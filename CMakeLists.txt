@@ -124,6 +124,8 @@ if(IMGUI_AVAILABLE)
   )
   add_library(imgui STATIC ${IMGUI_SOURCES})
   target_include_directories(imgui PUBLIC "${IMGUI_ROOT}" "${IMGUI_ROOT}/backends")
+  # Win32 + DirectX 11 arka ucu.
+  target_link_libraries(imgui PUBLIC d3d11 dxgi)
   set_target_properties(imgui PROPERTIES FOLDER "third_party")
   target_link_libraries(${_app_target} PRIVATE imgui)
 else()

@@ -3,24 +3,24 @@
 #include <windows.h>
 
 #include <algorithm>
-#include <cctype>
 #include <cstdio>
+#include <ctime>
 #include <filesystem>
 #include <string>
+#include <system_error>
 
 #include "imgui.h"
 #include "imgui_internal.h"
 
+#include "core/opcodes.h"
 #include "ui/theme.h"
 
 namespace ko::ui {
 namespace {
 
-// Toolbar ve durum cubugu sabittir; dockspace araligi bunlara gore hesaplanir.
-constexpr float kToolbarHeight = 68.0f;
+// Toolbar ve durum cubugu sabit yukseklikte; dockspace araligi bunlara gore hesaplanir.
+constexpr float kToolbarHeight = 70.0f;
 constexpr float kStatusBarHeight = 26.0f;
-
-// Hex dump satir uzunlugu.
 constexpr int kHexBytesPerRow = 16;
 
 constexpr ImGuiTableFlags kDetailTableFlags =
@@ -34,7 +34,6 @@ bool wpcapPresent() {
   return true;
 }
 
-// Unix mikrosaniyeyi saat:dakika:saniye.milisaniye bicimine cevirir.
 std::string clockString(std::int64_t tsUnixUs) {
   if (tsUnixUs <= 0) return "--:--:--.---";
   const std::time_t seconds = static_cast<std::time_t>(tsUnixUs / 1'000'000);
@@ -57,7 +56,6 @@ const char* cryptionLabel(Cryption cryption) {
   return "Bilinmiyor";
 }
 
-// Baytlari yazdirilabilir ASCII'ye cevirir; okunamaz yerlerde nokta kullanir.
 std::string asciiPreview(const std::vector<std::uint8_t>& data, std::size_t maxChars) {
   std::string out;
   const std::size_t limit = std::min<std::size_t>(data.size(), maxChars);
@@ -66,9 +64,7 @@ std::string asciiPreview(const std::vector<std::uint8_t>& data, std::size_t maxC
     const unsigned char c = data[i];
     out.push_back(c >= 0x20 && c < 0x7F ? static_cast<char>(c) : '.');
   }
-  if (data.size() > limit) {
-    out += "...";
-  }
+  if (data.size() > limit) out += "...";
   return out;
 }
 
@@ -85,28 +81,24 @@ std::string bytesToLowerHex(const std::uint8_t* data, std::size_t count) {
 
 std::uint64_t readLE(const std::uint8_t* data, std::size_t count) {
   std::uint64_t value = 0;
-  for (std::size_t i = 0; i < count; ++i) {
-    value |= static_cast<std::uint64_t>(data[i]) << (8 * i);
-  }
+  for (std::size_t i = 0; i < count; ++i) value |= static_cast<std::uint64_t>(data[i]) << (8 * i);
   return value;
 }
 
 std::uint64_t readBE(const std::uint8_t* data, std::size_t count) {
   std::uint64_t value = 0;
-  for (std::size_t i = 0; i < count; ++i) {
-    value = (value << 8) | data[i];
-  }
+  for (std::size_t i = 0; i < count; ++i) value = (value << 8) | data[i];
   return value;
 }
 
-// Kisa bir bayt serisinden okunabilir ozet: ilk degerlerin hex ve sayisal onizlemesi.
+// Kisa bir bayt serisinden okunabilir onizleme.
 std::string summarize(const DecodedPacket& packet) {
   const std::vector<std::uint8_t>& data = packet.plain.empty() ? packet.raw.data : packet.plain;
   if (data.empty()) return "(bos)";
   std::string out = bytesToLowerHex(data.data(), std::min<std::size_t>(data.size(), 8));
   if (data.size() >= 2) {
-    char tail[64];
-    std::snprintf(tail, sizeof(tail), "   [%u..%u]", static_cast<unsigned>(readLE(data.data(), 2) >> 8),
+    char tail[48];
+    std::snprintf(tail, sizeof(tail), "  [%u..%u]", static_cast<unsigned>(readLE(data.data(), 2)),
                   static_cast<unsigned>(readBE(data.data(), 2)));
     out += tail;
   }
@@ -119,7 +111,7 @@ std::string summarize(const DecodedPacket& packet) {
 Ui::Ui(AppState& state) : state_(state), buffer_(PacketBuffer::kDefaultCapacity) {
   capture_.setSink([this](RawPacket&& packet) { buffer_.push(std::move(packet)); });
   npcapPresent_ = wpcapPresent();
-  logPath_ = "logs";
+  logDirectory_ = "logs";
 }
 
 Ui::~Ui() { stopCapture(); }
@@ -127,10 +119,9 @@ Ui::~Ui() { stopCapture(); }
 void Ui::initialize() {
   refreshDevices();
   if (!npcapPresent_) {
-    setError("Npcap surucusu kurulu degil. Npcap surucusu (npcap-1.90.exe) kurulduktan "
-             "sonra uygulama yeniden baslatilmalidir.");
+    setError("Npcap surucusu kurulu degil (wpcap.dll yuklenemiyor). Npcap kurulduktan sonra uygulamayi yeniden baslatin.");
   } else if (selectedDevice_ < 0) {
-    setError("Kullanilabilir ag adaptoru bulunamadi. Ag baglantisi var mi kontrol edin.");
+    setError("Kullanilabilir ag adaptoru bulunamadi. Ag baglantisini kontrol edip Yenile'ye basin.");
   } else {
     setStatus("Hazir. Yakalamak icin Baslat'a basin.");
   }
@@ -139,6 +130,11 @@ void Ui::initialize() {
 // ---------------------------------------------------------------------------
 // Veri akisi
 // ---------------------------------------------------------------------------
+
+bool Ui::filtersArePassThrough() const {
+  return prepared_.showIn && prepared_.showOut && !prepared_.errorsOnly && !prepared_.opcodeRange &&
+         !prepared_.nameContains && !prepared_.sizeRange && !prepared_.text;
+}
 
 void Ui::pumpCapture() {
   const double now = ImGui::GetTime();
@@ -153,23 +149,17 @@ void Ui::pumpCapture() {
   const std::size_t drained = buffer_.drain(drainScratch_);
   rateCount_ += static_cast<std::uint64_t>(drained);
   state_.dropped.store(buffer_.droppedTotal(), std::memory_order_relaxed);
-
   if (drained == 0) return;
 
   decodeScratch_.clear();
-  for (RawPacket& raw : drainScratch_) {
-    pipeline_.process(raw, decodeScratch_);
-  }
+  for (const RawPacket& raw : drainScratch_) pipeline_.process(raw, decodeScratch_);
+  if (decodeScratch_.empty()) return;
 
-  const bool filtersActive = prepared_.showIn && prepared_.showOut && !prepared_.errorsOnly &&
-                             !prepared_.opcodeRange && !prepared_.nameContains && !prepared_.sizeRange &&
-                             !prepared_.text;
+  const bool passThrough = filtersArePassThrough();
   for (DecodedPacket& decoded : decodeScratch_) {
     const std::uint64_t seq = nextSeq_++;
-    const bool accepted = filtersActive || prepared_.matches(decoded);
-    appendDecoded(std::move(decoded), seq, accepted);
+    appendDecoded(std::move(decoded), seq, passThrough || prepared_.matches(decoded));
   }
-
   evictOverflow();
 }
 
@@ -178,48 +168,41 @@ void Ui::appendDecoded(DecodedPacket&& packet, std::uint64_t seq, bool accepted)
   row.seq = seq;
   row.packet = std::move(packet);
   rows_.push_back(std::move(row));
-  if (accepted) {
-    filtered_.push_back(seq);
-  }
+  if (accepted) filtered_.push_back(seq);
 }
 
 void Ui::evictOverflow() {
   while (rows_.size() > capacity_) {
-    const std::uint64_t droppedSeq = rows_.front().seq;
+    const std::uint64_t evicted = rows_.front().seq;
     rows_.pop_front();
-    if (filtered_.front() == droppedSeq) {
+    if (!filtered_.empty() && filtered_.front() == evicted) {
       filtered_.erase(filtered_.begin());
-    } else {
-      // Filtreli liste bastan kopmus olabilir; boyle bir durumda yeniden kur.
-      filtersDirty_ = true;
     }
-    if (selectedSeq_ == droppedSeq) selectedSeq_ = 0;
+    if (selectedSeq_ == evicted) selectedSeq_ = 0;
   }
 }
 
 void Ui::rebuildFiltered() {
   filtered_.clear();
-  const bool filtersActive = prepared_.showIn && prepared_.showOut && !prepared_.errorsOnly &&
-                             !prepared_.opcodeRange && !prepared_.nameContains && !prepared_.sizeRange &&
-                             !prepared_.text;
+  const bool passThrough = filtersArePassThrough();
   for (const Row& row : rows_) {
-    if (filtersActive || prepared_.matches(row.packet)) {
-      filtered_.push_back(row.seq);
-    }
+    if (passThrough || prepared_.matches(row.packet)) filtered_.push_back(row.seq);
   }
-  if (!filtered_.empty() && std::find(filtered_.begin(), filtered_.end(), selectedSeq_) == filtered_.end()) {
+  if (selectedSeq_ != 0 && !std::binary_search(filtered_.begin(), filtered_.end(), selectedSeq_)) {
     selectedSeq_ = 0;
   }
   filtersDirty_ = false;
 }
 
-const Row* Ui::selectedRow() const {
-  if (selectedSeq_ == 0) return nullptr;
-  for (const Row& row : rows_) {
-    if (row.seq == selectedSeq_) return &row;
-  }
-  return nullptr;
+const Row* Ui::rowForSeq(std::uint64_t seq) const {
+  if (rows_.empty() || seq < rows_.front().seq) return nullptr;
+  const std::uint64_t index = seq - rows_.front().seq;
+  if (index >= rows_.size()) return nullptr;
+  const Row& row = rows_[static_cast<std::size_t>(index)];
+  return row.seq == seq ? &row : nullptr;
 }
+
+const Row* Ui::selectedRow() const { return rowForSeq(selectedSeq_); }
 
 void Ui::selectRow(std::uint64_t seq) { selectedSeq_ = seq; }
 
@@ -245,9 +228,8 @@ void Ui::refreshDevices() {
 }
 
 void Ui::startCapture() {
-  if (capture_.running()) return;
-  if (selectedDevice_ < 0) {
-    setError("Once bir ag adaptoru secin.");
+  if (capture_.running() || selectedDevice_ < 0) {
+    if (selectedDevice_ < 0) setError("Once bir ag adaptoru secin.");
     return;
   }
 
@@ -268,24 +250,22 @@ void Ui::startCapture() {
 
   buffer_.setPaused(false);
   state_.capturing.store(true, std::memory_order_relaxed);
-  clear_error();
-  setStatus("Yakalama devam ediyor.");
+  state_.error.clear();
+  setStatus("Yakalama suruyor.");
 }
 
 void Ui::stopCapture() {
-  if (!capture_.running()) {
-    state_.capturing.store(false, std::memory_order_relaxed);
-    return;
+  if (capture_.running()) {
+    capture_.stop();
+    setStatus("Yakalama durduruldu.");
   }
-  capture_.stop();
   state_.capturing.store(false, std::memory_order_relaxed);
-  setStatus("Yakalama durduruldu.");
 }
 
 void Ui::togglePause() {
   const bool paused = !buffer_.paused();
   buffer_.setPaused(paused);
-  setStatus(paused ? "Yakalama duraklatildi; gelen paketler birakiliyor." : "Yakalama suruyor.");
+  setStatus(paused ? "Duraklatildi; gelen paketler birakiliyor." : "Yakalama suruyor.");
 }
 
 void Ui::clearPackets() {
@@ -293,22 +273,22 @@ void Ui::clearPackets() {
   filtered_.clear();
   selectedSeq_ = 0;
   nextSeq_ = 1;
+  pipeline_.reset();
   filtersDirty_ = true;
   setStatus("Paket listesi temizlendi.");
 }
 
 void Ui::toggleLogging() {
   if (log_.isOpen()) {
+    const std::string path = log_.path();
     log_.close();
     logError_.clear();
-    setStatus("Kayit kapatildi: " + log_.path());
+    setStatus("Kayit kapatildi: " + path);
     return;
   }
 
-  if (!std::filesystem::exists(logPath_)) {
-    std::error_code ec;
-    std::filesystem::create_directories(logPath_, ec);
-  }
+  std::error_code ec;
+  std::filesystem::create_directories(logDirectory_, ec);
 
   std::time_t now = std::time(nullptr);
   std::tm local{};
@@ -316,7 +296,7 @@ void Ui::toggleLogging() {
   char name[64];
   std::snprintf(name, sizeof(name), "ko-%04d%02d%02d-%02d%02d%02d.log", local.tm_year + 1900, local.tm_mon + 1,
                 local.tm_mday, local.tm_hour, local.tm_min, local.tm_sec);
-  const std::string path = logPath_ + "/" + name;
+  const std::string path = logDirectory_ + "/" + name;
 
   std::string err;
   if (!log_.open(path, err)) {
@@ -333,24 +313,19 @@ void Ui::setStatus(std::string text) { state_.status = std::move(text); }
 void Ui::setError(std::string text) { state_.error = std::move(text); }
 
 // ---------------------------------------------------------------------------
-// Cizim
+// Kare
 // ---------------------------------------------------------------------------
 
 void Ui::frame() {
   pumpCapture();
 
   if (filtersDirty_) {
-    PreparedFilter fresh = prepare(filters_);
-    if (!fresh.sameAs(prepared_)) {
-      prepared_ = std::move(fresh);
-    }
+    prepared_ = prepare(filters_);
     rebuildFiltered();
   }
 
   const double now = ImGui::GetTime();
-  if (lastFrameTime_ > 0.0) {
-    frameMs_ = static_cast<float>((now - lastFrameTime_) * 1000.0);
-  }
+  if (lastFrameTime_ > 0.0) frameMs_ = static_cast<float>((now - lastFrameTime_) * 1000.0);
   lastFrameTime_ = now;
 
   drawDockSpace();
@@ -363,30 +338,42 @@ void Ui::frame() {
 
 void Ui::drawDockSpace() {
   const ImGuiViewport* viewport = ImGui::GetMainViewport();
-  const ImVec2 dockPos(viewport->WorkPos.x, viewport->WorkPos.y + kToolbarHeight);
-  const ImVec2 dockSize(viewport->WorkSize.x,
-                        viewport->WorkSize.y - kToolbarHeight - kStatusBarHeight);
-  const ImGuiID dockspaceId = ImGui::GetID("KoDockspace");
+  ImGui::SetNextWindowPos(ImVec2(viewport->WorkPos.x, viewport->WorkPos.y + kToolbarHeight));
+  ImGui::SetNextWindowSize(
+      ImVec2(viewport->WorkSize.x, viewport->WorkSize.y - kToolbarHeight - kStatusBarHeight));
 
-  ImGui::DockSpace(dockspaceId, dockSize, ImGuiDockNodeFlags_None);
+  constexpr ImGuiWindowFlags kHostFlags =
+      ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
+      ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
+      ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground;
+
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+  ImGui::Begin("##dockhost", nullptr, kHostFlags);
+  ImGui::PopStyleVar();
+
+  const ImGuiID dockspaceId = ImGui::GetID("KoDockspace");
+  ImGui::DockSpace(dockspaceId, ImGui::GetContentRegionAvail(), ImGuiDockNodeFlags_None);
 
   if (!layoutBuilt_) {
     layoutBuilt_ = true;
+    const ImVec2 size = ImGui::GetContentRegionAvail();
     ImGui::DockBuilderRemoveNode(dockspaceId);
     ImGui::DockBuilderAddNode(dockspaceId, ImGuiDockNodeFlags_DockSpace);
-    ImGui::DockBuilderSetNodeSize(dockspaceId, dockSize);
+    ImGui::DockBuilderSetNodeSize(dockspaceId, size);
 
-    ImGuiID left = dockspaceId;
-    ImGuiID right = dockspaceId;
-    ImGui::DockBuilderSplitNode(left, ImGuiDir_Left, 0.62f, nullptr, &right);
-    ImGuiID bottom = right;
-    ImGui::DockBuilderSplitNode(right, ImGuiDir_Down, 0.28f, nullptr, &bottom);
+    ImGuiID main = dockspaceId;
+    ImGuiID right = 0;
+    ImGui::DockBuilderSplitNode(main, ImGuiDir_Right, 0.38f, &right, &main);
+    ImGuiID rightBottom = 0;
+    ImGui::DockBuilderSplitNode(right, ImGuiDir_Down, 0.32f, &rightBottom, &right);
 
-    ImGui::DockBuilderDockWindow("Paket Listesi", left);
-    ImGui::DockBuilderDockWindow("Paket Detayı", bottom);
-    ImGui::DockBuilderDockWindow("Uyarılar", right);
+    ImGui::DockBuilderDockWindow("Paket Listesi", main);
+    ImGui::DockBuilderDockWindow("Paket Detayi", rightBottom);
+    ImGui::DockBuilderDockWindow("Uyarilar", right);
     ImGui::DockBuilderFinish(dockspaceId);
   }
+
+  ImGui::End();
 }
 
 void Ui::drawMenuBarAndToolbar() {
@@ -396,205 +383,105 @@ void Ui::drawMenuBarAndToolbar() {
   constexpr ImGuiWindowFlags kFlags =
       ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
       ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
-      ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoScrollbar;
+      ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_MenuBar;
 
-  if (!ImGui::Begin("##toolbar", nullptr, kFlags)) {
-    ImGui::End();
-    return;
-  }
+  ImGui::Begin("##toolbar", nullptr, kFlags);
 
   if (ImGui::BeginMenuBar()) {
     if (ImGui::BeginMenu("Dosya")) {
-      if (ImGui::MenuItem(log_.isOpen() ? "Kaydı Kapat" : "Kaydı Aç")) toggleLogging();
+      if (ImGui::MenuItem(log_.isOpen() ? "Kaydi Kapat" : "Kaydi Ac")) toggleLogging();
       ImGui::Separator();
-      if (ImGui::MenuItem("Çıkış")) state_.quit.store(true, std::memory_order_relaxed);
-      ImGui::EndMenu();
-    }
-    if (ImGui::BeginMenu("Görünüm")) {
-      if (ImGui::MenuItem("Otomatik Kaydır", nullptr, autoScroll_)) autoScroll_ = !autoScroll_;
-      if (ImGui::MenuItem("Uyarılar", nullptr, showWarnings_)) showWarnings_ = !showWarnings_;
+      if (ImGui::MenuItem("Cikis")) state_.quit.store(true, std::memory_order_relaxed);
       ImGui::EndMenu();
     }
     if (ImGui::BeginMenu("Yakalama")) {
-      if (ImGui::MenuItem("Başlat", nullptr, false, selectedDevice_ >= 0 && !capture_.running())) startCapture();
+      if (ImGui::MenuItem("Baslat", nullptr, false, !capture_.running() && selectedDevice_ >= 0)) startCapture();
       if (ImGui::MenuItem("Durdur", nullptr, false, capture_.running())) stopCapture();
-      if (ImGui::MenuItem("Duraklat / Devam", nullptr, false, capture_.running())) togglePause();
+      if (ImGui::MenuItem(buffer_.paused() ? "Devam Et" : "Duraklat", nullptr, false, capture_.running())) {
+        togglePause();
+      }
       ImGui::Separator();
       if (ImGui::MenuItem("Temizle")) clearPackets();
+      ImGui::EndMenu();
+    }
+    if (ImGui::BeginMenu("Gorunum")) {
+      if (ImGui::MenuItem("Filtre Cubugu", nullptr, filterBarOpen_)) filterBarOpen_ = !filterBarOpen_;
+      if (ImGui::MenuItem("Uyari Paneli", nullptr, showWarnings_)) showWarnings_ = !showWarnings_;
+      if (ImGui::MenuItem("Otomatik Kaydir", nullptr, autoScroll_)) autoScroll_ = !autoScroll_;
       ImGui::EndMenu();
     }
     ImGui::EndMenuBar();
   }
 
-  // --- Adaptör seçimi ---
+  // --- adaptor ---
   ImGui::AlignTextToFramePadding();
-  ImGui::TextUnformatted("Adaptör:");
+  ImGui::TextUnformatted("Adaptor:");
   ImGui::SameLine();
-  {
-    std::vector<DeviceInfo> devices;
-    {
-      std::lock_guard<std::mutex> lock(state_.devicesMutex);
-      devices = state_.devices;
-    }
 
-    const char* preview = devices.empty() ? "(adaptör yok)"
-                                          : devices[static_cast<std::size_t>(selectedDevice_)].description.c_str();
-    ImGui::SetNextItemWidth(320.0f);
-    if (ImGui::BeginCombo("##device", preview)) {
-      for (int i = 0; i < static_cast<int>(devices.size()); ++i) {
-        const bool selected = (i == selectedDevice_);
-        const std::string label = devices[static_cast<std::size_t>(i)].description;
-        if (ImGui::Selectable(label.c_str(), selected)) {
-          selectedDevice_ = i;
-          state_.selectedDevice = i;
-        }
-        if (selected) ImGui::SetItemDefaultFocus();
-      }
-      ImGui::EndCombo();
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Yenile")) {
-      refreshDevices();
-      setStatus("Adaptör listesi yenilendi.");
-    }
+  std::vector<DeviceInfo> devices;
+  {
+    std::lock_guard<std::mutex> lock(state_.devicesMutex);
+    devices = state_.devices;
   }
 
-  ImGui::SameLine(0.0f, 12.0f);
-
-  // --- Başlat / Durdur ---
-  {
-    const bool running = capture_.running();
-    if (!running) {
-      if (ImGui::Button("▶ Başlat", ImVec2(92.0f, 0.0f))) startCapture();
-      ImGui::SameLine();
-      if (ImGui::Button("⏸ Duraklat", ImVec2(96.0f, 0.0f)) && false) {
-      }
-    } else {
-      if (ImGui::Button("■ Durdur", ImVec2(92.0f, 0.0f))) stopCapture();
-      ImGui::SameLine();
-      const bool paused = buffer_.paused();
-      if (ImGui::Button(paused ? "▶ Devam" : "⏸ Duraklat", ImVec2(96.0f, 0.0f))) togglePause();
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Temizle", ImVec2(80.0f, 0.0f))) clearPackets();
-    ImGui::SameLine();
-    if (ImGui::Button(log_.isOpen() ? "⏺ Kayıt: Açık" : "⏺ Kayıt: Kapalı")) toggleLogging();
-    if (log_.isOpen()) {
-      ImGui::SameLine();
-      ImGui::TextDisabled("%llu", static_cast<unsigned long long>(log_.writtenCount()));
-    }
+  const char* preview = "(adaptor yok)";
+  if (selectedDevice_ >= 0 && selectedDevice_ < static_cast<int>(devices.size())) {
+    preview = devices[static_cast<std::size_t>(selectedDevice_)].description.c_str();
   }
 
-  ImGui::SameLine(0.0f, 12.0f);
+  ImGui::SetNextItemWidth(340.0f);
+  if (ImGui::BeginCombo("##device", preview)) {
+    for (int i = 0; i < static_cast<int>(devices.size()); ++i) {
+      const bool selected = i == selectedDevice_;
+      if (ImGui::Selectable(devices[static_cast<std::size_t>(i)].description.c_str(), selected)) {
+        selectedDevice_ = i;
+        state_.selectedDevice = i;
+      }
+      if (selected) ImGui::SetItemDefaultFocus();
+    }
+    ImGui::EndCombo();
+  }
+  ImGui::SameLine();
+  if (ImGui::Button("Yenile")) {
+    refreshDevices();
+    setStatus("Adaptor listesi yenilendi.");
+  }
 
-  // --- Arama ---
-  ImGui::SetNextItemWidth(240.0f);
-  if (ImGui::InputTextWithHint("##search", "Ara (opcode, hex, metin)", filters_.text, sizeof(filters_.text))) {
+  ImGui::SameLine(0.0f, 16.0f);
+
+  // --- kontrol dugmeleri ---
+  if (capture_.running()) {
+    if (ImGui::Button("Durdur", ImVec2(88.0f, 0.0f))) stopCapture();
+    ImGui::SameLine();
+    if (ImGui::Button(buffer_.paused() ? "Devam" : "Duraklat", ImVec2(88.0f, 0.0f))) togglePause();
+  } else {
+    ImGui::BeginDisabled(selectedDevice_ < 0);
+    if (ImGui::Button("Baslat", ImVec2(88.0f, 0.0f))) startCapture();
+    ImGui::EndDisabled();
+    ImGui::SameLine();
+    ImGui::BeginDisabled();
+    ImGui::Button("Duraklat", ImVec2(88.0f, 0.0f));
+    ImGui::EndDisabled();
+  }
+
+  ImGui::SameLine();
+  if (ImGui::Button("Temizle", ImVec2(78.0f, 0.0f))) clearPackets();
+  ImGui::SameLine();
+  if (ImGui::Button(log_.isOpen() ? "Kayit: Acik" : "Kayit: Kapali", ImVec2(118.0f, 0.0f))) toggleLogging();
+  if (log_.isOpen()) {
+    ImGui::SameLine();
+    ImGui::TextDisabled("%llu satir", static_cast<unsigned long long>(log_.writtenCount()));
+  }
+
+  ImGui::SameLine(0.0f, 16.0f);
+  ImGui::SetNextItemWidth(260.0f);
+  if (ImGui::InputTextWithHint("##search", "Ara: opcode adi, hex veya metin", filters_.text, sizeof(filters_.text))) {
     filtersDirty_ = true;
   }
-
-  ImGui::End();
-}
-
-void Ui::drawPacketList() {
-  if (!ImGui::Begin("Paket Listesi")) {
-    ImGui::End();
-    return;
-  }
-
-  drawFilterBar();
-
-  const float listHeight = ImGui::GetContentRegionAvail().y;
-  if (listHeight <= 0.0f) {
-    ImGui::End();
-    return;
-  }
-
-  if (ImGui::BeginTable("##packets", 7,
-                        ImGuiTableFlags_ScrollY | ImGuiTableFlags_RowBg | ImGuiTableFlags_BordersOuter |
-                            ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_Resizable |
-                            ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable |
-                            ImGuiTableFlags_SizingStretchProp,
-                        ImVec2(0.0f, listHeight))) {
-    ImGui::TableSetupScrollFreeze(0, 1);
-    ImGui::TableSetupColumn("Sıra", ImGuiTableColumnFlags_WidthFixed, 58.0f);
-    ImGui::TableSetupColumn("Saat (ms)", ImGuiTableColumnFlags_WidthFixed, 96.0f);
-    ImGui::TableSetupColumn("Yön", ImGuiTableColumnFlags_WidthFixed, 62.0f);
-    ImGui::TableSetupColumn("Opcode", ImGuiTableColumnFlags_WidthFixed, 62.0f);
-    ImGui::TableSetupColumn("Ad", ImGuiTableColumnFlags_WidthStretch, 160.0f);
-    ImGui::TableSetupColumn("Boyut", ImGuiTableColumnFlags_WidthFixed, 66.0f);
-    ImGui::TableSetupColumn("Özet", ImGuiTableColumnFlags_WidthStretch, 220.0f);
-    ImGui::TableHeadersRow();
-
-    // seq -> satir arama: deque bastan tuketildigi icin verimli bir ileri/geri isaretci tut.
-    const int total = static_cast<int>(filtered_.size());
-    ImGuiListClipper clipper;
-    clipper.Begin(total, static_cast<float>(ImGui::GetTextLineHeightWithSpacing()));
-    while (clipper.Step()) {
-      for (int row = clipper.DisplayStart; row < clipper.DisplayEnd; ++row) {
-        const std::uint64_t seq = filtered_[static_cast<std::size_t>(row)];
-        const Row* rowPtr = nullptr;
-        for (const Row& candidate : rows_) {
-          if (candidate.seq == seq) {
-            rowPtr = &candidate;
-            break;
-          }
-        }
-        if (rowPtr == nullptr) continue;
-
-        const DecodedPacket& packet = rowPtr->packet;
-        const bool incoming = packet.raw.dir == Direction::In;
-        const bool known = ko::isKnownOpcode(packet.opcode);
-
-        ImGui::TableNextRow();
-        ImGui::PushID(static_cast<int>(seq & 0x7FFFFFFF));
-
-        ImGui::TableSetColumnIndex(0);
-        const bool selected = (rowPtr->seq == selectedSeq_);
-        if (ImGui::Selectable("##sel", selected,
-                              ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap)) {
-          selectRow(rowPtr->seq);
-        }
-
-        ImGui::SameLine();
-        ImGui::TextDisabled("%llu", static_cast<unsigned long long>(seq));
-
-        ImGui::TableSetColumnIndex(1);
-        ImGui::TextUnformatted(clockString(packet.raw.ts_unix_us).c_str());
-
-        ImGui::TableSetColumnIndex(2);
-        ImGui::PushStyleColor(ImGuiCol_Text, colorForDirection(incoming));
-        ImGui::TextUnformatted(directionLabel(packet.raw.dir));
-        ImGui::PopStyleColor();
-
-        ImGui::TableSetColumnIndex(3);
-        if (!packet.ok) {
-          ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(235, 120, 120));
-        } else if (!known) {
-          ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(235, 170, 110));
-        }
-        ImGui::Text("0x%02X", packet.opcode);
-        ImGui::PopStyleColor();
-
-        ImGui::TableSetColumnIndex(4);
-        ImGui::TextUnformatted(packet.opcode_name != nullptr ? packet.opcode_name : "UNKNOWN");
-
-        ImGui::TableSetColumnIndex(5);
-        ImGui::Text("%zu", packet.raw.data.size());
-
-        ImGui::TableSetColumnIndex(6);
-        if (!packet.ok) {
-          ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(235, 120, 120));
-          ImGui::TextUnformatted(packet.error.c_str());
-          ImGui::PopStyleColor();
-        } else {
-          ImGui::TextUnformatted(summarize(packet).c_str());
-        }
-
-        ImGui::PopID();
-      }
-    }
-    ImGui::EndTable();
+  ImGui::SameLine();
+  if (ImGui::SmallButton("x")) {
+    filters_.text[0] = '\0';
+    filtersDirty_ = true;
   }
 
   ImGui::End();
@@ -602,13 +489,11 @@ void Ui::drawPacketList() {
 
 void Ui::drawFilterBar() {
   ImGui::AlignTextToFramePadding();
-  ImGui::Text("Filtre");
+  ImGui::TextUnformatted("Filtreler");
   ImGui::SameLine();
-  if (ImGui::SmallButton(filterBarOpen_ ? " Gizle" : " Göster")) {
-    filterBarOpen_ = !filterBarOpen_;
-  }
+  if (ImGui::SmallButton(filterBarOpen_ ? "Gizle" : "Goster")) filterBarOpen_ = !filterBarOpen_;
   ImGui::SameLine();
-  ImGui::TextDisabled("|  Sonuç: %zu / %zu paket", filtered_.size(), rows_.size());
+  ImGui::TextDisabled("|  Sonuc: %zu / %zu", filtered_.size(), rows_.size());
 
   if (!filterBarOpen_) return;
 
@@ -620,46 +505,157 @@ void Ui::drawFilterBar() {
     ImGui::SameLine();
     if (ImGui::Checkbox("Giden", &filters_.showOut)) filtersDirty_ = true;
     ImGui::SameLine();
-    if (ImGui::Checkbox("Sadece Hatalılar", &filters_.errorsOnly)) filtersDirty_ = true;
+    if (ImGui::Checkbox("Sadece hatali", &filters_.errorsOnly)) filtersDirty_ = true;
 
     ImGui::TableSetColumnIndex(1);
-    ImGui::SetNextItemWidth(110.0f);
-    if (ImGui::InputInt("##opmin", &filters_.opcodeMin)) filtersDirty_ = true;
+    ImGui::SetNextItemWidth(64.0f);
+    if (ImGui::DragInt("##opmin", &filters_.opcodeMin, 1.0f, 0, 255, "0x%02X")) {
+      filters_.opcodeRangeEnabled = true;
+      filtersDirty_ = true;
+    }
     ImGui::SameLine();
-    ImGui::SetNextItemWidth(110.0f);
-    if (ImGui::InputInt("##opmax", &filters_.opcodeMax)) filtersDirty_ = true;
+    ImGui::TextDisabled("-");
     ImGui::SameLine();
-    ImGui::TextDisabled("opcode aralığı (0-255)");
+    ImGui::SetNextItemWidth(64.0f);
+    if (ImGui::DragInt("##opmax", &filters_.opcodeMax, 1.0f, 0, 255, "0x%02X")) {
+      filters_.opcodeRangeEnabled = true;
+      filtersDirty_ = true;
+    }
+    ImGui::SameLine();
+    if (ImGui::Checkbox("opcode araligi", &filters_.opcodeRangeEnabled)) filtersDirty_ = true;
 
     ImGui::TableSetColumnIndex(2);
-    ImGui::SetNextItemWidth(110.0f);
-    if (ImGui::InputInt("##szmin", &filters_.sizeMin)) filtersDirty_ = true;
+    ImGui::SetNextItemWidth(72.0f);
+    if (ImGui::DragInt("##szmin", &filters_.sizeMin, 1.0f, 0, 65535)) {
+      filters_.sizeRangeEnabled = true;
+      filtersDirty_ = true;
+    }
     ImGui::SameLine();
-    ImGui::SetNextItemWidth(110.0f);
-    if (ImGui::InputInt("##szmax", &filters_.sizeMax)) filtersDirty_ = true;
+    ImGui::TextDisabled("-");
     ImGui::SameLine();
-    ImGui::TextDisabled("boyut aralığı (bayt)");
+    ImGui::SetNextItemWidth(72.0f);
+    if (ImGui::DragInt("##szmax", &filters_.sizeMax, 1.0f, 0, 65535)) {
+      filters_.sizeRangeEnabled = true;
+      filtersDirty_ = true;
+    }
+    ImGui::SameLine();
+    if (ImGui::Checkbox("boyut araligi", &filters_.sizeRangeEnabled)) filtersDirty_ = true;
 
     ImGui::TableSetColumnIndex(3);
-    ImGui::SetNextItemWidth(220.0f);
-    if (ImGui::InputTextWithHint("##namefilter", "Opcode adı içerecek", filters_.nameContains,
+    ImGui::SetNextItemWidth(200.0f);
+    if (ImGui::InputTextWithHint("##namefilter", "Opcode adinda ara", filters_.nameContains,
                                  sizeof(filters_.nameContains))) {
       filtersDirty_ = true;
     }
+    ImGui::SameLine();
+    if (ImGui::Checkbox("ad filtresi", &filters_.nameContainsEnabled)) filtersDirty_ = true;
 
     ImGui::EndTable();
   }
 }
 
-void Ui::drawDetailPanel() {
-  if (!ImGui::Begin("Paket Detayı")) {
+void Ui::drawPacketList() {
+  ImGui::Begin("Paket Listesi");
+  drawFilterBar();
+
+  const float listHeight = ImGui::GetContentRegionAvail().y;
+  if (listHeight <= 0.0f) {
     ImGui::End();
     return;
   }
 
+  constexpr ImGuiTableFlags kTableFlags =
+      ImGuiTableFlags_ScrollY | ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersInnerV |
+      ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable |
+      ImGuiTableFlags_SizingStretchProp;
+
+  if (ImGui::BeginTable("##packets", 7, kTableFlags, ImVec2(0.0f, listHeight))) {
+    ImGui::TableSetupScrollFreeze(0, 1);
+    ImGui::TableSetupColumn("Sira", ImGuiTableColumnFlags_WidthFixed, 56.0f);
+    ImGui::TableSetupColumn("Saat (ms)", ImGuiTableColumnFlags_WidthFixed, 96.0f);
+    ImGui::TableSetupColumn("Yon", ImGuiTableColumnFlags_WidthFixed, 58.0f);
+    ImGui::TableSetupColumn("Opcode", ImGuiTableColumnFlags_WidthFixed, 62.0f);
+    ImGui::TableSetupColumn("Ad", ImGuiTableColumnFlags_WidthStretch, 150.0f);
+    ImGui::TableSetupColumn("Boyut", ImGuiTableColumnFlags_WidthFixed, 62.0f);
+    ImGui::TableSetupColumn("Ozet", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+    ImGui::TableHeadersRow();
+
+    const int total = static_cast<int>(filtered_.size());
+    ImGuiListClipper clipper;
+    clipper.Begin(total, ImGui::GetTextLineHeightWithSpacing());
+    while (clipper.Step()) {
+      for (int line = clipper.DisplayStart; line < clipper.DisplayEnd; ++line) {
+        const Row* row = rowForSeq(filtered_[static_cast<std::size_t>(line)]);
+        if (row == nullptr) continue;
+
+        const DecodedPacket& packet = row->packet;
+        const bool incoming = packet.raw.dir == Direction::In;
+        const bool known = isKnownOpcode(packet.opcode);
+        const bool selected = row->seq == selectedSeq_;
+
+        ImGui::TableNextRow();
+        ImGui::PushID(static_cast<int>(row->seq & 0x7FFFFFFF));
+
+        ImGui::TableSetColumnIndex(0);
+        if (ImGui::Selectable("##sel", selected,
+                              ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap)) {
+          selectRow(row->seq);
+        }
+        ImGui::SameLine();
+        ImGui::TextDisabled("%llu", static_cast<unsigned long long>(row->seq));
+
+        ImGui::TableSetColumnIndex(1);
+        ImGui::TextUnformatted(clockString(packet.raw.ts_unix_us).c_str());
+
+        ImGui::TableSetColumnIndex(2);
+        ImGui::PushStyleColor(ImGuiCol_Text, colorForDirection(incoming));
+        ImGui::TextUnformatted(directionLabel(packet.raw.dir));
+        ImGui::PopStyleColor();
+
+        ImGui::TableSetColumnIndex(3);
+        const ImU32 opcodeColor = !packet.ok ? IM_COL32(238, 122, 122, 255)
+                                             : (known ? IM_COL32(214, 220, 232, 255) : IM_COL32(238, 176, 112, 255));
+        ImGui::PushStyleColor(ImGuiCol_Text, opcodeColor);
+        ImGui::Text("0x%02X", packet.opcode);
+        ImGui::PopStyleColor();
+
+        ImGui::TableSetColumnIndex(4);
+        ImGui::PushStyleColor(ImGuiCol_Text, known ? IM_COL32(206, 212, 224, 255) : IM_COL32(238, 176, 112, 255));
+        ImGui::TextUnformatted(packet.opcode_name != nullptr ? packet.opcode_name : "UNKNOWN");
+        ImGui::PopStyleColor();
+
+        ImGui::TableSetColumnIndex(5);
+        ImGui::Text("%zu", packet.raw.data.size());
+
+        ImGui::TableSetColumnIndex(6);
+        if (!packet.ok) {
+          ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(238, 122, 122, 255));
+          ImGui::TextUnformatted(packet.error.c_str());
+          ImGui::PopStyleColor();
+        } else {
+          ImGui::TextUnformatted(summarize(packet).c_str());
+        }
+
+        ImGui::PopID();
+      }
+    }
+
+    if (autoScroll_ && total > 0 && ImGui::GetScrollY() < ImGui::GetScrollMaxY()) {
+      ImGui::SetScrollY(ImGui::GetScrollMaxY());
+    }
+
+    ImGui::EndTable();
+  }
+
+  ImGui::End();
+}
+
+void Ui::drawDetailPanel() {
+  ImGui::Begin("Paket Detayi");
+
   const Row* row = selectedRow();
   if (row == nullptr) {
-    ImGui::TextDisabled("Ayrıntı için soldaki listeden bir paket seçin.");
+    ImGui::TextDisabled("Ayrintilar icin listeden bir paket secin.");
     ImGui::End();
     return;
   }
@@ -668,60 +664,43 @@ void Ui::drawDetailPanel() {
   const bool incoming = packet.raw.dir == Direction::In;
 
   if (ImGui::BeginTable("##summary", 2, kDetailTableFlags)) {
-    ImGui::TableNextRow();
-    ImGui::TableSetColumnIndex(0);
-    ImGui::TextDisabled("Sıra");
-    ImGui::TableSetColumnIndex(1);
+    auto field = [](const char* label) {
+      ImGui::TableNextRow();
+      ImGui::TableSetColumnIndex(0);
+      ImGui::TextDisabled("%s", label);
+      ImGui::TableSetColumnIndex(1);
+    };
+
+    field("Sira");
     ImGui::Text("%llu", static_cast<unsigned long long>(row->seq));
 
-    ImGui::TableNextRow();
-    ImGui::TableSetColumnIndex(0);
-    ImGui::TextDisabled("Saat");
-    ImGui::TableSetColumnIndex(1);
+    field("Saat");
     ImGui::TextUnformatted(clockString(packet.raw.ts_unix_us).c_str());
 
-    ImGui::TableNextRow();
-    ImGui::TableSetColumnIndex(0);
-    ImGui::TextDisabled("Yön");
-    ImGui::TableSetColumnIndex(1);
+    field("Yon");
     ImGui::PushStyleColor(ImGuiCol_Text, colorForDirection(incoming));
     ImGui::TextUnformatted(directionLabel(packet.raw.dir));
     ImGui::PopStyleColor();
 
-    ImGui::TableNextRow();
-    ImGui::TableSetColumnIndex(0);
-    ImGui::TextDisabled("Kripto");
-    ImGui::TableSetColumnIndex(1);
+    field("Kripto");
     ImGui::TextUnformatted(cryptionLabel(packet.cryption));
 
-    ImGui::TableNextRow();
-    ImGui::TableSetColumnIndex(0);
-    ImGui::TextDisabled("Opcode");
-    ImGui::TableSetColumnIndex(1);
+    field("Opcode");
     ImGui::Text("0x%02X (%u)  %s", packet.opcode, static_cast<unsigned>(packet.opcode),
                 packet.opcode_name != nullptr ? packet.opcode_name : "UNKNOWN");
 
-    ImGui::TableNextRow();
-    ImGui::TableSetColumnIndex(0);
-    ImGui::TextDisabled("Uzunluk");
-    ImGui::TableSetColumnIndex(1);
+    field("Uzunluk");
     ImGui::Text("%zu bayt", packet.raw.data.size());
 
-    ImGui::TableNextRow();
-    ImGui::TableSetColumnIndex(0);
-    ImGui::TextDisabled("Çözülmüş");
-    ImGui::TableSetColumnIndex(1);
+    field("Cozulmus govde");
     ImGui::Text("%zu bayt", packet.plain.size());
 
-    ImGui::TableNextRow();
-    ImGui::TableSetColumnIndex(0);
-    ImGui::TextDisabled("Durum");
-    ImGui::TableSetColumnIndex(1);
+    field("Durum");
     if (packet.ok) {
-      ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(150, 220, 160));
-      ImGui::TextUnformatted("Başarılı");
+      ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(150, 214, 160, 255));
+      ImGui::TextUnformatted("Cozuldu");
     } else {
-      ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(235, 120, 120));
+      ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(238, 122, 122, 255));
       ImGui::TextUnformatted(packet.error.c_str());
     }
     ImGui::PopStyleColor();
@@ -729,36 +708,32 @@ void Ui::drawDetailPanel() {
     ImGui::EndTable();
   }
 
-  if (!packet.ok && !packet.error.empty()) {
-    ImGui::Separator();
-    ImGui::TextColored(ImVec4(0.92f, 0.47f, 0.47f, 1.0f), "Hata: %s", packet.error.c_str());
-  }
-
   ImGui::Separator();
+
   if (ImGui::BeginTabBar("##detailtabs")) {
     if (ImGui::BeginTabItem("Ham Hex")) {
-      drawHexDump(packet.raw.data, "ham");
+      drawHexDump(packet.raw.data, "ham cerceve");
       ImGui::EndTabItem();
     }
-    if (ImGui::BeginTabItem("Çözülmüş Gövde")) {
+    if (ImGui::BeginTabItem("Cozulmus Govde")) {
       if (packet.plain.empty()) {
-        ImGui::TextDisabled("Çözülmüş gövde yok.");
+        ImGui::TextDisabled("Cozulmus govde yok.");
       } else {
-        ImGui::TextDisabled("İlk bayt opcode = 0x%02X; kalan baytlar gövde alanlarıdır.", packet.opcode);
+        ImGui::TextDisabled("plain[0] = opcode 0x%02X. Asagidaki ofsetler govde alanlaridir.", packet.opcode);
         drawFieldTable(packet.plain);
         ImGui::Separator();
-        drawHexDump(packet.plain, "düz");
+        drawHexDump(packet.plain, "duz metin");
       }
       ImGui::EndTabItem();
     }
     if (ImGui::BeginTabItem("Metin")) {
-      const std::string text = asciiPreview(packet.plain.empty() ? packet.raw.data : packet.plain, 4096);
+      const std::string text = asciiPreview(packet.plain.empty() ? packet.raw.data : packet.plain, 8192);
       ImGui::BeginChild("##text", ImVec2(0, 0), ImGuiChildFlags_Borders);
       ImGui::TextWrapped("%s", text.c_str());
       ImGui::EndChild();
       ImGui::EndTabItem();
     }
-    ImGui::EndTabItem();
+    ImGui::EndTabBar();
   }
 
   ImGui::End();
@@ -771,13 +746,10 @@ void Ui::drawHexDump(const std::vector<std::uint8_t>& data, const char* caption)
     return;
   }
 
-  const float height = ImGui::GetContentRegionAvail().y;
-  if (height <= 0.0f) return;
-
   ImGui::BeginChild("##hex", ImVec2(0, 0), ImGuiChildFlags_Borders);
-  const float lineHeight = ImGui::GetTextLineHeightWithSpacing();
+  const int lineCount = static_cast<int>((data.size() + kHexBytesPerRow - 1) / kHexBytesPerRow);
   ImGuiListClipper clipper;
-  clipper.Begin(static_cast<int>((data.size() + kHexBytesPerRow - 1) / kHexBytesPerRow), lineHeight);
+  clipper.Begin(lineCount, ImGui::GetTextLineHeightWithSpacing());
   while (clipper.Step()) {
     for (int line = clipper.DisplayStart; line < clipper.DisplayEnd; ++line) {
       const std::size_t offset = static_cast<std::size_t>(line) * kHexBytesPerRow;
@@ -786,25 +758,22 @@ void Ui::drawHexDump(const std::vector<std::uint8_t>& data, const char* caption)
       char head[16];
       std::snprintf(head, sizeof(head), "%08zX  ", offset);
       ImGui::TextDisabled("%s", head);
-      ImGui::SameLine(0, 0);
 
       for (std::size_t i = 0; i < count; ++i) {
+        ImGui::SameLine(0.0f, 0.0f);
         ImGui::Text("%02X ", data[offset + i]);
-        if (i + 1 != count) ImGui::SameLine(0, 0);
       }
 
-      ImGui::SameLine(0, 8);
+      ImGui::SameLine(0.0f, 8.0f);
       ImGui::TextDisabled("|");
-      ImGui::SameLine(0, 6);
+
       for (std::size_t i = 0; i < count; ++i) {
         const unsigned char c = data[offset + i];
         const bool printable = c >= 0x20 && c < 0x7F;
-        if (!printable) {
-          ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(120, 126, 140));
-        }
+        ImGui::SameLine(0.0f, 0.0f);
+        ImGui::PushStyleColor(ImGuiCol_Text, printable ? IM_COL32(214, 220, 232, 255) : IM_COL32(120, 126, 140, 255));
         ImGui::Text("%c", printable ? static_cast<char>(c) : '.');
-        if (!printable) ImGui::PopStyleColor();
-        if (i + 1 != count) ImGui::SameLine(0, 0);
+        ImGui::PopStyleColor();
       }
     }
   }
@@ -812,119 +781,123 @@ void Ui::drawHexDump(const std::vector<std::uint8_t>& data, const char* caption)
 }
 
 void Ui::drawFieldTable(const std::vector<std::uint8_t>& plain) {
+  constexpr std::size_t kMaxRows = 400;
+  const std::size_t rowCount = std::min(plain.size(), kMaxRows);
+
   if (ImGui::BeginTable("##fields", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
-    ImGui::TableSetupColumn("Ofset", ImGuiTableColumnFlags_WidthFixed, 70.0f);
-    ImGui::TableSetupColumn("Sayısal Değer", ImGuiTableColumnFlags_WidthFixed, 150.0f);
+    ImGui::TableSetupColumn("Ofset", ImGuiTableColumnFlags_WidthFixed, 64.0f);
+    ImGui::TableSetupColumn("Yorumlanan", ImGuiTableColumnFlags_WidthFixed, 200.0f);
     ImGui::TableSetupColumn("Baytlar", ImGuiTableColumnFlags_WidthStretch);
     ImGui::TableHeadersRow();
 
-    // Her ofset için 1, 2 ve 4 bayt okumalarini goster; karar vericinin gorevi degil,
-    // sadece teşhis için hızlı bir bakış sunar.
-    for (std::size_t i = 0; i < plain.size(); ++i) {
+    for (std::size_t i = 0; i < rowCount; ++i) {
       const std::size_t available = plain.size() - i;
-      const int width = available >= 4 ? 4 : (available >= 2 ? 2 : 1);
+      const std::size_t width = std::min<std::size_t>(available, 4);
       const std::uint8_t* bytes = plain.data() + i;
+      const std::size_t pairWidth = std::min<std::size_t>(width, 2);
 
       ImGui::TableNextRow();
       ImGui::TableSetColumnIndex(0);
       ImGui::TextDisabled("%04zu", i);
       ImGui::TableSetColumnIndex(1);
-      ImGui::Text("u16le=%u  u16be=%u", static_cast<unsigned>(readLE(bytes, std::min<std::size_t>(width, 2))),
-                  static_cast<unsigned>(readBE(bytes, std::min<std::size_t>(width, 2))));
+      ImGui::Text("u16le=%u  u16be=%u", static_cast<unsigned>(readLE(bytes, pairWidth)),
+                  static_cast<unsigned>(readBE(bytes, pairWidth)));
       ImGui::TableSetColumnIndex(2);
-      ImGui::TextUnformatted(bytesToLowerHex(bytes, static_cast<std::size_t>(width)).c_str());
-
-      if (i > 512) break;  // tablo icin yeterli; tum govde ayrica hex dump'ta
+      ImGui::TextUnformatted(bytesToLowerHex(bytes, width).c_str());
     }
     ImGui::EndTable();
+  }
+
+  if (plain.size() > rowCount) {
+    ImGui::TextDisabled("... ilk %zu bayt gosterildi, tamami hex sekmesinde.", rowCount);
   }
 }
 
 void Ui::drawWarningsPanel() {
   if (!showWarnings_) return;
 
-  if (!ImGui::Begin("Uyarılar")) {
-    ImGui::End();
-    return;
-  }
+  ImGui::Begin("Uyarilar");
+  bool any = false;
 
-  bool hasWarning = false;
+  auto warn = [&any](const ImVec4& color, const char* text) {
+    any = true;
+    ImGui::PushStyleColor(ImGuiCol_Text, color);
+    ImGui::TextWrapped("%s", text);
+    ImGui::PopStyleColor();
+  };
 
   if (!npcapPresent_) {
-    hasWarning = true;
-    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(235, 170, 110));
-    ImGui::TextWrapped(
-        "Npcap sürücüsü bulunamadı (wpcap.dll yüklenemiyor). Paket yakalama çalışmayacak. "
-        "Npcap sürümünü (npcap-1.90.exe) kurup uygulamayı yeniden başlatın.");
-    ImGui::PopStyleColor();
+    warn(ImVec4(0.92f, 0.68f, 0.44f, 1.0f),
+         "Npcap surucusu yok (wpcap.dll yuklenemiyor). Npcap kurup uygulamayi yeniden baslatin.");
   } else if (selectedDevice_ < 0) {
-    hasWarning = true;
-    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(235, 170, 110));
-    ImGui::TextWrapped(
-        "Kullanılabilir bir ağ adaptörü listelenemedi. Ağ bağlantınızı kontrol edin ve "
-        "Yenile düğmesiyle adaptör listesini tazeleyin.");
-    ImGui::PopStyleColor();
+    warn(ImVec4(0.92f, 0.68f, 0.44f, 1.0f),
+         "Listelenen ag adaptoru yok. Ag baglantisini kontrol edin, Yenile ile tekrar deneyin.");
   }
 
   if (!state_.error.empty()) {
-    hasWarning = true;
-    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(235, 120, 120));
+    any = true;
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.93f, 0.49f, 0.49f, 1.0f));
     ImGui::TextWrapped("Son hata: %s", state_.error.c_str());
     ImGui::PopStyleColor();
   }
 
   if (!logError_.empty()) {
-    hasWarning = true;
-    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(235, 120, 120));
-    ImGui::TextWrapped("Kayıt dosyası hatası: %s", logError_.c_str());
+    any = true;
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.93f, 0.49f, 0.49f, 1.0f));
+    ImGui::TextWrapped("Kayit hatasi: %s", logError_.c_str());
     ImGui::PopStyleColor();
   }
 
-  if (capture_.dropped() > 0) {
-    hasWarning = true;
-    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(235, 170, 110));
-    ImGui::TextWrapped("Yakalama sürücüsü %llu paketi düşürdü; arabellek yetersiz olabilir.",
+  if (capture_.running() && capture_.dropped() > 0) {
+    any = true;
+    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.92f, 0.68f, 0.44f, 1.0f));
+    ImGui::TextWrapped("Surucu %llu paket dusurdu; tampon yetersiz olabilir.",
                        static_cast<unsigned long long>(capture_.dropped()));
     ImGui::PopStyleColor();
   }
 
-  if (!hasWarning) {
-    ImGui::TextDisabled("Sorun yok. Adaptör ve sürücü hazır.");
-  }
+  if (!any) ImGui::TextDisabled("Sorun yok.");
+
+  ImGui::Separator();
+  ImGui::TextDisabled("Dinlenen portlar: TCP 15100-15109, 15001");
+  if (pipeline_.hasClientKey()) ImGui::TextDisabled("Client anahtari ele gecirildi.");
+  else ImGui::TextDisabled("Client anahtari bekleniyor (el sikisma).");
 
   ImGui::End();
 }
 
 void Ui::drawStatusBar() {
   const ImGuiViewport* viewport = ImGui::GetMainViewport();
-  ImGui::SetNextWindowPos(ImVec2(viewport->WorkPos.x, viewport->WorkPos.y + viewport->WorkSize.y - kStatusBarHeight));
+  ImGui::SetNextWindowPos(
+      ImVec2(viewport->WorkPos.x, viewport->WorkPos.y + viewport->WorkSize.y - kStatusBarHeight));
   ImGui::SetNextWindowSize(ImVec2(viewport->WorkSize.x, kStatusBarHeight));
   constexpr ImGuiWindowFlags kFlags =
       ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
       ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
       ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
 
-  if (!ImGui::Begin("##statusbar", nullptr, kFlags)) {
-    ImGui::End();
-    return;
-  }
+  ImGui::Begin("##statusbar", nullptr, kFlags);
 
   const bool running = capture_.running();
   const bool paused = buffer_.paused();
+  const char* stateText = running ? (paused ? "Duraklatildi" : "Yakaliyor") : "Durduruldu";
+  ImGui::TextColored(running ? ImVec4(0.51f, 0.84f, 0.56f, 1.0f) : ImVec4(0.60f, 0.62f, 0.66f, 1.0f), "Durum: %s",
+                     stateText);
 
-  ImGui::TextColored(running ? ImVec4(0.50f, 0.84f, 0.56f, 1.0f) : ImVec4(0.60f, 0.62f, 0.66f, 1.0f),
-                     "Durum: %s", running ? (paused ? "Duraklatıldı" : "Yakalıyor") : "Durduruldu");
-  ImGui::SameLine(0, 12);
-  ImGui::TextDisabled("|  Yakalanan: %llu   Düşen: %llu   Bekleyen: %zu", static_cast<unsigned long long>(buffer_.capturedTotal()),
+  ImGui::SameLine(0.0f, 12.0f);
+  ImGui::TextDisabled("| Yakalanan: %llu  Dusan: %llu  Bekleyen: %zu",
+                      static_cast<unsigned long long>(buffer_.capturedTotal()),
                       static_cast<unsigned long long>(buffer_.droppedTotal()), buffer_.pending());
-  ImGui::SameLine(0, 12);
-  ImGui::TextDisabled("|  Listede: %zu paket (arabellek %zu)", rows_.size(), capacity_);
-  ImGui::SameLine(0, 12);
-  ImGui::TextDisabled("|  Hız: %.0f paket/sn   Kare: %.2f ms", rate_, frameMs_);
+
+  ImGui::SameLine(0.0f, 12.0f);
+  ImGui::TextDisabled("| Tampon: %zu / %zu", rows_.size(), capacity_);
+
+  ImGui::SameLine(0.0f, 12.0f);
+  ImGui::TextDisabled("| Hiz: %.0f paket/s  Kare: %.2f ms", rate_, frameMs_);
 
   if (!state_.status.empty()) {
-    ImGui::SameLine(0, 12);
-    ImGui::TextDisabled("|  %s", state_.status.c_str());
+    ImGui::SameLine(0.0f, 12.0f);
+    ImGui::TextDisabled("| %s", state_.status.c_str());
   }
 
   ImGui::End();

@@ -174,6 +174,12 @@ bool parseFrame(const std::uint8_t* frame, std::size_t len, ParsedFrame& out,
     }
 
     if (ether_type != kEtherTypeIPv4 && ether_type != kEtherTypeIPv6) return false;
+    if (off >= len) return false;
+
+    // EtherType ile IP sürüm nibble'ı uyuşmalı; aksi halde yanlış yorumlanır.
+    const std::uint8_t version = static_cast<std::uint8_t>(frame[off] >> 4);
+    if (ether_type == kEtherTypeIPv4 && version != 4) return false;
+    if (ether_type == kEtherTypeIPv6 && version != 6) return false;
   } else if (link == LinkType::NullLoop) {
     if (!skipNullFamily(frame, len, off)) return false;
   }
