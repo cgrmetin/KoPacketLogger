@@ -6,11 +6,7 @@
 namespace ko {
 namespace {
 
-// AES-128 sabitleri. Nk=4 (128 bit anahtar), Nr=10 tur.
-constexpr std::size_t kRounds = 10;
-constexpr std::size_t kKeyBytes = 16;
-constexpr std::size_t kRoundKeyBytes = 16 * (kRounds + 1);
-
+// AES sabit tabloları (FIPS-197 §5).
 constexpr std::array<std::uint8_t, 256> kSbox{
     0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
     0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
@@ -49,7 +45,7 @@ constexpr std::array<std::uint8_t, 256> kInvSbox{
 
 constexpr std::array<std::uint8_t, 11> kRcon{0x00, 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36};
 
-// GF(2^8) carpimi; xtime tablosu yerine dogrudan hesap, tablo boyu kucuk kalsin.
+// GF(2^8) çarpımı (FIPS-197 §4.2).
 std::uint8_t gmul(std::uint8_t a, std::uint8_t b) noexcept {
   std::uint8_t result = 0;
   for (int i = 0; i < 8; ++i) {
@@ -62,72 +58,50 @@ std::uint8_t gmul(std::uint8_t a, std::uint8_t b) noexcept {
   return result;
 }
 
-using RoundKeys = std::array<std::uint8_t, kRoundKeyBytes>;
+// En fazla 240 bayt: 4 * (Nr+1) * 4, Nr en çok 14.
+constexpr std::size_t kMaxRoundKeyBytes = 4 * (14 + 1) * 4;
+using RoundKeys = std::array<std::uint8_t, kMaxRoundKeyBytes>;
 
-// FIPS-197 anahtar genisletme. Tek blok cozme icin gerekli tur anahtarlarini uretir.
-void expandKey(const Aes128Key& key, RoundKeys& roundKeys) noexcept {
-  std::memcpy(roundKeys.data(), key.data(), kKeyBytes);
+// FIPS-197 §5.2 anahtar genişletme, Nk ve Nr anahtar boyundan türetilir.
+// i % Nk == 0 -> RotWord + SubWord + Rcon; Nk > 6 && i % Nk == 4 -> SubWord.
+void expandKey(const AesKey& key, std::size_t nk, std::size_t nr,
+               RoundKeys& roundKeys) noexcept {
+  roundKeys.fill(0);
+  std::memcpy(roundKeys.data(), key.bytes.data(), key.len);
 
-  for (std::size_t i = 4; i < 4 * (kRounds + 1); ++i) {
-    std::array<std::uint8_t, 4> temp{
-        roundKeys[(i - 1) * 4 + 0],
-        roundKeys[(i - 1) * 4 + 1],
-        roundKeys[(i - 1) * 4 + 2],
-        roundKeys[(i - 1) * 4 + 3]};
+  const std::size_t totalWords = 4 * (nr + 1);
+  for (std::size_t i = nk; i < totalWords; ++i) {
+    std::uint8_t temp[4];
+    std::memcpy(temp, roundKeys.data() + (i - 1) * 4, 4);
 
-    if (i % 4 == 0) {
-      // RotWord + SubWord + Rcon
+    if (i % nk == 0) {
       const std::uint8_t t0 = temp[0];
-      temp[0] = static_cast<std::uint8_t>(kSbox[temp[1]] ^ kRcon[i / 4]);
+      temp[0] = static_cast<std::uint8_t>(kSbox[temp[1]] ^ kRcon[i / nk]);
       temp[1] = kSbox[temp[2]];
       temp[2] = kSbox[temp[3]];
       temp[3] = kSbox[t0];
+    } else if (nk > 6 && i % nk == 4) {
+      for (std::size_t j = 0; j < 4; ++j) temp[j] = kSbox[temp[j]];
     }
 
     for (std::size_t j = 0; j < 4; ++j) {
-      roundKeys[i * 4 + j] = static_cast<std::uint8_t>(roundKeys[(i - 4) * 4 + j] ^ temp[j]);
+      roundKeys[i * 4 + j] =
+          static_cast<std::uint8_t>(roundKeys[(i - nk) * 4 + j] ^ temp[j]);
     }
   }
 }
 
-void addRoundKey(std::uint8_t state[16], const std::uint8_t* roundKey) noexcept {
-  for (std::size_t i = 0; i < 16; ++i) state[i] ^= roundKey[i];
+void addRoundKey(std::uint8_t s[16], const std::uint8_t* roundKey) noexcept {
+  for (std::size_t i = 0; i < 16; ++i) s[i] ^= roundKey[i];
 }
 
-void invShiftRows(std::uint8_t s[16]) noexcept {
-  std::uint8_t t = s[13];
-  s[13] = s[9];
-  s[9] = s[5];
-  s[5] = s[1];
-  s[1] = t;
-
-  t = s[2];
-  s[2] = s[10];
-  s[10] = t;
-  t = s[6];
-  s[6] = s[14];
-  s[14] = t;
-
-  t = s[3];
-  s[3] = s[7];
-  s[7] = s[11];
-  s[11] = s[15];
-  s[15] = t;
+// Durum sütun-major: s[4*col + row].
+void subBytes(std::uint8_t s[16]) noexcept {
+  for (std::size_t i = 0; i < 16; ++i) s[i] = kSbox[s[i]];
 }
 
 void invSubBytes(std::uint8_t s[16]) noexcept {
   for (std::size_t i = 0; i < 16; ++i) s[i] = kInvSbox[s[i]];
-}
-
-void invMixColumns(std::uint8_t s[16]) noexcept {
-  for (std::size_t c = 0; c < 4; ++c) {
-    std::uint8_t* col = s + c * 4;
-    const std::uint8_t a0 = col[0], a1 = col[1], a2 = col[2], a3 = col[3];
-    col[0] = static_cast<std::uint8_t>(gmul(a0, 0x0e) ^ gmul(a1, 0x0b) ^ gmul(a2, 0x0d) ^ gmul(a3, 0x09));
-    col[1] = static_cast<std::uint8_t>(gmul(a0, 0x09) ^ gmul(a1, 0x0e) ^ gmul(a2, 0x0b) ^ gmul(a3, 0x0d));
-    col[2] = static_cast<std::uint8_t>(gmul(a0, 0x0d) ^ gmul(a1, 0x09) ^ gmul(a2, 0x0e) ^ gmul(a3, 0x0b));
-    col[3] = static_cast<std::uint8_t>(gmul(a0, 0x0b) ^ gmul(a1, 0x0d) ^ gmul(a2, 0x09) ^ gmul(a3, 0x0e));
-  }
 }
 
 void shiftRows(std::uint8_t s[16]) noexcept {
@@ -151,8 +125,25 @@ void shiftRows(std::uint8_t s[16]) noexcept {
   s[7] = t;
 }
 
-void subBytes(std::uint8_t s[16]) noexcept {
-  for (std::size_t i = 0; i < 16; ++i) s[i] = kSbox[s[i]];
+void invShiftRows(std::uint8_t s[16]) noexcept {
+  std::uint8_t t = s[13];
+  s[13] = s[9];
+  s[9] = s[5];
+  s[5] = s[1];
+  s[1] = t;
+
+  t = s[2];
+  s[2] = s[10];
+  s[10] = t;
+  t = s[6];
+  s[6] = s[14];
+  s[14] = t;
+
+  t = s[3];
+  s[3] = s[7];
+  s[7] = s[11];
+  s[11] = s[15];
+  s[15] = t;
 }
 
 void mixColumns(std::uint8_t s[16]) noexcept {
@@ -166,6 +157,17 @@ void mixColumns(std::uint8_t s[16]) noexcept {
   }
 }
 
+void invMixColumns(std::uint8_t s[16]) noexcept {
+  for (std::size_t c = 0; c < 4; ++c) {
+    std::uint8_t* col = s + c * 4;
+    const std::uint8_t a0 = col[0], a1 = col[1], a2 = col[2], a3 = col[3];
+    col[0] = static_cast<std::uint8_t>(gmul(a0, 0x0e) ^ gmul(a1, 0x0b) ^ gmul(a2, 0x0d) ^ gmul(a3, 0x09));
+    col[1] = static_cast<std::uint8_t>(gmul(a0, 0x09) ^ gmul(a1, 0x0e) ^ gmul(a2, 0x0b) ^ gmul(a3, 0x0d));
+    col[2] = static_cast<std::uint8_t>(gmul(a0, 0x0d) ^ gmul(a1, 0x09) ^ gmul(a2, 0x0e) ^ gmul(a3, 0x0b));
+    col[3] = static_cast<std::uint8_t>(gmul(a0, 0x0b) ^ gmul(a1, 0x0d) ^ gmul(a2, 0x09) ^ gmul(a3, 0x0e));
+  }
+}
+
 int hexNibble(char c) noexcept {
   if (c >= '0' && c <= '9') return c - '0';
   if (c >= 'a' && c <= 'f') return c - 'a' + 10;
@@ -173,15 +175,24 @@ int hexNibble(char c) noexcept {
   return -1;
 }
 
-} // namespace
+// Anahtar boyundan Nk/Nr türetir; geçersiz boyda false.
+bool keyScheduleParams(const AesKey& key, std::size_t& nk, std::size_t& nr) noexcept {
+  if (!key.valid()) return false;
+  nk = key.len / 4;
+  nr = nk + 6;
+  return true;
+}
+
+}  // namespace
 
 const char* aesStatusName(AesStatus status) noexcept {
   switch (status) {
     case AesStatus::Ok: return "ok";
     case AesStatus::NullInput: return "null input";
-    case AesStatus::NotBlockAligned: return "cipher length not a multiple of 16";
-    case AesStatus::InvalidPadding: return "invalid PKCS7 padding";
     case AesStatus::EmptyInput: return "empty cipher input";
+    case AesStatus::BadKeyLength: return "invalid AES key length";
+    case AesStatus::NotBlockAligned: return "input length not a multiple of 16";
+    case AesStatus::InvalidPadding: return "invalid PKCS7 padding";
   }
   return "unknown";
 }
@@ -213,16 +224,20 @@ std::string toHex(const std::uint8_t* data, std::size_t len) {
   return result;
 }
 
-void aes128EncryptBlock(const Aes128Key& key, const std::uint8_t in[kAesBlockSize],
-                        std::uint8_t out[kAesBlockSize]) noexcept {
+AesStatus aesEncryptBlock(const AesKey& key, const std::uint8_t in[kAesBlockSize],
+                          std::uint8_t out[kAesBlockSize]) noexcept {
+  std::size_t nk = 0, nr = 0;
+  if (!keyScheduleParams(key, nk, nr)) return AesStatus::BadKeyLength;
+  if (in == nullptr || out == nullptr) return AesStatus::NullInput;
+
   RoundKeys roundKeys{};
-  expandKey(key, roundKeys);
+  expandKey(key, nk, nr, roundKeys);
 
   std::uint8_t state[16];
   std::memcpy(state, in, 16);
 
   addRoundKey(state, roundKeys.data());
-  for (std::size_t round = 1; round < kRounds; ++round) {
+  for (std::size_t round = 1; round < nr; ++round) {
     subBytes(state);
     shiftRows(state);
     mixColumns(state);
@@ -230,21 +245,26 @@ void aes128EncryptBlock(const Aes128Key& key, const std::uint8_t in[kAesBlockSiz
   }
   subBytes(state);
   shiftRows(state);
-  addRoundKey(state, roundKeys.data() + kRounds * 16);
+  addRoundKey(state, roundKeys.data() + nr * 16);
 
   std::memcpy(out, state, 16);
+  return AesStatus::Ok;
 }
 
-void aes128DecryptBlock(const Aes128Key& key, const std::uint8_t in[kAesBlockSize],
-                        std::uint8_t out[kAesBlockSize]) noexcept {
+AesStatus aesDecryptBlock(const AesKey& key, const std::uint8_t in[kAesBlockSize],
+                          std::uint8_t out[kAesBlockSize]) noexcept {
+  std::size_t nk = 0, nr = 0;
+  if (!keyScheduleParams(key, nk, nr)) return AesStatus::BadKeyLength;
+  if (in == nullptr || out == nullptr) return AesStatus::NullInput;
+
   RoundKeys roundKeys{};
-  expandKey(key, roundKeys);
+  expandKey(key, nk, nr, roundKeys);
 
   std::uint8_t state[16];
   std::memcpy(state, in, 16);
 
-  addRoundKey(state, roundKeys.data() + kRounds * 16);
-  for (std::size_t round = kRounds; round-- > 1;) {
+  addRoundKey(state, roundKeys.data() + nr * 16);
+  for (std::size_t round = nr; round-- > 1;) {
     invShiftRows(state);
     invSubBytes(state);
     addRoundKey(state, roundKeys.data() + round * 16);
@@ -255,13 +275,50 @@ void aes128DecryptBlock(const Aes128Key& key, const std::uint8_t in[kAesBlockSiz
   addRoundKey(state, roundKeys.data());
 
   std::memcpy(out, state, 16);
+  return AesStatus::Ok;
 }
 
-AesStatus aes128CbcDecrypt(const Aes128Key& key, const std::uint8_t iv[kAesBlockSize],
-                           const std::uint8_t* cipher, std::size_t cipherLen,
-                           std::vector<std::uint8_t>& plainOut) noexcept {
+AesStatus aesCbcEncrypt(const AesKey& key, const std::uint8_t iv[kAesBlockSize],
+                        const std::uint8_t* data, std::size_t len,
+                        std::vector<std::uint8_t>& out) noexcept {
+  out.clear();
+  if (iv == nullptr) return AesStatus::NullInput;
+  if (!key.valid()) return AesStatus::BadKeyLength;
+  if (data == nullptr && len > 0) return AesStatus::NullInput;
+
+  // PKCS#7: her zaman 1..16 bayt dolgu eklenir.
+  const std::size_t pad = kAesBlockSize - (len % kAesBlockSize);
+  std::vector<std::uint8_t> padded(len + pad);
+  if (len > 0) std::memcpy(padded.data(), data, len);
+  for (std::size_t i = 0; i < pad; ++i) padded[len + i] = static_cast<std::uint8_t>(pad);
+
+  out.resize(padded.size());
+  std::uint8_t chain[kAesBlockSize];
+  std::memcpy(chain, iv, kAesBlockSize);
+
+  for (std::size_t offset = 0; offset < padded.size(); offset += kAesBlockSize) {
+    std::uint8_t block[kAesBlockSize];
+    for (std::size_t i = 0; i < kAesBlockSize; ++i) {
+      block[i] = static_cast<std::uint8_t>(padded[offset + i] ^ chain[i]);
+    }
+    const AesStatus status = aesEncryptBlock(key, block, out.data() + offset);
+    if (status != AesStatus::Ok) {
+      out.clear();
+      return status;
+    }
+    std::memcpy(chain, out.data() + offset, kAesBlockSize);
+  }
+
+  return AesStatus::Ok;
+}
+
+AesStatus aesCbcDecrypt(const AesKey& key, const std::uint8_t iv[kAesBlockSize],
+                        const std::uint8_t* cipher, std::size_t cipherLen,
+                        std::vector<std::uint8_t>& plainOut) noexcept {
   plainOut.clear();
-  if (cipher == nullptr || iv == nullptr) return AesStatus::NullInput;
+  if (iv == nullptr) return AesStatus::NullInput;
+  if (!key.valid()) return AesStatus::BadKeyLength;
+  if (cipher == nullptr) return AesStatus::NullInput;
   if (cipherLen == 0) return AesStatus::EmptyInput;
   if (cipherLen % kAesBlockSize != 0) return AesStatus::NotBlockAligned;
 
@@ -272,14 +329,18 @@ AesStatus aes128CbcDecrypt(const Aes128Key& key, const std::uint8_t iv[kAesBlock
 
   for (std::size_t offset = 0; offset < cipherLen; offset += kAesBlockSize) {
     std::uint8_t decrypted[kAesBlockSize];
-    aes128DecryptBlock(key, cipher + offset, decrypted);
+    const AesStatus status = aesDecryptBlock(key, cipher + offset, decrypted);
+    if (status != AesStatus::Ok) {
+      plainOut.clear();
+      return status;
+    }
     for (std::size_t i = 0; i < kAesBlockSize; ++i) {
       plainOut[offset + i] = static_cast<std::uint8_t>(decrypted[i] ^ previous[i]);
     }
     std::memcpy(previous, cipher + offset, kAesBlockSize);
   }
 
-  // PKCS7 dolgu dogrulamasi: son byte 1..16, onceki pad byte&apos;lari ayni degerde.
+  // Dolgu doğrulaması (0x707ef0: son bayt > 0x10 ise -25).
   const std::uint8_t pad = plainOut.back();
   if (pad == 0 || pad > kAesBlockSize) {
     plainOut.clear();
@@ -296,4 +357,4 @@ AesStatus aes128CbcDecrypt(const Aes128Key& key, const std::uint8_t iv[kAesBlock
   return AesStatus::Ok;
 }
 
-} // namespace ko
+}  // namespace ko

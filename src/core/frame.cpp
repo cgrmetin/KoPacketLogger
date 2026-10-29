@@ -1,27 +1,23 @@
 #include "core/frame.h"
 
-#include <algorithm>
 #include <cstring>
 
 namespace ko {
 namespace {
 
-// Büyük-endian 16 bit uzunluk okur.
+// Little-endian 16 bit gövde uzunluğu okur.
 std::size_t readLength(const std::uint8_t* p) noexcept {
-  return (static_cast<std::size_t>(p[0]) << 8) | static_cast<std::size_t>(p[1]);
+  return static_cast<std::size_t>(p[0]) | (static_cast<std::size_t>(p[1]) << 8);
 }
 
-Cryption toCryption(std::uint8_t raw) noexcept {
-  switch (raw) {
-    case kCryptionClient: return Cryption::Client;
-    case kCryptionServer: return Cryption::Server;
-    default: return Cryption::Unknown;
-  }
+// Sihir/kuyruk sabitleri kablo bayt sırasıyla yazıldığı için karşılaştırma
+// doğrudan bayt çifti üzerinden yapılır; ntohs gerekmez.
+bool hasMagic(const std::uint8_t* p) noexcept {
+  return p[0] == 0xAA && p[1] == 0x55;
 }
 
-// 0x16 handshake çerçevesi geçerlidir ama Cryption enum&apos;unda karşılığı yoktur.
-bool isKnownCryptionByte(std::uint8_t raw) noexcept {
-  return raw == kCryptionClient || raw == kCryptionServer || raw == kCryptionHandshake;
+bool hasTrailer(const std::uint8_t* p) noexcept {
+  return p[0] == 0x55 && p[1] == 0xAA;
 }
 
 }  // namespace
@@ -30,8 +26,7 @@ const char* frameStatusName(FrameStatus status) noexcept {
   switch (status) {
     case FrameStatus::NeedMore: return "need more bytes";
     case FrameStatus::Ok: return "ok";
-    case FrameStatus::BadLength: return "bad frame length";
-    case FrameStatus::BadCryption: return "unknown cryption type";
+    case FrameStatus::Resynced: return "stream resynchronised";
     case FrameStatus::Overflow: return "stream buffer overflow";
   }
   return "unknown";
@@ -66,67 +61,67 @@ FrameStatus FrameParser::feed(Direction dir, const std::uint8_t* data, std::size
   }
 
   std::size_t consumed = 0;
-  FrameStatus status = FrameStatus::NeedMore;
+  // Bu çağrıda en az bir çerçeve üretildiyse Ok döner; resync olduysa ve
+  // çerçeve de üretildiyse Ok baskındır, bilgi kaybı olmasın.
+  bool produced = false;
+  bool resynced = false;
 
-  while (buffer.size() - consumed >= kFrameLengthBytes) {
-    const std::size_t declared = readLength(buffer.data() + consumed);
+  // Parser en az 7 bayt ister (sihir 2 + uzunluk 2 + kuyruk 2 + en az 1 gövde).
+  while (buffer.size() - consumed >= kMinFrameBytes) {
+    const std::uint8_t* cursor = buffer.data() + consumed;
 
-    // Uzunluk, çerçeve başlığından küçükse akış güvenilmez; yönü sıfırla.
-    if (declared < kMinFrameBytes || declared > maxFrameBytes_) {
-      status = FrameStatus::BadLength;
-      consumed = buffer.size();
+    if (!hasMagic(cursor)) {
+      // Sihir hatası: 2 bayt sola kaydır ve yeniden dene.
+      consumed += kFrameMagicBytes;
+      resynced = true;
+      continue;
+    }
+
+    const std::size_t declared = readLength(cursor + kFrameMagicBytes);
+
+    // Uzunluk, tamamlanmış bir çerçevenin sığabileceği üst sınırı aşarsa akış
+    // güvenilmez; o yönün tamponu sıfırlanır.
+    if (declared + kMinFrameBytes > maxBufferedBytes_) {
+      buffer.clear();
+      return FrameStatus::Overflow;
+    }
+
+    // Tam çerçeve henüz gelmediyse tamponda bekle.
+    if (buffer.size() - consumed < declared + kMinFrameBytes) {
       break;
     }
 
-    // Uzunluk tampon sınırını aşacaksa (ve zaten aşılmışsa) sıfırla.
-    if (declared > maxBufferedBytes_) {
-      status = FrameStatus::Overflow;
-      consumed = buffer.size();
-      break;
-    }
-
-    // Tam çerçeve henüz gelmediyse bekle, tampon üst sınırını kontrol et.
-    if (buffer.size() - consumed < declared) {
-      if (buffer.size() > maxBufferedBytes_) {
-        status = FrameStatus::Overflow;
-        consumed = buffer.size();
-      }
-      break;
-    }
-
-    const std::uint8_t* framePtr = buffer.data() + consumed;
-    const std::uint8_t cryptionByte = framePtr[kFrameLengthBytes];
-    if (!isKnownCryptionByte(cryptionByte)) {
-      // Kripto türü tanınmadı: uzunluk doğruysa çerçeveyi atla, akışı bozmadan devam et.
-      consumed += declared;
-      if (status != FrameStatus::Ok) status = FrameStatus::BadCryption;
+    const std::uint8_t* trailer = cursor + kFrameHeaderBytes + declared;
+    if (!hasTrailer(trailer)) {
+      // Kuyruk hatası: sihir doğruydu ama çerçeve bozuk, 2 bayt kaydır.
+      consumed += kFrameMagicBytes;
+      resynced = true;
       continue;
     }
 
     Frame frame;
-    frame.cryption = toCryption(cryptionByte);
-    frame.cryption_byte = cryptionByte;
-    frame.raw.assign(framePtr, framePtr + declared);
-
-    const std::size_t bodyStart = kFrameHeaderBytes;
-    const std::size_t bodyEnd = declared - kFrameTrailerBytes;
-    frame.body.assign(framePtr + bodyStart, framePtr + bodyEnd);
-
+    frame.raw.assign(cursor, cursor + declared + kMinFrameBytes);
+    frame.body.assign(cursor + kFrameHeaderBytes, trailer);
     out.push_back(std::move(frame));
-    consumed += declared;
-    status = FrameStatus::Ok;
+    produced = true;
+    consumed += declared + kMinFrameBytes;
   }
 
   if (consumed > 0) {
-    buffer.erase(buffer.begin(), buffer.begin() + static_cast<std::ptrdiff_t>(consumed));
+    buffer.erase(buffer.begin(),
+                 buffer.begin() + static_cast<std::ptrdiff_t>(consumed));
   }
 
-  // Hata sonrası tampon boşaltıldı; sonraki çağrı temiz başlar.
-  if (status == FrameStatus::BadLength || status == FrameStatus::Overflow) {
+  // Kalan tampon hâlâ sınırın üstündeyse (art arda gelen NeedMore durumları)
+  // taşma sayılır; aksi halde bellek sınırsız büyür.
+  if (buffer.size() > maxBufferedBytes_) {
     buffer.clear();
+    return FrameStatus::Overflow;
   }
 
-  return status;
+  if (produced) return FrameStatus::Ok;
+  if (resynced) return FrameStatus::Resynced;
+  return FrameStatus::NeedMore;
 }
 
 }  // namespace ko

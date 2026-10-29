@@ -1,150 +1,168 @@
 #include "core/decoder.h"
 
+#include <algorithm>
 #include <cstddef>
+#include <utility>
 
 #include "core/opcodes.h"
 
 namespace ko {
 namespace {
 
-// Handshake gövdesi: 0x16 0x00 0x2b öneki + 4 byte dolgu, ardından 32 karakter hex
-// anahtar ve 1 byte kuyruk. Legacy kod payload üzerinden 7 byte atlayıp son byte'ı
-// kırpıyordu; gövde payload[3]'ten başladığı için buradaki kayma 4 byte'tır.
-constexpr std::uint8_t kHandshake0 = 0x16;
-constexpr std::uint8_t kHandshake1 = 0x00;
-constexpr std::uint8_t kHandshake2 = 0x2b;
-constexpr std::size_t kHandshakeKeyOffset = 4;
-constexpr std::size_t kHandshakeKeyChars = 32;
+// Anahtar secicileri (0x707ce8 oturum, 0x707d0e sabit).
+constexpr std::uint8_t kSelectorSession = 1;
+constexpr std::uint8_t kSelectorConstant = 2;
 
-DecodedPacket fail(const RawPacket& raw, const char* message) {
+// Handshake govdesi (0x7BD730, IDA ile birebir dogrulandi):
+//   [0]    0x2B opcode
+//   [1]    PvP bayragi (0x7bd787)
+//   [2..3] port u16 LE (0x7bd994)
+//   [4]    anahtar uzunlugu (0x7bd9aa)
+//   [5..]  HAM anahtar baytlari (0x7bd9e5)
+constexpr std::uint8_t kHandshakeOpcode = 0x2B;
+constexpr std::size_t kHandshakeHeaderBytes = 5;
+
+// Sifreli cerceve isareti: cozulmus duz metin bununla baslarsa ilk 5 bayt atilir.
+constexpr std::uint8_t kCryptMark0 = 0xFC;
+constexpr std::uint8_t kCryptMark1 = 0x1E;
+constexpr std::size_t kCryptMarkSkip = 5;
+
+// Govde boyut kurali (0x707cd5): secici dahil uzunluk 16k+1 ve en az 17 olmali.
+constexpr std::size_t kMinEncryptedBody = 17;
+
+DecodedPacket fail(const RawPacket& raw, std::string message) {
   DecodedPacket result;
   result.raw = raw;
   result.ok = false;
-  result.error = message;
+  result.error = std::move(message);
   return result;
+}
+
+AesKey constantKey() noexcept {
+  AesKey key;
+  std::copy(kConstantKey.begin(), kConstantKey.end(), key.bytes.begin());
+  key.len = kConstantKey.size();
+  return key;
 }
 
 }  // namespace
 
-const char* keyStateName(KeyState state) noexcept {
-  switch (state) {
-    case KeyState::NoClientKey: return "no client key";
-    case KeyState::HaveClientKey: return "have client key";
+bool Decoder::looksEncrypted(const std::vector<std::uint8_t>& body) noexcept {
+  if (body.size() < kMinEncryptedBody) return false;
+  const std::uint8_t selector = body[0];
+  if (selector != kSelectorSession && selector != kSelectorConstant) return false;
+  // Duz moddaki 0x01/0x02 opcode'lu paketler bu boyut kuralini gecemez.
+  return (body.size() & 0xF) == 1;
+}
+
+const AesKey* Decoder::keyFor(std::uint8_t selector) const noexcept {
+  static const AesKey kConstant = constantKey();
+  switch (selector) {
+    case kSelectorSession: return sessionKey_.valid() ? &sessionKey_ : nullptr;
+    case kSelectorConstant: return &kConstant;
+    default: return nullptr;
   }
-  return "unknown";
 }
 
 void Decoder::reset() noexcept {
-  keyState_ = KeyState::NoClientKey;
-  clientKey_.fill(0);
+  sessionKey_ = AesKey{};
+  encryptionEnabled_ = false;
+  seqCounter_ = 0;
 }
 
-bool Decoder::tryCaptureClientKey(const std::vector<std::uint8_t>& body, std::string& error) {
-  if (body.size() < kHandshakeKeyOffset + kHandshakeKeyChars) {
-    error = "handshake frame too short for a 32 character key";
+std::uint8_t Decoder::nextSeq() noexcept {
+  if (!encryptionEnabled_ || !sessionKey_.valid()) return 0;
+  if (++seqCounter_ > 0xFA) seqCounter_ = 1;
+  return seqCounter_;
+}
+
+bool Decoder::captureSessionKey(const std::vector<std::uint8_t>& body,
+                                std::string& error) {
+  if (body.size() < kHandshakeHeaderBytes) {
+    error = "handshake body too short for header";
+    return false;
+  }
+  if (body[0] != kHandshakeOpcode) {
+    error = "handshake body does not start with opcode 0x2B";
     return false;
   }
 
-  const std::size_t end = body.size() - 1;  // kuyruk byte'ı kırpılır
-  const std::size_t available = end - kHandshakeKeyOffset;
-  if (available < kHandshakeKeyChars) {
-    error = "handshake frame truncated";
+  const std::size_t keyLen = body[4];
+  if (keyLen != kAesMinKeyBytes && keyLen != 24 && keyLen != kAesMaxKeyBytes) {
+    error = "handshake key length is not 16/24/32";
+    return false;
+  }
+  if (body.size() < kHandshakeHeaderBytes + keyLen) {
+    error = "handshake body truncated before key bytes";
     return false;
   }
 
-  // Anahtar ASCII hex olarak taşınıyor; sadece ilk 32 karakter alınır.
-  std::string hex;
-  hex.reserve(kHandshakeKeyChars);
-  for (std::size_t i = 0; i < kHandshakeKeyChars; ++i) {
-    const std::uint8_t c = body[kHandshakeKeyOffset + i];
-    if (c == 0) {
-      error = "handshake key contains NUL";
-      return false;
-    }
-    hex.push_back(static_cast<char>(c));
-  }
+  AesKey key;
+  std::copy(body.begin() + static_cast<std::ptrdiff_t>(kHandshakeHeaderBytes),
+            body.begin() + static_cast<std::ptrdiff_t>(kHandshakeHeaderBytes + keyLen),
+            key.bytes.begin());
+  key.len = keyLen;
 
-  Aes128Key parsed{};
-  if (!parseHexKey(hex, parsed)) {
-    error = "handshake key is not valid hex";
-    return false;
-  }
-
-  clientKey_ = parsed;
-  keyState_ = KeyState::HaveClientKey;
+  sessionKey_ = key;
+  // Anahtar geldiyse sifreleme acilir (0x7bd9d8: byte_1129B34 = v14 != 0).
+  encryptionEnabled_ = true;
+  // Sira sayaci sifirlanir (0x7bda8a).
+  seqCounter_ = 0;
   return true;
 }
 
 DecodedPacket Decoder::decode(const RawPacket& raw) {
-  DecodedPacket result;
-  result.raw = raw;
+  const std::vector<std::uint8_t>& body = raw.data;
 
-  const std::vector<std::uint8_t>& bytes = raw.data;
-  if (bytes.size() < kMinFrameBytes) {
-    result.error = "frame shorter than minimum frame size";
-    return result;
-  }
+  if (body.empty()) return fail(raw, "empty frame body");
 
-  const std::size_t declared = (static_cast<std::size_t>(bytes[0]) << 8) | bytes[1];
-  if (declared != bytes.size()) {
-    result.error = "declared length does not match frame size";
-    return result;
-  }
+  // 1) Sifresiz mod: handshake ve sifreleme kapaliyken govde duzdur.
+  const bool encrypted = encryptionEnabled_ && looksEncrypted(body);
 
-  const std::uint8_t cryptionByte = bytes[kFrameLengthBytes];
-  const std::size_t bodyStart = kFrameHeaderBytes;
-  const std::size_t bodyEnd = declared - kFrameTrailerBytes;
-  const std::vector<std::uint8_t> body(bytes.begin() + static_cast<std::ptrdiff_t>(bodyStart),
-                                       bytes.begin() + static_cast<std::ptrdiff_t>(bodyEnd));
+  if (!encrypted) {
+    DecodedPacket result;
+    result.raw = raw;
+    result.cryption = Cryption::Unknown;
 
-  // Handshake: gövde açık metindir ve client anahtarını taşır.
-  if (cryptionByte == kCryptionHandshake) {
-    if (body.size() >= 3 && body[0] == kHandshake0 && body[1] == kHandshake1 &&
-        body[2] == kHandshake2) {
+    // Sifreleme kapaliyken de gelen handshake anahtari yakalanir.
+    if (raw.dir == Direction::In && body[0] == kHandshakeOpcode) {
       std::string error;
-      if (!tryCaptureClientKey(body, error)) {
+      if (!captureSessionKey(body, error)) {
         result.error = error;
         return result;
       }
     }
-    result.cryption = Cryption::Unknown;
+
     result.plain = body;
+    result.opcode = result.plain[0];
+    result.opcode_name = opcodeName(result.opcode);
     result.ok = true;
-    // Handshake'in kendi opcode'u yok; 0x16 sabiti taşınır, tabloda WIZ_REQ_USERIN'dir.
-    result.opcode = kHandshake0;
-    result.opcode_name = "HANDSHAKE";
     return result;
   }
 
-  if (cryptionByte == kCryptionClient) {
-    result.cryption = Cryption::Client;
-  } else if (cryptionByte == kCryptionServer) {
-    result.cryption = Cryption::Server;
-  } else {
-    result.error = "unknown cryption type byte";
-    return result;
-  }
+  // 2) Sifreli mod.
+  DecodedPacket result;
+  result.raw = raw;
 
-  // Client çerçevesi için anahtar handshake'ten gelmiş olmalı.
-  const Aes128Key* key = nullptr;
-  if (result.cryption == Cryption::Client) {
-    if (keyState_ != KeyState::HaveClientKey) {
-      result.error = "client key not captured yet";
-      return result;
+  const std::uint8_t selector = body[0];
+  const AesKey* key = keyFor(selector);
+  if (key == nullptr) {
+    if (selector == kSelectorSession) {
+      result.error = "session selector but no session key captured";
+    } else {
+      result.error = "unknown key selector";
     }
-    key = &clientKey_;
-  } else {
-    key = &kServerKey;
-  }
-
-  if (body.empty()) {
-    result.error = "empty frame body";
     return result;
   }
+  result.cryption =
+      selector == kSelectorSession ? Cryption::Session : Cryption::Constant;
+
+  const std::uint8_t* cipher = body.data() + 1;
+  const std::size_t cipherLen = body.size() - 1;
 
   std::vector<std::uint8_t> plain;
   const AesStatus status =
-      aes128CbcDecrypt(*key, kFixedIv.data(), body.data(), body.size(), plain);
+      aesCbcDecrypt(*key, kFixedIv.data(), cipher, cipherLen, plain);
   if (status != AesStatus::Ok) {
     result.error = std::string("decrypt failed: ") + aesStatusName(status);
     return result;
@@ -154,27 +172,45 @@ DecodedPacket Decoder::decode(const RawPacket& raw) {
     return result;
   }
 
-  // TODO(IDA): opcode konumu yöne göre kayıyor varsayımı doğrulanacak.
-  // Gelen pakette plain[0], giden pakette plain[1] opcode kabul edilir.
-  const std::size_t opcodeIndex = raw.dir == Direction::In ? 0 : 1;
-  if (plain.size() <= opcodeIndex) {
+  // 3) Sira bayti yalnizca giden yonde vardir; once o ayiklanir.
+  std::size_t offset = 0;
+  if (raw.dir == Direction::Out) {
+    result.seq = plain[0];
+    offset = 1;
+    if (plain.size() <= offset) {
+      result.error = "plaintext too short for opcode after sequence byte";
+      return result;
+    }
+  }
+
+  // 4) Sifreli cerceve isareti (0x8e327a) kirpilir.
+  if (plain.size() >= offset + 2 && plain[offset] == kCryptMark0 &&
+      plain[offset + 1] == kCryptMark1) {
+    offset += kCryptMarkSkip;
+    if (plain.size() < offset) {
+      result.error = "plaintext too short for crypt mark";
+      return result;
+    }
+  }
+
+  if (plain.size() <= offset) {
     result.error = "plaintext too short for opcode";
     return result;
   }
 
-  result.plain = std::move(plain);
-  result.opcode = result.plain[opcodeIndex];
+  result.opcode = plain[offset];
   result.opcode_name = opcodeName(result.opcode);
+  result.plain.assign(plain.begin() + static_cast<std::ptrdiff_t>(offset), plain.end());
   result.ok = true;
   return result;
 }
 
 DecodedPacket Decoder::decode(Direction dir, std::int64_t tsUnixUs,
-                              const std::vector<std::uint8_t>& frameBytes) {
+                              const std::vector<std::uint8_t>& body) {
   RawPacket raw;
   raw.ts_unix_us = tsUnixUs;
   raw.dir = dir;
-  raw.data = frameBytes;
+  raw.data = body;
   return decode(raw);
 }
 

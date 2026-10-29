@@ -7,41 +7,41 @@
 
 namespace ko {
 
-// Çerçeve biçimi (legacy C# kodunun varsayımı, IDA ile doğrulanacak):
-//   [0..1] uzunluk (big-endian, çerçevenin TAMAMENIN byte cinsinden boyu)
-//   [2]    kripto türü: 0x01 client, 0x02 server
-//   [3..L-2) gövde (şifreli)
-//   [L-2..L) legacy kodun atladığı 2 byte kuyruk (CRC/ayırıcı olduğu sanılıyor)
+// Doğrulanmış çerçeve biçimi (IDA: pkt_parse_frames @ 0x70C0E0):
+//   [0..1]  sihir 0xAA55  -> kablo üzerinde AA 55
+//   [2..3]  gövde uzunluğu, uint16 LITTLE-ENDIAN
+//   [4..4+len)  gövde
+//   [len+4..len+6) kuyruk 0x55AA -> kablo üzerinde 55 AA
+// Toplam çerçeve boyu len + 6. Parser en az 7 bayt ister (0x70c176: cmp esi,7 / jl).
+//
+// Şifreleme bayrağı başlıkta DEĞİLDİR; gövdenin ilk baytı anahtar seçicidir ve
+// karar Decoder içinde verilir. Çerçeve katmanı gövdeyi yalnızca sınırlar.
+//
+// Sihir veya kuyruk uyuşmazsa akış 2 bayt sola kaydırılıp yeniden senkronize
+// edilir (0x70c27c, 0x70c282). Eksik segment tamponda bekletilir.
+inline constexpr std::size_t kFrameMagicBytes = 2;
 inline constexpr std::size_t kFrameLengthBytes = 2;
-inline constexpr std::size_t kFrameCryptionBytes = 1;
-inline constexpr std::size_t kFrameHeaderBytes = kFrameLengthBytes + kFrameCryptionBytes;
+inline constexpr std::size_t kFrameHeaderBytes = kFrameMagicBytes + kFrameLengthBytes;
 inline constexpr std::size_t kFrameTrailerBytes = 2;
+// Sihir + uzunluk + kuyruk; gövdesiz en küçük geçerli çerçeve.
 inline constexpr std::size_t kMinFrameBytes = kFrameHeaderBytes + kFrameTrailerBytes;
 
-// Kripto türü byte değerleri.
-inline constexpr std::uint8_t kCryptionClient = 0x01;
-inline constexpr std::uint8_t kCryptionServer = 0x02;
-// 0x16 el sıkışma çerçevesidir: gövdesi şifreli değildir, client anahtarını taşır.
-// Cryption enum'u sözleşme gereği üç değerli olduğu için Unknown olarak işaretlenir;
-// ayrım raw byte'tan yapılır.
-inline constexpr std::uint8_t kCryptionHandshake = 0x16;
+// Kablo üzerindeki sabitler, okundukları bayt sırasıyla.
+inline constexpr std::uint16_t kFrameMagicWire = 0x55AA;   // bellek: AA 55
+inline constexpr std::uint16_t kFrameTrailerWire = 0xAA55;  // bellek: 55 AA
 
 enum class FrameStatus {
-  NeedMore,     // elimizde tam çerçeve yok, daha fazla byte gerekli
-  Ok,           // en az bir çerçeve üretildi
-  BadLength,    // uzunluk alanı geçersiz, o yönün tamponu sıfırlandı
-  BadCryption,  // kripto türü tanınmadı, çerçeve atlandı
-  Overflow,     // tampon üst sınırı aşıldı, o yönün tamponu sıfırlandı
+  NeedMore,   // elimizde tam çerçeve yok, daha fazla bayt gerekli
+  Ok,         // en az bir çerçeve üretildi
+  Resynced,   // sihir/kuyruk hatası görüldü, 2 bayt kaydırılıp devam edildi
+  Overflow,   // tampon üst sınırı aşıldı, o yönün tamponu sıfırlandı
 };
 
 const char* frameStatusName(FrameStatus status) noexcept;
 
 struct Frame {
-  Cryption cryption = Cryption::Unknown;
-  // Ham kripto türü byte'ı; 0x16 handshake için Cryption::Unknown olur, bu yüzden ayrı tutulur.
-  std::uint8_t cryption_byte = 0;
   std::vector<std::uint8_t> body;
-  // Çerçevenin ham byte'ları (başlık ve kuyruk dahil), teşhis için.
+  // Çerçevenin ham baytları (başlık ve kuyruk dahil), teşhis için.
   std::vector<std::uint8_t> raw;
 };
 
@@ -49,10 +49,11 @@ struct Frame {
 // Tek iş parçacığından kullanılır; iç eşitleme yok.
 class FrameParser {
  public:
-  explicit FrameParser(std::size_t maxFrameBytes = 0xFFFF, std::size_t maxBufferedBytes = 1u << 20);
+  explicit FrameParser(std::size_t maxFrameBytes = 0xFFFF,
+                       std::size_t maxBufferedBytes = 1u << 20);
 
-  // Gelen byte'ları ilgili yönün tamponuna ekler ve tamamlanan çerçeveleri `out`a
-  // yazar. Bir hata durumunda o yönün tamponu sıfırlanır, `out` o ana kadarki
+  // Gelen baytları ilgili yönün tamponuna ekler ve tamamlanan çerçeveleri `out`a
+  // yazar. Hata durumunda o yönün tamponu sıfırlanır, `out` o ana kadarki
   // çerçeveleri korur ve hata durumu döner.
   FrameStatus feed(Direction dir, const std::uint8_t* data, std::size_t len,
                    std::vector<Frame>& out);
