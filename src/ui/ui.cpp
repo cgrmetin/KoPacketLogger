@@ -91,6 +91,20 @@ std::uint64_t readBE(const std::uint8_t* data, std::size_t count) {
   return value;
 }
 
+// Alan tipinin sabit bayt genisligi. `Str` degiskendir, cagiran taraf ozel isler.
+std::size_t fieldSize(FieldType type) {
+  switch (type) {
+    case FieldType::U8: return 1;
+    case FieldType::U16:
+    case FieldType::Coord: return 2;
+    case FieldType::U32:
+    case FieldType::F32: return 4;
+    case FieldType::U64: return 8;
+    case FieldType::Str: return 1;
+  }
+  return 1;
+}
+
 // Kisa bir bayt serisinden okunabilir onizleme.
 std::string summarize(const DecodedPacket& packet) {
   const std::vector<std::uint8_t>& data = packet.plain.empty() ? packet.raw.data : packet.plain;
@@ -727,7 +741,7 @@ void Ui::drawDetailPanel() {
         ImGui::TextDisabled("Cozulmus govde yok.");
       } else {
         ImGui::TextDisabled("Opcode plain[0] = 0x%02X. Asagidaki ofsetler govde alanlaridir.", packet.opcode);
-        drawFieldTable(packet.plain);
+        drawFieldTable(packet);
         ImGui::Separator();
         drawHexDump(packet.plain, "duz metin");
       }
@@ -787,13 +801,36 @@ void Ui::drawHexDump(const std::vector<std::uint8_t>& data, const char* caption)
   ImGui::EndChild();
 }
 
-void Ui::drawFieldTable(const std::vector<std::uint8_t>& plain) {
+void Ui::drawFieldTable(const DecodedPacket& packet) {
+  const std::vector<std::uint8_t>& plain = packet.plain;
+  if (plain.empty()) return;
+
+  // Opcode'un alan haritasi varsa ad/tip ile gosterilir; yoksa ham offset dokumu.
+  const OpcodeInfo* info = findOpcode(packet.opcode, packet.raw.dir);
+  const bool haveSpec = info != nullptr && info->fields != nullptr && info->fieldCount > 0;
+
+  if (haveSpec) {
+    if (info->provisional) {
+      ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(238, 176, 112, 255));
+      ImGui::TextWrapped("Bu opcode'un alan haritasi canli trafikle dogrulanmadi.");
+      ImGui::PopStyleColor();
+    }
+    if (info->variant) {
+      ImGui::TextDisabled("Cok bicimli: offset 1 alt secici bayt, govde ona gore degisir.");
+    }
+    if (info->fieldsTruncated) {
+      ImGui::TextDisabled("Alan listesi eksik (string/skip sonrasi kesildi).");
+    }
+    ImGui::Spacing();
+  }
+
   constexpr std::size_t kMaxRows = 400;
   const std::size_t rowCount = std::min(plain.size(), kMaxRows);
 
-  if (ImGui::BeginTable("##fields", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
-    ImGui::TableSetupColumn("Ofset", ImGuiTableColumnFlags_WidthFixed, 64.0f);
-    ImGui::TableSetupColumn("Yorumlanan", ImGuiTableColumnFlags_WidthFixed, 200.0f);
+  if (ImGui::BeginTable("##fields", 4, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
+    ImGui::TableSetupColumn("Ofset", ImGuiTableColumnFlags_WidthFixed, 56.0f);
+    ImGui::TableSetupColumn("Alan", ImGuiTableColumnFlags_WidthFixed, 150.0f);
+    ImGui::TableSetupColumn("Deger", ImGuiTableColumnFlags_WidthFixed, 190.0f);
     ImGui::TableSetupColumn("Baytlar", ImGuiTableColumnFlags_WidthStretch);
     ImGui::TableHeadersRow();
 
@@ -803,13 +840,55 @@ void Ui::drawFieldTable(const std::vector<std::uint8_t>& plain) {
       const std::uint8_t* bytes = plain.data() + i;
       const std::size_t pairWidth = std::min<std::size_t>(width, 2);
 
+      // Bu offsette baslayan bir alan tanimi var mi?
+      const FieldSpec* spec = nullptr;
+      if (haveSpec) {
+        for (std::uint8_t f = 0; f < info->fieldCount; ++f) {
+          if (info->fields[f].offset == i) {
+            spec = &info->fields[f];
+            break;
+          }
+        }
+      }
+
       ImGui::TableNextRow();
       ImGui::TableSetColumnIndex(0);
       ImGui::TextDisabled("%04zu", i);
+
       ImGui::TableSetColumnIndex(1);
-      ImGui::Text("u16le=%u  u16be=%u", static_cast<unsigned>(readLE(bytes, pairWidth)),
-                  static_cast<unsigned>(readBE(bytes, pairWidth)));
+      if (spec != nullptr) {
+        ImGui::TextUnformatted(spec->name != nullptr ? spec->name : "?");
+      } else if (haveSpec) {
+        ImGui::TextDisabled("-");
+      }
+
       ImGui::TableSetColumnIndex(2);
+      if (spec != nullptr) {
+        const std::size_t need = fieldSize(spec->type);
+        if (i + need > plain.size()) {
+          ImGui::TextDisabled("kesik");
+        } else if (spec->type == FieldType::Str) {
+          const std::size_t n = plain[i];
+          if (i + 1 + n > plain.size()) {
+            ImGui::TextDisabled("kesik string (%zu)", n);
+          } else {
+            const std::string text(reinterpret_cast<const char*>(plain.data() + i + 1), n);
+            ImGui::TextUnformatted(text.c_str());
+          }
+        } else if (spec->type == FieldType::Coord) {
+          ImGui::Text("%.1f", readLE(plain.data() + i, 2) / 10.0);
+        } else if (spec->type == FieldType::F32) {
+          float f = 0.0f;
+          std::memcpy(&f, plain.data() + i, 4);
+          ImGui::Text("%.3f", static_cast<double>(f));
+        } else {
+          ImGui::Text("%llu", static_cast<unsigned long long>(readLE(plain.data() + i, need)));
+        }
+      } else if (!haveSpec) {
+        ImGui::Text("u16le=%u", static_cast<unsigned>(readLE(bytes, pairWidth)));
+      }
+
+      ImGui::TableSetColumnIndex(3);
       ImGui::TextUnformatted(bytesToLowerHex(bytes, width).c_str());
     }
     ImGui::EndTable();

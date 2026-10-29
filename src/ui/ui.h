@@ -44,7 +44,7 @@ private:
   void drawPacketList();
   void drawDetailPanel();
   void drawHexDump(const std::vector<std::uint8_t>& data, const char* caption);
-  void drawFieldTable(const std::vector<std::uint8_t>& plain);
+  void drawFieldTable(const DecodedPacket& packet);
   void drawWarningsPanel();
   void drawStatusBar();
 
