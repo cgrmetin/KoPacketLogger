@@ -1,0 +1,28 @@
+* text=auto
+
+# Windows araç zinciri: betikler CRLF, C++ kaynakları LF.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.sln text eol=crlf
+*.vcxproj text eol=crlf
+
+*.h text eol=lf
+*.hpp text eol=lf
+*.cpp text eol=lf
+*.c text eol=lf
+*.txt text eol=lf
+*.md text eol=lf
+CMakeLists.txt text eol=lf
+
+# İkili dosyalar
+*.png binary
+*.ico binary
+*.lib binary
+*.dll binary
+*.exe binary
+*.pcap binary
+*.pcapng binary
+
+# Vendor edilen Npcap SDK ve ImGui diff gürültüsünü azalt.
+third_party/** linguist-vendored
