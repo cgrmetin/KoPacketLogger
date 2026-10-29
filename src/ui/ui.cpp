@@ -689,6 +689,13 @@ void Ui::drawDetailPanel() {
     ImGui::Text("0x%02X (%u)  %s", packet.opcode, static_cast<unsigned>(packet.opcode),
                 packet.opcode_name != nullptr ? packet.opcode_name : "UNKNOWN");
 
+    field("Sira no");
+    if (packet.seq == 0) {
+      ImGui::TextDisabled("yok (gelen yon veya duz mod)");
+    } else {
+      ImGui::Text("%u", static_cast<unsigned>(packet.seq));
+    }
+
     field("Uzunluk");
     ImGui::Text("%zu bayt", packet.raw.data.size());
 
@@ -719,7 +726,7 @@ void Ui::drawDetailPanel() {
       if (packet.plain.empty()) {
         ImGui::TextDisabled("Cozulmus govde yok.");
       } else {
-        ImGui::TextDisabled("plain[0] = opcode 0x%02X. Asagidaki ofsetler govde alanlaridir.", packet.opcode);
+        ImGui::TextDisabled("Opcode plain[0] = 0x%02X. Asagidaki ofsetler govde alanlaridir.", packet.opcode);
         drawFieldTable(packet.plain);
         ImGui::Separator();
         drawHexDump(packet.plain, "duz metin");
