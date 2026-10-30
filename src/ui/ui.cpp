@@ -2,7 +2,8 @@
 
 #include <windows.h>
 
-#include <algorithm>
+#include <cctype>
+#include <cstring>
 #include <cstdio>
 #include <ctime>
 #include <filesystem>
@@ -13,6 +14,7 @@
 #include "imgui_internal.h"
 
 #include "core/opcodes.h"
+#include "core/opcode_wiki.h"
 #include "ui/theme.h"
 
 namespace ko::ui {
@@ -30,6 +32,21 @@ constexpr float kFollowThreshold = 2.0f;
 constexpr const char* kKeyWarnings = "gorunum.uyari_paneli";
 constexpr const char* kKeyFilterBar = "gorunum.filtre_cubugu";
 constexpr const char* kKeyAutoScroll = "gorunum.otomatik_kaydir";
+// Buyuk/kucuk harf duyarsiz alt dizgi aramasi (ASCII).
+bool containsFold(const std::string& haystack, const char* needle) {
+  if (needle == nullptr || needle[0] == '\0') return true;
+  const std::size_t n = std::strlen(needle);
+  if (n > haystack.size()) return false;
+  for (std::size_t i = 0; i + n <= haystack.size(); ++i) {
+    std::size_t k = 0;
+    while (k < n && std::tolower(static_cast<unsigned char>(haystack[i + k])) ==
+                        std::tolower(static_cast<unsigned char>(needle[k]))) {
+      ++k;
+    }
+    if (k == n) return true;
+  }
+  return false;
+}
 
 constexpr ImGuiTableFlags kDetailTableFlags =
     ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_BordersOuterH |
@@ -387,7 +404,7 @@ void Ui::frame() {
   drawMenuBarAndToolbar();
   drawPacketList();
   drawDetailPanel();
-  drawWarningsPanel();
+  drawWikiPanel();
   drawStatusBar();
 }
 
@@ -425,6 +442,7 @@ void Ui::drawDockSpace() {
     ImGui::DockBuilderDockWindow("Paket Listesi", main);
     ImGui::DockBuilderDockWindow("Paket Detayi", rightBottom);
     ImGui::DockBuilderDockWindow("Uyarilar", right);
+    ImGui::DockBuilderDockWindow("Protokol Wikisi", right);
     ImGui::DockBuilderFinish(dockspaceId);
   }
 
@@ -461,7 +479,10 @@ void Ui::drawMenuBarAndToolbar() {
     }
     if (ImGui::BeginMenu("Gorunum")) {
       if (ImGui::MenuItem("Filtre Cubugu", nullptr, filterBarOpen_)) filterBarOpen_ = !filterBarOpen_;
-      if (ImGui::MenuItem("Uyari Paneli", nullptr, showWarnings_)) showWarnings_ = !showWarnings_;
+      if (ImGui::MenuItem("Protokol Wikisi", nullptr, showWiki_)) {
+        showWiki_ = !showWiki_;
+        wikiDirty_ = true;
+      }
       if (ImGui::MenuItem("Otomatik Kaydir", nullptr, autoScroll_)) {
         autoScroll_ = !autoScroll_;
         followTail_ = autoScroll_;
@@ -809,6 +830,24 @@ void Ui::drawDetailPanel() {
       }
       ImGui::EndTabItem();
     }
+    if (ImGui::BeginTabItem("Yerlesim")) {
+      // Sema, alinan baytlardan bagimsizdir: kesik veya cozulemeyen pakette de gorunur.
+      const std::string layout = buildLayoutTable(packet);
+      ImGui::BeginChild("##layout", ImVec2(0, 0), ImGuiChildFlags_Borders);
+      std::size_t pos = 0;
+      while (pos <= layout.size()) {
+        const std::size_t end = layout.find('\n', pos);
+        const std::string line =
+            layout.substr(pos, end == std::string::npos ? std::string::npos : end - pos);
+        if (!line.empty() && line[0] == '|') ImGui::TextUnformatted(line.c_str());
+        else if (!line.empty()) ImGui::TextDisabled("%s", line.c_str());
+        else ImGui::Spacing();
+        if (end == std::string::npos) break;
+        pos = end + 1;
+      }
+      ImGui::EndChild();
+      ImGui::EndTabItem();
+    }
     if (ImGui::BeginTabItem("Metin")) {
       const std::string text = asciiPreview(packet.plain.empty() ? packet.raw.data : packet.plain, 8192);
       ImGui::BeginChild("##text", ImVec2(0, 0), ImGuiChildFlags_Borders);
@@ -897,13 +936,14 @@ void Ui::drawFieldTable(const DecodedPacket& packet) {
     ImGui::TableHeadersRow();
 
     for (std::size_t i = 0; i < rowCount; ++i) {
+      const FieldSpec* spec = nullptr;
       const std::size_t available = plain.size() - i;
       const std::size_t width = std::min<std::size_t>(available, 4);
       const std::uint8_t* bytes = plain.data() + i;
       const std::size_t pairWidth = std::min<std::size_t>(width, 2);
 
       // Bu offsette baslayan bir alan tanimi var mi?
-      const FieldSpec* spec = nullptr;
+
       if (haveSpec) {
         for (std::uint8_t f = 0; f < info->fieldCount; ++f) {
           if (info->fields[f].offset == i) {
@@ -961,6 +1001,122 @@ void Ui::drawFieldTable(const DecodedPacket& packet) {
   }
 }
 
+void Ui::drawWikiPanel() {
+  if (!showWiki_) return;
+
+  ImGui::Begin("Protokol Wikisi", &showWiki_);
+
+  ImGui::TextDisabled("Opcode tablosundan uretilir; yakalama gerektirmez.");
+  ImGui::SetNextItemWidth(-1.0f);
+  if (ImGui::InputTextWithHint("##wikifilter", "Opcode veya ad ile suz", wikiFilter_,
+                               sizeof(wikiFilter_))) {
+    wikiDirty_ = true;
+  }
+  ImGui::Separator();
+
+  if (wikiDirty_) {
+    wikiText_ = buildOpcodeWiki();
+    wikiDirty_ = false;
+  }
+
+  const char* filter = wikiFilter_[0] != '\0' ? wikiFilter_ : nullptr;
+  ImGui::BeginChild("##wikitext", ImVec2(0.0f, 0.0f), ImGuiChildFlags_None);
+
+  // Basit suzgec: eslesen baslik ve altindaki govde blogu gosterilir.
+  bool showing = filter == nullptr;
+  bool inTable = false;
+  bool tableHeaderDone = false;
+
+  // "| a | b |" satirini hucrelere ayirir; kenar bosluklari kirpilir.
+  auto splitCells = [](const std::string& text) {
+    std::vector<std::string> cells;
+    std::size_t start = 1;
+    for (std::size_t i = 1; i <= text.size(); ++i) {
+      if (i != text.size() && text[i] != '|') continue;
+      std::string cell = text.substr(start, i - start);
+      const std::size_t first = cell.find_first_not_of(" \t");
+      const std::size_t last = cell.find_last_not_of(" \t");
+      cell = (first == std::string::npos) ? std::string() : cell.substr(first, last - first + 1);
+      cells.push_back(cell);
+      start = i + 1;
+    }
+    return cells;
+  };
+
+  auto endTable = [&inTable, &tableHeaderDone]() {
+    if (!inTable) return;
+    ImGui::EndTable();
+    inTable = false;
+    tableHeaderDone = false;
+  };
+
+  std::size_t pos = 0;
+  while (pos < wikiText_.size()) {
+    const std::size_t end = wikiText_.find('\n', pos);
+    const std::size_t lineLen = (end == std::string::npos ? wikiText_.size() : end) - pos;
+    const std::string line = wikiText_.substr(pos, lineLen);
+
+    if (line.rfind("### ", 0) == 0) {
+      endTable();
+      showing = filter == nullptr || containsFold(line, filter);
+    }
+    if (showing) {
+      if (line.rfind("# ", 0) == 0) {
+        endTable();
+        ImGui::SeparatorText(line.c_str() + 2);
+      } else if (line.rfind("## ", 0) == 0) {
+        endTable();
+        ImGui::SeparatorText(line.c_str() + 3);
+      } else if (line.rfind("### ", 0) == 0) {
+        ImGui::TextColored(ImVec4(0.62f, 0.78f, 1.0f, 1.0f), "%s", line.c_str() + 4);
+      } else if (line == "---") {
+        ImGui::Separator();
+      } else if (line.rfind("> ", 0) == 0) {
+        ImGui::TextDisabled("%s", line.c_str() + 2);
+      } else if (!line.empty() && line[0] == '|') {
+        const std::vector<std::string> cells = splitCells(line);
+        // Ayirici satir (|---|---|) atlanir.
+        bool separator = true;
+        for (const std::string& cell : cells) {
+          if (!cell.empty() && cell[0] != '-') {
+            separator = false;
+            break;
+          }
+        }
+        if (!separator && !cells.empty()) {
+          if (!inTable) {
+            inTable = true;
+            ImGui::BeginTable("##wikit", static_cast<int>(cells.size()),
+                              ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg |
+                                  ImGuiTableFlags_SizingStretchProp);
+            for (const std::string& cell : cells) ImGui::TableSetupColumn(cell.c_str());
+          }
+          if (!tableHeaderDone) {
+            ImGui::TableHeadersRow();
+            tableHeaderDone = true;
+          } else {
+            ImGui::TableNextRow();
+            for (std::size_t c = 0; c < cells.size(); ++c) {
+              ImGui::TableSetColumnIndex(static_cast<int>(c));
+              ImGui::TextUnformatted(cells[c].c_str());
+            }
+          }
+        }
+      } else if (!line.empty()) {
+        endTable();
+        ImGui::TextWrapped("%s", line.c_str());
+      } else {
+        ImGui::Spacing();
+      }
+    }
+
+    if (end == std::string::npos) break;
+    pos = end + 1;
+  }
+
+  ImGui::EndChild();
+  ImGui::End();
+}
 void Ui::drawWarningsPanel() {
   if (!showWarnings_) return;
 

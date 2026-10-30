@@ -47,6 +47,7 @@ private:
   void drawHexDump(const std::vector<std::uint8_t>& data, const char* caption);
   void drawFieldTable(const DecodedPacket& packet);
   void drawWarningsPanel();
+  void drawWikiPanel();
   void drawStatusBar();
 
   // --- veri akisi ---
@@ -99,6 +100,7 @@ private:
   bool npcapPresent_ = false;
   bool layoutBuilt_ = false;
   bool showWarnings_ = true;
+  bool showWiki_ = true;
   bool filterBarOpen_ = true;
   bool autoScroll_ = true;
   bool followTail_ = true;
@@ -108,6 +110,10 @@ private:
   // Arayuz tercihleri; kapanista bir kez yazilir.
   SettingsStore settings_;
   std::string settingsPath_;
+  std::string wikiText_;
+  char wikiFilter_[128] = {};
+  bool wikiDirty_ = true;
+
   bool preferencesLoaded_ = false;
 
   double rate_ = 0.0;

@@ -59,6 +59,8 @@ add_library(ko_core STATIC
   src/core/opcodes.cpp
   src/core/decoder.h
   src/core/decoder.cpp
+  src/core/opcode_wiki.h
+  src/core/opcode_wiki.cpp
 )
 target_include_directories(ko_core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")
 target_compile_features(ko_core PUBLIC cxx_std_23)
