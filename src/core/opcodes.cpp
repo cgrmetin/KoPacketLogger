@@ -73,9 +73,9 @@ constexpr FieldSpec kF_03[] = {
     { 18, FieldType::U16, "zone" },
     { 118, FieldType::U8, "sub_type" },
     { 1818, FieldType::U8, "sub_type" },
-    { 1820, FieldType::U16, "field_1820" },
-    { 1822, FieldType::U8, "field_1822" },
-    { 1857, FieldType::U8, "field_1857" },
+    { 1820, FieldType::U16, "obj_id" },
+    { 1822, FieldType::U8, "sub_type" },
+    { 1857, FieldType::U8, "flag" },
 };
 constexpr FieldSpec kF_04[] = {
     { 1, FieldType::U8, "type" },
@@ -94,7 +94,7 @@ constexpr FieldSpec kF_04[] = {
     { 55, FieldType::U16, "value_3" },
     { 57, FieldType::U16, "value_4" },
     { 161, FieldType::U8, "sub_type" },
-    { 1861, FieldType::U8, "field_1861" },
+    { 1861, FieldType::U8, "type" },
     { 1863, FieldType::U16, "field_1863" },
     { 1865, FieldType::U8, "field_1865" },
     { 1900, FieldType::U8, "field_1900" },
@@ -103,7 +103,7 @@ constexpr FieldSpec kF_05[] = {
     { 1, FieldType::U8, "obj_id" },
     { 2, FieldType::U16, "code" },
     { 4, FieldType::Str, "text" },
-    { 34, FieldType::U8, "field_34" },
+    { 34, FieldType::U8, "count" },
     { 36, FieldType::U16, "field_36" },
     { 38, FieldType::U8, "field_38" },
     { 40, FieldType::Str, "field_40" },
@@ -149,7 +149,7 @@ constexpr FieldSpec kF_07[] = {
     { 152, FieldType::Str, "name" },
     { 153, FieldType::U8, "name_len" },
     { 157, FieldType::Str, "guild_name" },
-    { 158, FieldType::U16, "field_158" },
+    { 158, FieldType::U16, "type" },
     { 160, FieldType::U16, "field_160" },
 };
 constexpr FieldSpec kF_08[] = {
@@ -165,15 +165,15 @@ constexpr FieldSpec kF_09[] = {
     { 4, FieldType::U16, "char_id" },
     { 5, FieldType::U8, "angle" },
     { 7, FieldType::U16, "angle" },
-    { 9, FieldType::U16, "field_9" },
+    { 9, FieldType::U16, "obj_id" },
     { 11, FieldType::U16, "angle" },
-    { 13, FieldType::U16, "field_13" },
-    { 15, FieldType::U8, "field_15" },
-    { 20, FieldType::Str, "field_20" },
-    { 21, FieldType::U8, "field_21" },
-    { 25, FieldType::Str, "field_25" },
-    { 26, FieldType::U16, "field_26" },
-    { 28, FieldType::U16, "field_28" },
+    { 13, FieldType::U16, "sub_type" },
+    { 15, FieldType::U8, "flag" },
+    { 20, FieldType::Str, "name" },
+    { 21, FieldType::U8, "name_len" },
+    { 25, FieldType::Str, "name" },
+    { 26, FieldType::U16, "level" },
+    { 28, FieldType::U16, "class" },
     { 30, FieldType::Str, "field_30" },
     { 31, FieldType::Str, "field_31" },
     { 32, FieldType::Str, "field_32" },
@@ -267,12 +267,12 @@ constexpr FieldSpec kF_10[] = {
     { 32, FieldType::U8, "sub_type" },
     { 33, FieldType::U8, "name_len" },
     { 34, FieldType::U8, "count" },
-    { 35, FieldType::Str, "field_35" },
-    { 36, FieldType::Str, "field_36" },
+    { 35, FieldType::Str, "type" },
+    { 36, FieldType::Str, "sub_type" },
     { 37, FieldType::Str, "field_37" },
     { 38, FieldType::Str, "field_38" },
-    { 39, FieldType::Str, "field_39" },
-    { 40, FieldType::Str, "field_40" },
+    { 39, FieldType::Str, "flag" },
+    { 40, FieldType::Str, "sub_type" },
     { 41, FieldType::Str, "field_41" },
     { 42, FieldType::Str, "field_42" },
     { 43, FieldType::Str, "field_43" },
@@ -296,7 +296,7 @@ constexpr FieldSpec kF_10[] = {
 constexpr FieldSpec kF_11[] = {
     { 1, FieldType::U32, "char_id" },
     { 5, FieldType::U32, "killer_id" },
-    { 36, FieldType::U8, "field_36" },
+    { 36, FieldType::U8, "obj_id" },
     { 132, FieldType::U8, "field_132" },
     { 167, FieldType::U16, "field_167" },
 };
@@ -307,9 +307,9 @@ constexpr FieldSpec kF_12[] = {
     { 6, FieldType::U16, "char_id" },
     { 11, FieldType::U16, "obj_id" },
     { 20, FieldType::U16, "uid" },
-    { 22, FieldType::U16, "field_22" },
-    { 24, FieldType::U16, "field_24" },
-    { 25, FieldType::U16, "field_25" },
+    { 22, FieldType::U16, "x" },
+    { 24, FieldType::U16, "z" },
+    { 25, FieldType::U16, "type" },
     { 27, FieldType::U16, "type" },
     { 29, FieldType::U16, "time" },
     { 31, FieldType::U8, "obj_id" },
@@ -363,11 +363,11 @@ constexpr FieldSpec kF_17[] = {
     { 1, FieldType::U16, "hp" },
     { 3, FieldType::U16, "hp_max" },
     { 5, FieldType::U32, "char_id" },
-    { 39, FieldType::U8, "field_39" },
-    { 43, FieldType::U16, "field_43" },
+    { 39, FieldType::U8, "sub_type" },
+    { 43, FieldType::U16, "hp" },
     { 45, FieldType::U8, "obj_id" },
-    { 597, FieldType::U16, "field_597" },
-    { 599, FieldType::U8, "field_599" },
+    { 597, FieldType::U16, "damage" },
+    { 599, FieldType::U8, "flag" },
 };
 constexpr FieldSpec kF_18[] = {
     { 1, FieldType::U16, "msp_max" },
@@ -413,7 +413,7 @@ constexpr FieldSpec kF_1C[] = {
     { 17, FieldType::Str, "id_5" },
     { 18, FieldType::U8, "id_6" },
     { 20, FieldType::U8, "id_7" },
-    { 40, FieldType::U16, "field_40" },
+    { 40, FieldType::U16, "count" },
 };
 constexpr FieldSpec kF_1D[] = {
     { 1, FieldType::U16, "count" },
@@ -423,8 +423,8 @@ constexpr FieldSpec kF_1F[] = {
     { 2, FieldType::U8, "flag" },
     { 3, FieldType::U8, "hp" },
     { 4, FieldType::U8, "mp" },
-    { 5, FieldType::U8, "field_5" },
-    { 6, FieldType::U8, "field_6" },
+    { 5, FieldType::U8, "sub_type" },
+    { 6, FieldType::U8, "count" },
     { 7, FieldType::U16, "hp" },
     { 9, FieldType::U8, "mp" },
 };
@@ -436,8 +436,8 @@ constexpr FieldSpec kF_20[] = {
     { 9, FieldType::U16, "obj_id" },
     { 11, FieldType::U16, "target_id" },
     { 15, FieldType::Str, "sub_type" },
-    { 16, FieldType::U8, "field_16" },
-    { 20, FieldType::U16, "field_20" },
+    { 16, FieldType::U8, "type" },
+    { 20, FieldType::U16, "target_id" },
 };
 constexpr FieldSpec kF_21[] = {
     { 1, FieldType::U8, "type" },
@@ -491,7 +491,7 @@ constexpr FieldSpec kF_28[] = {
     { 6, FieldType::U16, "mp" },
     { 8, FieldType::U16, "x" },
     { 10, FieldType::U32, "z" },
-    { 14, FieldType::U8, "field_14" },
+    { 14, FieldType::U8, "type" },
 };
 constexpr FieldSpec kF_29[] = {
     { 1, FieldType::U32, "char_id" },
@@ -547,7 +547,7 @@ constexpr FieldSpec kF_2F[] = {
     { 17, FieldType::Str, "member_name" },
     { 18, FieldType::Str, "member_name" },
     { 19, FieldType::U8, "count" },
-    { 54, FieldType::U16, "field_54" },
+    { 54, FieldType::U16, "sub_type" },
     { 56, FieldType::U16, "field_56" },
     { 58, FieldType::U8, "field_58" },
     { 93, FieldType::U8, "field_93" },
@@ -559,7 +559,7 @@ constexpr FieldSpec kF_30[] = {
     { 7, FieldType::U8, "open_flag" },
     { 8, FieldType::U32, "obj_id" },
     { 12, FieldType::U64, "target_obj_id" },
-    { 20, FieldType::U32, "field_20" },
+    { 20, FieldType::U32, "type" },
     { 24, FieldType::U8, "state" },
     { 25, FieldType::U8, "flag" },
     { 26, FieldType::U32, "field_26" },
@@ -573,9 +573,9 @@ constexpr FieldSpec kF_31[] = {
     { 1, FieldType::U8, "update_type" },
     { 2, FieldType::U8, "flag" },
     { 3, FieldType::U8, "hp" },
-    { 19, FieldType::U8, "field_19" },
-    { 48, FieldType::Str, "field_48" },
-    { 49, FieldType::Str, "field_49" },
+    { 19, FieldType::U8, "type" },
+    { 48, FieldType::Str, "name" },
+    { 49, FieldType::Str, "name_len" },
 };
 constexpr FieldSpec kF_33[] = {
     { 1, FieldType::U8, "type" },
@@ -595,7 +595,7 @@ constexpr FieldSpec kF_35[] = {
     { 2, FieldType::U16, "target_id" },
     { 4, FieldType::U32, "type" },
     { 8, FieldType::U32, "result" },
-    { 12, FieldType::U32, "field_12" },
+    { 12, FieldType::U32, "type" },
     { 16, FieldType::Str, "text" },
 };
 constexpr FieldSpec kF_36[] = {
@@ -625,7 +625,7 @@ constexpr FieldSpec kF_3D[] = {
     { 14, FieldType::U16, "item_count" },
     { 16, FieldType::U32, "obj_id" },
     { 20, FieldType::U32, "target_obj_id" },
-    { 555, FieldType::U16, "field_555" },
+    { 555, FieldType::U16, "count" },
     { 557, FieldType::U8, "field_557" },
     { 561, FieldType::U16, "field_561" },
     { 569, FieldType::U16, "field_569" },
@@ -638,7 +638,7 @@ constexpr FieldSpec kF_3E[] = {
     { 8, FieldType::Str, "name" },
     { 9, FieldType::U16, "id" },
     { 11, FieldType::U16, "name_len" },
-    { 13, FieldType::U16, "field_13" },
+    { 13, FieldType::U16, "type" },
     { 44, FieldType::U16, "name_len" },
     { 46, FieldType::U8, "field_46" },
 };
@@ -685,7 +685,7 @@ constexpr FieldSpec kF_49[] = {
     { 1, FieldType::U8, "sub_type" },
     { 2, FieldType::U16, "name_len" },
     { 4, FieldType::Str, "name" },
-    { 35, FieldType::U16, "field_35" },
+    { 35, FieldType::U16, "name_len" },
     { 147, FieldType::U16, "field_147" },
     { 149, FieldType::U16, "field_149" },
     { 151, FieldType::U16, "field_151" },
@@ -706,8 +706,8 @@ constexpr FieldSpec kF_4B[] = {
     { 6, FieldType::U16, "name" },
     { 8, FieldType::Str, "name2" },
     { 10, FieldType::Str, "field_10" },
-    { 11, FieldType::U16, "field_11" },
-    { 13, FieldType::U8, "field_13" },
+    { 11, FieldType::U16, "obj_id" },
+    { 13, FieldType::U8, "flag" },
     { 461, FieldType::Str, "field_461" },
     { 462, FieldType::U8, "field_462" },
     { 2570, FieldType::U16, "field_2570" },
@@ -720,10 +720,10 @@ constexpr FieldSpec kF_4E[] = {
     { 8, FieldType::U8, "entry_count" },
     { 9, FieldType::U8, "count" },
     { 10, FieldType::Str, "time" },
-    { 45, FieldType::Str, "field_45" },
-    { 46, FieldType::U16, "field_46" },
+    { 45, FieldType::Str, "sub_type" },
+    { 46, FieldType::U16, "count" },
     { 48, FieldType::U8, "field_48" },
-    { 52, FieldType::U16, "field_52" },
+    { 52, FieldType::U16, "time" },
     { 86, FieldType::Str, "field_86" },
     { 87, FieldType::Str, "field_87" },
     { 88, FieldType::Str, "field_88" },
@@ -767,7 +767,7 @@ constexpr FieldSpec kF_54[] = {
     { 11, FieldType::Str, "field_11" },
     { 12, FieldType::Str, "field_12" },
     { 13, FieldType::Str, "field_13" },
-    { 14, FieldType::U16, "field_14" },
+    { 14, FieldType::U16, "zone" },
     { 15, FieldType::Str, "field_15" },
     { 16, FieldType::Str, "field_16" },
     { 17, FieldType::U8, "field_17" },
@@ -779,7 +779,7 @@ constexpr FieldSpec kF_55[] = {
     { 1, FieldType::U32, "obj_id" },
     { 5, FieldType::U8, "kind" },
     { 6, FieldType::U32, "sub_type" },
-    { 39, FieldType::Str, "field_39" },
+    { 39, FieldType::Str, "name" },
 };
 constexpr FieldSpec kF_57[] = {
     { 1, FieldType::U8, "sub_opcode" },
@@ -818,8 +818,8 @@ constexpr FieldSpec kF_5F[] = {
     { 6, FieldType::Str, "text" },
     { 7, FieldType::Str, "text" },
     { 8, FieldType::Str, "text" },
-    { 9, FieldType::U8, "field_9" },
-    { 10, FieldType::U8, "field_10" },
+    { 9, FieldType::U8, "flag" },
+    { 10, FieldType::U8, "status" },
 };
 constexpr FieldSpec kF_60[] = {
     { 1, FieldType::U8, "sub_type" },
@@ -844,11 +844,11 @@ constexpr FieldSpec kF_64[] = {
     { 326, FieldType::Str, "name" },
     { 327, FieldType::U16, "action" },
     { 329, FieldType::Str, "desc" },
-    { 330, FieldType::U16, "field_330" },
-    { 366, FieldType::U16, "field_366" },
-    { 402, FieldType::U16, "field_402" },
+    { 330, FieldType::U16, "action" },
+    { 366, FieldType::U16, "quest_id" },
+    { 402, FieldType::U16, "count" },
     { 438, FieldType::U8, "state" },
-    { 442, FieldType::U16, "field_442" },
+    { 442, FieldType::U16, "state" },
 };
 constexpr FieldSpec kF_65[] = {
     { 1, FieldType::U8, "sub_type" },
@@ -891,8 +891,8 @@ constexpr FieldSpec kF_6C[] = {
     { 102, FieldType::U16, "item_id" },
     { 104, FieldType::U16, "item_count" },
     { 106, FieldType::U8, "text_len" },
-    { 141, FieldType::U8, "field_141" },
-    { 142, FieldType::U8, "field_142" },
+    { 141, FieldType::U8, "obj_id" },
+    { 142, FieldType::U8, "type" },
     { 144, FieldType::U8, "field_144" },
     { 148, FieldType::U16, "field_148" },
     { 152, FieldType::U16, "field_152" },
@@ -985,14 +985,14 @@ constexpr FieldSpec kF_79[] = {
     { 1, FieldType::U16, "state" },
     { 3, FieldType::U32, "skill_id" },
     { 37, FieldType::U16, "count" },
-    { 72, FieldType::U16, "field_72" },
+    { 72, FieldType::U16, "count" },
 };
 constexpr FieldSpec kF_3C[] = {
     { 1, FieldType::U8, "sub_type" },
     { 2, FieldType::U8, "type" },
     { 4, FieldType::Str, "action" },
-    { 5, FieldType::U16, "field_5" },
-    { 6, FieldType::U8, "field_6" },
+    { 5, FieldType::U16, "sub_type" },
+    { 6, FieldType::U8, "type" },
     { 41, FieldType::U16, "field_41" },
     { 43, FieldType::U8, "field_43" },
 };
@@ -1031,8 +1031,8 @@ constexpr FieldSpec kF_81[] = {
     { 13, FieldType::U32, "action" },
     { 17, FieldType::U8, "sub_type" },
     { 18, FieldType::U8, "obj_id" },
-    { 19, FieldType::U8, "field_19" },
-    { 20, FieldType::U16, "field_20" },
+    { 19, FieldType::U8, "type" },
+    { 20, FieldType::U16, "sub_type" },
     { 22, FieldType::U16, "field_22" },
     { 24, FieldType::U16, "field_24" },
     { 26, FieldType::U16, "field_26" },
@@ -1075,7 +1075,7 @@ constexpr FieldSpec kF_85[] = {
     { 104, FieldType::Str, "name4" },
     { 105, FieldType::Str, "name5" },
     { 106, FieldType::Str, "name6" },
-    { 107, FieldType::U16, "field_107" },
+    { 107, FieldType::U16, "type" },
     { 109, FieldType::U16, "field_109" },
     { 111, FieldType::U8, "field_111" },
 };
@@ -1084,7 +1084,7 @@ constexpr FieldSpec kF_86[] = {
     { 2, FieldType::U8, "kind" },
     { 3, FieldType::U16, "char_id" },
     { 5, FieldType::U8, "type" },
-    { 37, FieldType::U8, "field_37" },
+    { 37, FieldType::U8, "sub_type" },
     { 133, FieldType::U8, "name_len" },
     { 134, FieldType::Str, "name" },
     { 135, FieldType::Str, "name2" },
@@ -1128,9 +1128,9 @@ constexpr FieldSpec kF_92[] = {
     { 3, FieldType::U64, "object_id" },
     { 11, FieldType::U8, "flag" },
     { 12, FieldType::U32, "value" },
-    { 16, FieldType::U16, "field_16" },
+    { 16, FieldType::U16, "type" },
     { 18, FieldType::U16, "field_18" },
-    { 20, FieldType::U8, "field_20" },
+    { 20, FieldType::U8, "sub_type" },
     { 21, FieldType::U32, "field_21" },
 };
 constexpr FieldSpec kF_95[] = {
@@ -1146,7 +1146,7 @@ constexpr FieldSpec kF_95[] = {
     { 18, FieldType::U16, "value2" },
     { 20, FieldType::U8, "value" },
     { 55, FieldType::U8, "value2" },
-    { 79, FieldType::U8, "field_79" },
+    { 79, FieldType::U8, "type" },
     { 2863, FieldType::U8, "field_2863" },
     { 2867, FieldType::U8, "field_2867" },
 };
@@ -1168,10 +1168,10 @@ constexpr FieldSpec kF_99[] = {
     { 12, FieldType::U16, "count" },
     { 15, FieldType::U16, "count" },
     { 17, FieldType::U8, "count" },
-    { 19, FieldType::U16, "field_19" },
-    { 21, FieldType::U16, "field_21" },
-    { 23, FieldType::U16, "field_23" },
-    { 25, FieldType::U16, "field_25" },
+    { 19, FieldType::U16, "sub_type" },
+    { 21, FieldType::U16, "count" },
+    { 23, FieldType::U16, "value1" },
+    { 25, FieldType::U16, "value2" },
     { 27, FieldType::Str, "field_27" },
     { 28, FieldType::U16, "field_28" },
     { 29, FieldType::U8, "field_29" },
@@ -1197,7 +1197,7 @@ constexpr FieldSpec kF_9C[] = {
 };
 constexpr FieldSpec kF_A0[] = {
     { 1, FieldType::U16, "name_len" },
-    { 3, FieldType::Str, "field_3" },
+    { 3, FieldType::Str, "name" },
 };
 constexpr FieldSpec kF_A5[] = {
     { 1, FieldType::U32, "value" },
@@ -1207,9 +1207,9 @@ constexpr FieldSpec kF_A9[] = {
     { 2, FieldType::U32, "item_id" },
     { 6, FieldType::U16, "type" },
     { 8, FieldType::U16, "time" },
-    { 33, FieldType::U8, "field_33" },
-    { 41, FieldType::U16, "field_41" },
-    { 43, FieldType::U16, "field_43" },
+    { 33, FieldType::U8, "sub_type" },
+    { 41, FieldType::U16, "time" },
+    { 43, FieldType::U16, "param1" },
     { 45, FieldType::U16, "field_45" },
     { 47, FieldType::U8, "field_47" },
     { 52, FieldType::U16, "field_52" },
@@ -1249,9 +1249,9 @@ constexpr FieldSpec kF_B6[] = {
     { 1, FieldType::U8, "type" },
     { 2, FieldType::U8, "sub_type" },
     { 3, FieldType::U8, "count" },
-    { 4, FieldType::U8, "field_4" },
-    { 5, FieldType::U8, "field_5" },
-    { 6, FieldType::U8, "field_6" },
+    { 4, FieldType::U8, "sub_type" },
+    { 5, FieldType::U8, "status" },
+    { 6, FieldType::U8, "count" },
     { 28, FieldType::U8, "field_28" },
     { 30, FieldType::U16, "field_30" },
     { 32, FieldType::U8, "name_len" },
@@ -1342,7 +1342,7 @@ constexpr FieldSpec kF_CF[] = {
     { 10, FieldType::U16, "sub_action" },
     { 11, FieldType::U8, "action" },
     { 15, FieldType::U8, "value" },
-    { 35, FieldType::Str, "field_35" },
+    { 35, FieldType::Str, "type" },
 };
 constexpr FieldSpec kF_D0[] = {
     { 1, FieldType::U8, "sub_type" },
@@ -1371,7 +1371,7 @@ constexpr FieldSpec kF_D5[] = {
     { 15, FieldType::U8, "flag4" },
     { 16, FieldType::U32, "value_c" },
     { 20, FieldType::U32, "value_d" },
-    { 42, FieldType::U16, "field_42" },
+    { 42, FieldType::U16, "count" },
 };
 constexpr FieldSpec kF_D6[] = {
     { 1, FieldType::U8, "type" },
@@ -1659,7 +1659,7 @@ constexpr FieldSpec kF_O_21[] = {
 constexpr FieldSpec kF_O_26[] = {
     { 1, FieldType::U8, "type" },
     { 2, FieldType::U8, "obj_id" },
-    { 3, FieldType::U8, "field_3" },
+    { 3, FieldType::U8, "count" },
 };
 constexpr FieldSpec kF_O_2F[] = {
     { 1, FieldType::U8, "sub_type" },
@@ -1699,7 +1699,7 @@ constexpr FieldSpec kF_O_49[] = {
 };
 constexpr FieldSpec kF_O_4F[] = {
     { 1, FieldType::U8, "state" },
-    { 2, FieldType::U8, "field_2" },
+    { 2, FieldType::U8, "value" },
     { 3, FieldType::U8, "field_3" },
 };
 constexpr FieldSpec kF_O_50[] = {
@@ -1713,17 +1713,17 @@ constexpr FieldSpec kF_O_51[] = {
 };
 constexpr FieldSpec kF_O_55[] = {
     { 1, FieldType::U8, "obj_id" },
-    { 2, FieldType::U8, "field_2" },
+    { 2, FieldType::U8, "target_id" },
 };
 constexpr FieldSpec kF_O_57[] = {
     { 1, FieldType::U8, "sub_opcode" },
-    { 2, FieldType::U16, "field_2" },
+    { 2, FieldType::U16, "value" },
 };
 constexpr FieldSpec kF_O_5B[] = {
     { 1, FieldType::U8, "value" },
-    { 2, FieldType::U32, "field_2" },
-    { 6, FieldType::U8, "field_6" },
-    { 7, FieldType::U32, "field_7" },
+    { 2, FieldType::U32, "item_id" },
+    { 6, FieldType::U8, "slot" },
+    { 7, FieldType::U32, "count" },
 };
 constexpr FieldSpec kF_O_5F[] = {
     { 1, FieldType::U8, "kind" },
@@ -1734,7 +1734,7 @@ constexpr FieldSpec kF_O_61[] = {
     { 2, FieldType::U16, "result" },
 };
 constexpr FieldSpec kF_O_62[] = {
-    { 1, FieldType::U8, "field_1" },
+    { 1, FieldType::U8, "type" },
 };
 constexpr FieldSpec kF_O_68[] = {
     { 1, FieldType::U8, "sub_type" },
@@ -1755,8 +1755,8 @@ constexpr FieldSpec kF_O_70[] = {
     { 1, FieldType::U8, "sub_type" },
 };
 constexpr FieldSpec kF_O_72[] = {
-    { 1, FieldType::U8, "field_1" },
-    { 2, FieldType::U16, "field_2" },
+    { 1, FieldType::U8, "type" },
+    { 2, FieldType::U16, "target_id" },
 };
 constexpr FieldSpec kF_O_73[] = {
     { 1, FieldType::U8, "sub_type" },
