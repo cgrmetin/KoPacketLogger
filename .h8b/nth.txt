@@ -1,0 +1,51 @@
+### kF_07 70DF40 fields=[160] reads=5
+  #1 spec~160 byte->al | STORE edx+0x6d0 = eax | 0070E03F
+  #2 spec~? dword->edi | STORE edx+0xd70 = ecx | 0070E08C
+  #3 spec~? dword->eax | STORE edx+0xd70 = ecx | 0070E090
+  #4 spec~? dword->edi | STORE edx+0xd78 = edi | 0070E0F2
+  #5 spec~? dword->eax | STORE edx+0xd78 = edi | 0070E0F6
+### kF_07 8455A0 fields=[160] reads=1
+  #1 spec~160 dword->edi | STORE esp+0x10 = edi | 008455EA
+### kF_10 846DC0 fields=[37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 59, 60, 61, 62] reads=12
+  #1 spec~37 byte->al | CMP 1 | 00846F68
+  #2 spec~38 word->eax | - | 00846F94
+  #3 spec~41 word->eax | - | 00846FB8
+  #4 spec~42 word->eax | CMP 2 | 00846FDC
+  #5 spec~43 word->eax | CMP 2 | 00847029
+  #6 spec~44 word->eax | CMP 0x1a | 00847059
+  #7 spec~45 word->eax | CMP 0x1a | 0084707D
+  #8 spec~46 byte->al | - | 008470B9
+  #9 spec~47 byte->al | - | 008470D7
+  #10 spec~48 byte->al | - | 008470FC
+  #11 spec~49 byte->al | - | 00847119
+  #12 spec~50 byte->al | - | 00847133
+### kF_18 837750 fields=[37, 41, 43, 595] reads=0
+### kF_30 81A520 fields=[26, 32, 34, 39] reads=0
+### kF_3E 814020 fields=[46] reads=0
+### kF_4B 80FDE0 fields=[10, 461, 462, 2570, 2572] reads=5
+  #1 spec~10 byte->al | CMP 1 | 0080FE45
+  #2 spec~461 word->eax | - | 0080FEE2
+  #3 spec~462 word->eax | - | 0080FFE7
+  #4 spec~2570 word->eax | - | 00810014
+  #5 spec~2572 word->eax | - | 0081005E
+### kF_6D 7F9630 fields=[155, 159, 161, 165] reads=9
+  #1 spec~155 byte->al | CMP 5 | 007F9692
+  #2 spec~159 byte->al | CMP 1 | 007F96C7
+  #3 spec~161 byte->al | STORE esi+0x7b8 = eax | 007F9A1B
+  #4 spec~165 word->eax | STORE esi+0x7b8 = eax | 007F9A5B
+  #5 spec~? word->eax | STORE esi+0x7bc = eax | 007F9A8C
+  #6 spec~? word->eax | STORE esi+0x7c0 = eax | 007F9ABD
+  #7 spec~? dword->eax | STORE esi+0x7c4 = eax | 007F9AEE
+  #8 spec~? word->eax | STORE esi+0x7c8 = eax | 007F9B1D
+  #9 spec~? byte->al | STORE esi+0x8f0 = ax | 007F9B4C
+### kF_83 8C6500 fields=[10, 45, 50, 90, 91, 131] reads=0
+### kF_99 7E2640 fields=[27, 28, 29, 30, 32, 34, 35, 36] reads=1
+  #1 spec~27 byte->al | CMP 5 | 007E298F
+### kF_C3 DE2F70 fields=[947, 951, 959, 960, 968, 969, 970, 971, 972, 973, 978] reads=7
+  #1 spec~947 byte->al | CMP 1 | 00DE307E
+  #2 spec~951 word->eax | - | 00DE3337
+  #3 spec~959 dword->eax | STORE esi+0x444 = eax | 00DE34BD
+  #4 spec~960 dword->eax | STORE esi+0x448 = eax | 00DE34FA
+  #5 spec~968 dword->eax | STORE esi+0x158 = xmm0 | 00DE3528
+  #6 spec~969 byte->al | STORE esi+0x154 = eax | 00DE356E
+  #7 spec~970 word->eax | - | 00DE3856

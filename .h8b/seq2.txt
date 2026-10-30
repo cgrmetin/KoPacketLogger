@@ -1,0 +1,56 @@
+### kF_07 70DF40 scope=[160] cnt=eax
+  0070E03F spec=1700 byte | STORE edx+0x6d0 = eax
+  0070E08C spec=1701 dword | STORE edx+0xd70 = ecx
+  0070E090 spec=1705 dword | STORE edx+0xd70 = ecx
+  0070E0F2 spec=1709 dword | STORE edx+0xd78 = edi
+  0070E0F6 spec=1713 dword | STORE edx+0xd78 = edi
+### kF_07 8455A0 scope=[160] cnt=edi
+  008455EA spec=2 dword | STORE esp+0x10 = edi
+### kF_10 846DC0 scope=[37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 59, 60, 61, 62] cnt=ecx
+  00846F68 spec=0 byte | CMP 1
+  00846F94 spec=1 word | -
+  00846FB8 spec=3 word | -
+  00846FDC spec=5 word | CMP 2
+  00847029 spec=7 word | CMP 2
+  00847059 spec=7 word | CMP 0x1a
+  0084707D spec=9 word | CMP 0x1a
+  008470B9 spec=11 byte | -
+  008470D7 spec=12 byte | -
+  008470FC spec=13 byte | -
+  00847119 spec=14 byte | -
+  00847133 spec=19 byte | -
+  008471BA STRING@20
+  0084720D STRING@24
+### kF_18 837750 scope=[37, 41, 43, 595] cnt=None
+### kF_30 81A520 scope=[26, 32, 34, 39] cnt=None
+### kF_3E 814020 scope=[46] cnt=None
+### kF_4B 80FDE0 scope=[10, 461, 462, 2570, 2572] cnt=ecx
+  0080FE45 spec=0 byte | CMP 1
+  0080FEE2 spec=1 word | -
+  0080FFE7 spec=5 word | -
+  0080FFF9 STRING@7
+  00810014 spec=11 word | -
+  00810026 STRING@13
+  0081005E spec=19 word | -
+### kF_6D 7F9630 scope=[155, 159, 161, 165] cnt=eax
+  007F9692 spec=0 byte | CMP 5
+  007F96C7 spec=0 byte | CMP 1
+  007F9A1B spec=1 byte | STORE esi+0x7b8 = eax
+  007F9A5B spec=2 word | STORE esi+0x7b8 = eax
+  007F9A8C spec=4 word | STORE esi+0x7bc = eax
+  007F9ABD spec=6 word | STORE esi+0x7c0 = eax
+  007F9AEE spec=8 dword | STORE esi+0x7c4 = eax
+  007F9B1D spec=12 word | STORE esi+0x7c8 = eax
+  007F9B4C spec=14 byte | STORE esi+0x8f0 = ax
+  007F9B9B STRING@15
+### kF_83 8C6500 scope=[10, 45, 50, 90, 91, 131] cnt=None
+### kF_99 7E2640 scope=[27, 28, 29, 30, 32, 34, 35, 36] cnt=edi
+  007E298F spec=0 byte | CMP 5
+### kF_C3 DE2F70 scope=[947, 951, 959, 960, 968, 969, 970, 971, 972, 973, 978] cnt=eax
+  00DE307E spec=0 byte | CMP 1
+  00DE3337 spec=9 word | -
+  00DE34BD spec=11 dword | STORE esi+0x444 = eax
+  00DE34FA spec=15 dword | STORE esi+0x448 = eax
+  00DE3528 spec=20 dword | STORE esi+0x158 = xmm0
+  00DE356E spec=24 byte | STORE esi+0x154 = eax
+  00DE3856 spec=23 word | -

@@ -1,0 +1,37 @@
+A2FA50: push ebp
+A2FA51: mov ebp, esp
+A2FA53: sub esp, 0x3c
+A2FA56: mov eax, dword ptr [0x110f680]
+A2FA5B: xor eax, ebp
+A2FA5D: mov dword ptr [ebp - 4], eax
+A2FA60: push esi
+A2FA61: push 0x347
+A2FA66: push 0x1035248
+A2FA6B: push 2
+A2FA6D: lea eax, [ebp - 0x38]
+A2FA70: mov word ptr [ebp - 0x38], 0x319
+A2FA76: push eax
+A2FA77: mov esi, ecx
+A2FA79: call 0x70b5e0
+A2FA7E: mov ecx, dword ptr [0x1129a94]
+A2FA84: lea eax, [ebp - 0x38]
+A2FA87: push 2
+A2FA89: push eax
+A2FA8A: call 0x70b360
+A2FA8F: mov ecx, esi
+A2FA91: call 0xa2a300
+A2FA96: mov ecx, esi
+A2FA98: call 0xa288c0
+A2FA9D: mov eax, dword ptr [esi]
+A2FA9F: mov ecx, esi
+A2FAA1: push 0
+A2FAA3: call dword ptr [eax + 0x64]
+A2FAA6: mov ecx, esi
+A2FAA8: call 0xa2a100
+A2FAAD: mov ecx, dword ptr [ebp - 4]
+A2FAB0: xor ecx, ebp
+A2FAB2: pop esi
+A2FAB3: call 0x5edafa
+A2FAB8: mov esp, ebp
+A2FABA: pop ebp
+A2FABB: ret 

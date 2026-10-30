@@ -1,0 +1,48 @@
+### 8164E0 kF_3A OFF=4 (u16) @816511
+   mov dword ptr [esp + 0x10], eax
+   mov esi, dword ptr [0x11299c0]
+   lea eax, [esp + 0x1c]
+   mov edi, dword ptr [0x11299cc]
+   push eax
+   lea eax, [esp + 0x28]
+   mov esi, dword ptr [esi + 0x660]
+   push eax
+   lea ecx, [edi + 0x60]
+   mov dword ptr [esp + 0x24], esi
+   call 0x4d9dd0
+   mov eax, dword ptr [esp + 0x2c]
+   cmp byte ptr [eax + 0xd], 0
+   jne 0x81680e
+   cmp esi, dword ptr [eax + 0x10]
+### 836110 kF_71 OFF=38 (u8) @8362EA
+   mov ecx, dword ptr [0x11299c0]
+   movzx eax, al
+   mov dword ptr [ebp - 0x464], eax
+   mov dword ptr [ebp - 0x46c], 0
+   test eax, eax
+   je 0x8363c0
+   lea eax, [ecx + 0x73c]
+   mov dword ptr [ebp - 0x478], eax
+   nop dword ptr [eax + eax]
+   mov eax, dword ptr [edx]
+   inc eax
+   mov dword ptr [edx], eax
+   mov dword ptr [ebp - 0x474], eax
+   cmp eax, dword ptr [edi + 4]
+   jle 0x836339
+### 77C3B0 kF_O_D5 OFF=2 (u16) @77C45D
+   cwde 
+   mov dword ptr [edx + 0x390], eax
+   mov ecx, dword ptr [edi]
+   inc ecx
+   mov dword ptr [edi], ecx
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x77c477
+   xor al, al
+   jmp 0x77c47e
+   mov eax, dword ptr [esi + 8]
+   mov al, byte ptr [ecx + eax - 1]
+   mov byte ptr [edx + 0x37c], al
+   mov ecx, dword ptr [edi]
+   inc ecx
+   mov dword ptr [edi], ecx

@@ -1,0 +1,783 @@
+##### 7119B0.txt  reads=4
+-- field 1 (body 0) @7119D5
+     inc esi
+     mov dword ptr [edi], esi
+     cmp esi, dword ptr [edx + 4]
+     jle 0x7119e5
+     xor ch, ch
+     jmp 0x7119ec
+     mov eax, dword ptr [edx + 8]
+     mov ch, byte ptr [eax + esi - 1]
+     add esi, 2
+     mov dword ptr [edi], esi
+     cmp esi, dword ptr [edx + 4]
+     jle 0x711a00
+     mov dword ptr [esp + 0x10], 0
+     jmp 0x711a0c
+     mov eax, dword ptr [edx + 8]
+-- field 2 (body 1) @7119E8
+     add esi, 2
+     mov dword ptr [edi], esi
+     cmp esi, dword ptr [edx + 4]
+     jle 0x711a00
+     mov dword ptr [esp + 0x10], 0
+     jmp 0x711a0c
+     mov eax, dword ptr [edx + 8]
+     movzx eax, word ptr [eax + esi - 2]
+     mov dword ptr [esp + 0x10], eax
+     add esi, 2
+     mov dword ptr [edi], esi
+     cmp esi, dword ptr [edx + 4]
+     jle 0x711a1a
+     xor eax, eax
+     jmp 0x711a22
+-- field 3 (body 2) @711A03
+     mov dword ptr [esp + 0x10], eax
+     add esi, 2
+     mov dword ptr [edi], esi
+     cmp esi, dword ptr [edx + 4]
+     jle 0x711a1a
+     xor eax, eax
+     jmp 0x711a22
+     mov eax, dword ptr [edx + 8]
+     movzx eax, word ptr [eax + esi - 2]
+     movzx edx, ax
+     movzx eax, cl
+     sub eax, 1
+     jne 0x711bb8
+     mov esi, dword ptr [0x1129a7c]
+     test esi, esi
+-- field 5 (body 4) @711A1D
+     movzx edx, ax
+     movzx eax, cl
+     sub eax, 1
+     jne 0x711bb8
+     mov esi, dword ptr [0x1129a7c]
+     test esi, esi
+     je 0x711bb8
+     mov edi, dword ptr [0x11299c0]
+     mov dword ptr [ebx + 0x10], eax
+     mov dword ptr [ebx + 0xc], eax
+     mov dword ptr [ebx + 0x14], eax
+     mov byte ptr [ebx + 0x18], al
+     movzx eax, ch
+     mov dword ptr [edi + 0x6d0], eax
+     movsx eax, dx
+##### 77C3B0.txt  reads=6
+-- field 9 (body 8) @77C591
+     add ecx, 2
+     cwde 
+     mov dword ptr [edi], ecx
+     mov dword ptr [ebp - 0x20], eax
+     cmp ecx, dword ptr [esi + 4]
+     jle 0x77c5a8
+     xor eax, eax
+     jmp 0x77c5b0
+     mov eax, dword ptr [esi + 8]
+     movzx eax, word ptr [eax + ecx - 2]
+     inc ecx
+     cwde 
+     mov dword ptr [edi], ecx
+     mov dword ptr [ebp - 0x1c], eax
+     cmp ecx, dword ptr [esi + 4]
+-- field 11 (body 10) @77C5AB
+     inc ecx
+     cwde 
+     mov dword ptr [edi], ecx
+     mov dword ptr [ebp - 0x1c], eax
+     cmp ecx, dword ptr [esi + 4]
+     jle 0x77c5c0
+     xor al, al
+     jmp 0x77c5c7
+     mov eax, dword ptr [esi + 8]
+     mov al, byte ptr [eax + ecx - 1]
+     inc ecx
+     mov byte ptr [ebp - 0x18], al
+     mov dword ptr [edi], ecx
+     cmp ecx, dword ptr [esi + 4]
+     jle 0x77c5d6
+-- field 13 (body 12) @77C5C3
+     inc ecx
+     mov byte ptr [ebp - 0x18], al
+     mov dword ptr [edi], ecx
+     cmp ecx, dword ptr [esi + 4]
+     jle 0x77c5d6
+     xor al, al
+     jmp 0x77c5dd
+     mov eax, dword ptr [esi + 8]
+     mov al, byte ptr [eax + ecx - 1]
+     add ecx, 4
+     mov byte ptr [ebp - 0x17], al
+     mov dword ptr [edi], ecx
+     cmp ecx, dword ptr [esi + 4]
+     jle 0x77c5ee
+     xor eax, eax
+-- field 14 (body 13) @77C5D9
+     add ecx, 4
+     mov byte ptr [ebp - 0x17], al
+     mov dword ptr [edi], ecx
+     cmp ecx, dword ptr [esi + 4]
+     jle 0x77c5ee
+     xor eax, eax
+     jmp 0x77c5f5
+     mov eax, dword ptr [esi + 8]
+     mov eax, dword ptr [eax + ecx - 4]
+     mov word ptr [ebp - 0x16], ax
+     mov eax, dword ptr [0x11299c0]
+     mov eax, dword ptr [eax + 0x6dc]
+     test eax, eax
+     je 0x77c60f
+     cmp eax, 0xfb
+-- field 15 (body 14) @77C5F1
+     mov word ptr [ebp - 0x16], ax
+     mov eax, dword ptr [0x11299c0]
+     mov eax, dword ptr [eax + 0x6dc]
+     test eax, eax
+     je 0x77c60f
+     cmp eax, 0xfb
+     jne 0x77c627
+     add ecx, 4
+     mov dword ptr [edi], ecx
+     cmp ecx, dword ptr [esi + 4]
+     jle 0x77c61d
+     xor eax, eax
+     jmp 0x77c624
+     mov eax, dword ptr [esi + 8]
+     mov eax, dword ptr [eax + ecx - 4]
+-- field 19 (body 18) @77C620
+     mov dword ptr [ebp - 0x14], eax
+     mov ecx, dword ptr [ebp - 0x54]
+     add ecx, 0x370
+     mov eax, dword ptr [ecx + 4]
+     mov dword ptr [ebp - 0x5c], eax
+     cmp eax, dword ptr [ecx + 8]
+     je 0x77c688
+     lea ecx, [ebp - 0x38]
+     mov dword ptr [ebp - 0x64], eax
+     push ecx
+     mov ecx, eax
+     call 0x4d8fe0
+     mov byte ptr [ebp - 4], 3
+     mov ecx, dword ptr [ebp - 0x5c]
+     mov eax, dword ptr [ebp - 0x20]
+##### 7E2000.txt  reads=0
+##### 7E8770.txt  reads=1
+-- field 0 (body -1) @7E87BE
+     movzx eax, al
+     dec eax
+     cmp eax, 4
+     ja 0x7e8ea7
+     jmp dword ptr [eax*4 + 0x7e8ecc]
+     mov ecx, dword ptr [0x11299c0]
+     push 0
+     mov eax, dword ptr [ecx]
+     call dword ptr [eax + 0x1c]
+     push 6
+     push 1
+     call 0x81aed0
+     mov ecx, dword ptr [0x11299c0]
+     push -1
+     push -1
+##### 80D2F0.txt  reads=7
+-- field 0 (body -1) @80D36E
+     mov ah, al
+     cmp ah, 1
+     jne 0x80d340
+     inc edx
+     mov dword ptr [esi], edx
+     cmp edx, dword ptr [edi + 4]
+     jle 0x80d385
+     xor al, al
+     jmp 0x80d38b
+     mov eax, dword ptr [ecx]
+     mov al, byte ptr [eax + edx - 1]
+     test al, al
+     jne 0x80d44e
+     xorps xmm0, xmm0
+     mov dword ptr [ebp - 0x170], 0
+-- field 4 (body 3) @80D387
+     test al, al
+     jne 0x80d44e
+     xorps xmm0, xmm0
+     mov dword ptr [ebp - 0x170], 0
+     movups xmmword ptr [ebp - 0x180], xmm0
+     mov dword ptr [ebp - 0x16c], 0
+     mov dword ptr [ebp - 0x170], 0
+     mov dword ptr [ebp - 0x16c], 0xf
+     mov byte ptr [ebp - 0x180], al
+     mov dword ptr [ebp - 4], 0
+     lea edx, [ebp - 0x180]
+     mov ecx, 0x1b85
+     call 0x7afa90
+     mov eax, dword ptr [ebp - 0x1a0]
+     mov ecx, dword ptr [eax + 0x228]
+-- field 5 (body 4) @80D466
+     xorps xmm0, xmm0
+     mov dword ptr [ebp - 0x158], 0
+     movups xmmword ptr [ebp - 0x168], xmm0
+     mov dword ptr [ebp - 0x154], 0
+     movsx esi, ax
+     mov dword ptr [ebp - 0x158], 0
+     mov dword ptr [ebp - 0x154], 0xf
+     mov byte ptr [ebp - 0x168], 0
+     mov dword ptr [ebp - 4], 1
+     lea edx, [ebp - 0x168]
+     mov ecx, 0x900
+     call 0x7afa90
+     push 0x40
+     lea eax, [ebp - 0x50]
+     push 0
+-- field 5 (body 4) @80D57C
+     mov dword ptr [ebp - 0x1a8], eax
+     add edx, 4
+     mov dword ptr [esi], edx
+     cmp edx, dword ptr [edi + 4]
+     jle 0x80d59d
+     mov dword ptr [ebp - 0x1a4], 0
+     jmp 0x80d5a9
+     mov eax, dword ptr [ecx]
+     mov eax, dword ptr [eax + edx - 4]
+     mov dword ptr [ebp - 0x1a4], eax
+     xorps xmm0, xmm0
+     mov dword ptr [ebp - 0x158], 0
+     movups xmmword ptr [ebp - 0x168], xmm0
+     mov dword ptr [ebp - 0x154], 0
+     mov dword ptr [ebp - 0x158], 0
+-- field 7 (body 6) @80D59F
+     mov dword ptr [ebp - 0x1a4], eax
+     xorps xmm0, xmm0
+     mov dword ptr [ebp - 0x158], 0
+     movups xmmword ptr [ebp - 0x168], xmm0
+     mov dword ptr [ebp - 0x154], 0
+     mov dword ptr [ebp - 0x158], 0
+     mov dword ptr [ebp - 0x154], 0xf
+     mov byte ptr [ebp - 0x168], 0
+     mov dword ptr [ebp - 4], 2
+     mov edi, dword ptr [ebp - 0x1a8]
+     test di, di
+     jle 0x80d73c
+     push 0xff
+     lea eax, [ebp - 0x14f]
+     mov byte ptr [ebp - 0x150], 0
+-- field 11 (body 10) @80D7D4
+     mov byte ptr [ebp - 0x199], al
+     xorps xmm0, xmm0
+     mov dword ptr [ebp - 0x170], 0
+     movups xmmword ptr [ebp - 0x180], xmm0
+     mov dword ptr [ebp - 0x16c], 0
+     mov dword ptr [ebp - 0x170], 0
+     mov dword ptr [ebp - 0x16c], 0xf
+     mov byte ptr [ebp - 0x180], 0
+     mov dword ptr [ebp - 4], 4
+     lea edx, [ebp - 0x180]
+     mov ecx, 0x88b8
+     call 0x7afa90
+     push 0xff
+     lea eax, [ebp - 0x14f]
+     mov byte ptr [ebp - 0x150], 0
+-- field 1 (body 0) @80D918
+     cmp dword ptr [ebp - 0x154], 0xf
+     lea edx, [ebp - 0x168]
+     mov ecx, dword ptr [ebp - 0x1a8]
+     cmova edx, dword ptr [ebp - 0x168]
+     inc ecx
+     cwde 
+     push eax
+     push edx
+     push ecx
+     push 0x102bd28
+     lea eax, [ebp - 0x150]
+     mov dword ptr [ebp - 0x1a8], ecx
+     push 0xff
+     push eax
+     call 0x4ddf00
+##### 813B70.txt  reads=2
+-- field -1 (body -2) @813BD6
+     mov eax, dword ptr [ebp - 0x13c]
+     movsx edx, cx
+     xor ecx, ecx
+     mov dword ptr [ebp - 0x14c], edx
+     mov dword ptr [ebp - 0x140], ecx
+     cmp edi, edx
+     jge 0x813ed7
+     nop word ptr [eax + eax]
+     lea ecx, [edi + 2]
+     mov dword ptr [ebp - 0x148], ecx
+     cmp ecx, dword ptr [eax + 4]
+     jle 0x813c12
+     xor eax, eax
+     jmp 0x813c19
+     mov eax, dword ptr [esi]
+-- field -1 (body -2) @813C14
+     movsx esi, ax
+     test esi, esi
+     jle 0x813c68
+     cmp esi, edx
+     jge 0x813c68
+     mov ecx, dword ptr [ebp - 0x144]
+     lea edx, [ebp - 0x148]
+     inc dword ptr [ebp - 0x140]
+     push edx
+     push dword ptr [ebp - 0x13c]
+     mov eax, dword ptr [ecx]
+     call dword ptr [eax + 8]
+     mov edx, dword ptr [ebp - 0x14c]
+     add esi, 2
+     mov eax, dword ptr [ebp - 0x13c]
+##### 8164E0.txt  reads=1
+-- field 1 (body 0) @816511
+     mov dword ptr [esp + 0x10], eax
+     mov esi, dword ptr [0x11299c0]
+     lea eax, [esp + 0x1c]
+     mov edi, dword ptr [0x11299cc]
+     push eax
+     lea eax, [esp + 0x28]
+     mov esi, dword ptr [esi + 0x660]
+     push eax
+     lea ecx, [edi + 0x60]
+     mov dword ptr [esp + 0x24], esi
+     call 0x4d9dd0
+     mov eax, dword ptr [esp + 0x2c]
+     cmp byte ptr [eax + 0xd], 0
+     jne 0x81680e
+     cmp esi, dword ptr [eax + 0x10]
+##### 825640.txt  reads=5
+-- field 1 (body 0) @825670
+     mov byte ptr [esp + 0x10], al
+     movzx eax, al
+     cmp eax, 5
+     ja 0x82597f
+     jmp dword ptr [eax*4 + 0x825998]
+     inc edx
+     mov dword ptr [ebx], edx
+     cmp edx, dword ptr [edi + 4]
+     jle 0x82569a
+     mov byte ptr [esp + 0x14], 0
+     jmp 0x8256a5
+     mov eax, dword ptr [edi + 8]
+     mov al, byte ptr [eax + edx - 1]
+     mov byte ptr [esp + 0x14], al
+     mov ecx, dword ptr [esi + 0x23c]
+-- field 2 (body 1) @82569D
+     mov byte ptr [esp + 0x14], al
+     mov ecx, dword ptr [esi + 0x23c]
+     test ecx, ecx
+     je 0x82597f
+     push 0
+     push 0
+     push dword ptr [esp + 0x1c]
+     push dword ptr [esp + 0x1c]
+     call 0xe3dcb0
+     jmp 0x82597f
+     add edx, 4
+     mov dword ptr [ebx], edx
+     cmp edx, dword ptr [edi + 4]
+     jle 0x8256dd
+     mov dword ptr [esp + 0x14], 0
+-- field 3 (body 2) @8256E0
+     mov dword ptr [esp + 0x14], eax
+     add edx, 4
+     mov dword ptr [ebx], edx
+     cmp edx, dword ptr [edi + 4]
+     jle 0x8256f6
+     xor eax, eax
+     jmp 0x8256fd
+     mov eax, dword ptr [edi + 8]
+     mov eax, dword ptr [eax + edx - 4]
+     mov ecx, dword ptr [esi + 0x23c]
+     test ecx, ecx
+     je 0x82597f
+     push eax
+     push dword ptr [esp + 0x18]
+     push 0
+-- field 7 (body 6) @8256F9
+     mov ecx, dword ptr [esi + 0x23c]
+     test ecx, ecx
+     je 0x82597f
+     push eax
+     push dword ptr [esp + 0x18]
+     push 0
+     push dword ptr [esp + 0x1c]
+     call 0xe3dcb0
+     jmp 0x82597f
+     mov esi, dword ptr [esi + 0x23c]
+     test esi, esi
+     je 0x82597f
+     mov ecx, esi
+     mov byte ptr [0x112a810], 0
+     call 0x8e2950
+-- field 11 (body 10) @8258F9
+     cmp al, 1
+     jne 0x825920
+     mov ecx, esi
+     call 0xd4d2a0
+     push ebx
+     push edi
+     mov ecx, esi
+     call 0xd4c3d0
+     test al, al
+     je 0x82597f
+     mov eax, dword ptr [esi]
+     mov ecx, esi
+     push 1
+     call dword ptr [eax + 0x64]
+     jmp 0x82597f
+##### 836110.txt  reads=8
+-- field 37 (body 36) @8362CF
+     cmp al, 1
+     jne 0x836169
+     inc ecx
+     mov dword ptr [edx], ecx
+     cmp ecx, dword ptr [edi + 4]
+     jle 0x8362e7
+     xor al, al
+     jmp 0x8362ee
+     mov eax, dword ptr [edi + 8]
+     mov al, byte ptr [ecx + eax - 1]
+     mov ecx, dword ptr [0x11299c0]
+     movzx eax, al
+     mov dword ptr [ebp - 0x464], eax
+     mov dword ptr [ebp - 0x46c], 0
+     test eax, eax
+-- field 1 (body 0) @836342
+     mov ecx, dword ptr [0x11299c0]
+     mov byte ptr [ebp - 0x459], al
+     mov eax, dword ptr [ebp - 0x46c]
+     mov dl, byte ptr [ebp - 0x459]
+     mov byte ptr [eax + ecx + 0x754], dl
+     mov edx, dword ptr [ebp - 0x468]
+     mov eax, dword ptr [edx]
+     add eax, 2
+     mov dword ptr [edx], eax
+     mov dword ptr [ebp - 0x474], eax
+     cmp eax, dword ptr [edi + 4]
+     jle 0x836381
+     xor eax, eax
+     jmp 0x83638f
+     mov eax, dword ptr [edi + 8]
+-- field 2 (body 1) @83638A
+     mov ecx, dword ptr [ebp - 0x478]
+     cwde 
+     mov dword ptr [ecx], eax
+     add ecx, 4
+     mov eax, dword ptr [ebp - 0x46c]
+     inc eax
+     mov dword ptr [ebp - 0x478], ecx
+     mov ecx, dword ptr [0x11299c0]
+     mov dword ptr [ebp - 0x46c], eax
+     cmp eax, dword ptr [ebp - 0x464]
+     jl 0x836320
+     mov eax, dword ptr [edx]
+     inc eax
+     mov dword ptr [edx], eax
+     mov dword ptr [ebp - 0x468], eax
+-- field 5 (body 4) @8363DD
+     mov edi, dword ptr [ebp - 0x464]
+     test edi, edi
+     jne 0x8363fe
+     mov byte ptr [ecx + 0x734], 0
+     mov dword ptr [ecx + 0x730], 0xffffffff
+     jmp 0x836404
+     mov byte ptr [ecx + 0x734], al
+     xor edx, edx
+     lea esi, [ecx + 0x73c]
+     nop dword ptr [eax]
+     cmp edi, edx
+     jbe 0x83642d
+     mov al, byte ptr [ecx + 0x734]
+     cmp al, byte ptr [ecx + edx + 0x754]
+     jne 0x83643b
+-- field 5 (body 4) @836525
+     mov ecx, dword ptr [0x11299c0]
+     mov byte ptr [ecx + 0xe1c], al
+     mov eax, dword ptr [edx]
+     add eax, 4
+     mov dword ptr [edx], eax
+     mov dword ptr [ebp - 0x468], eax
+     cmp eax, dword ptr [edi + 4]
+     jle 0x83654b
+     xor eax, eax
+     jmp 0x836558
+     mov eax, dword ptr [edi + 8]
+     mov edx, dword ptr [ebp - 0x468]
+     mov eax, dword ptr [edx + eax - 4]
+     mov esi, dword ptr [ebp - 0x460]
+     mov dword ptr [ecx + 0xe18], eax
+-- field 6 (body 5) @836554
+     mov esi, dword ptr [ebp - 0x460]
+     mov dword ptr [ecx + 0xe18], eax
+     cmp byte ptr [esi + 0x7eb], 0
+     mov dword ptr [esi + 0x7ec], 0x42700000
+     jne 0x83644a
+     mov byte ptr [ecx + 0xe1c], 5
+     mov dword ptr [ecx + 0xe18], 0
+     jmp 0x83644a
+     cmp al, 3
+     jne 0x8368af
+     inc ecx
+     mov dword ptr [edx], ecx
+     cmp ecx, dword ptr [edi + 4]
+     jle 0x8365a5
+     xor al, al
+-- field 9 (body 8) @8365A8
+     mov ecx, dword ptr [0x11299c0]
+     mov byte ptr [ecx + 0xe3c], al
+     mov eax, dword ptr [edx]
+     add eax, 4
+     mov dword ptr [edx], eax
+     mov dword ptr [ebp - 0x468], eax
+     cmp eax, dword ptr [edi + 4]
+     jle 0x8365ce
+     xor eax, eax
+     jmp 0x8365db
+     mov eax, dword ptr [edi + 8]
+     mov edx, dword ptr [ebp - 0x468]
+     mov eax, dword ptr [edx + eax - 4]
+     cmp byte ptr [0x1245b85], 0
+     mov dword ptr [ecx + 0xe38], eax
+-- field 10 (body 9) @8365D7
+     cmp byte ptr [0x1245b85], 0
+     mov dword ptr [ecx + 0xe38], eax
+     jne 0x836444
+     xorps xmm0, xmm0
+     mov dword ptr [ebp - 0x418], 0
+     movups xmmword ptr [ebp - 0x428], xmm0
+     mov dword ptr [ebp - 0x414], 0
+     mov dword ptr [ebp - 0x418], 0
+     mov dword ptr [ebp - 0x414], 0xf
+     mov byte ptr [ebp - 0x428], 0
+     mov dword ptr [ebp - 4], 3
+     push dword ptr [ecx + 0xe38]
+     movzx eax, byte ptr [ecx + 0xe3c]
+     push eax
+     push 0x102b8fc
+##### 83C160.txt  reads=3
+-- field 5 (body 4) @83C1DF
+     mov dword ptr [ebp - 0x15c], eax
+     mov eax, dword ptr [ebp - 0x144]
+     add ecx, 8
+     mov dword ptr [eax], ecx
+     cmp ecx, dword ptr [esi + 4]
+     jle 0x83c20c
+     xorps xmm0, xmm0
+     movlpd qword ptr [ebp - 0x154], xmm0
+     mov edx, dword ptr [ebp - 0x154]
+     jmp 0x83c21d
+     mov eax, dword ptr [esi + 8]
+     mov edx, dword ptr [eax + ecx - 8]
+     mov eax, dword ptr [eax + ecx - 4]
+     mov dword ptr [ebp - 0x150], eax
+     mov eax, dword ptr [ebp - 0x15c]
+-- field 9 (body 8) @83C20F
+     mov eax, dword ptr [eax + ecx - 4]
+     mov dword ptr [ebp - 0x150], eax
+     mov eax, dword ptr [ebp - 0x15c]
+     mov esi, dword ptr [0x11299c0]
+     mov dword ptr [ebp - 0x148], edx
+     test eax, eax
+     js 0x83c2f6
+     cmp eax, dword ptr [esi + 0x6a0]
+     jne 0x83c24a
+     mov dword ptr [ebp - 0x144], esi
+     jmp 0x83c2fe
+     mov dword ptr [ebp - 0x150], eax
+     lea ecx, [ebp - 0x150]
+     mov eax, dword ptr [0x11299cc]
+     push ecx
+-- field 13 (body 12) @83C213
+     mov dword ptr [ebp - 0x150], eax
+     mov eax, dword ptr [ebp - 0x15c]
+     mov esi, dword ptr [0x11299c0]
+     mov dword ptr [ebp - 0x148], edx
+     test eax, eax
+     js 0x83c2f6
+     cmp eax, dword ptr [esi + 0x6a0]
+     jne 0x83c24a
+     mov dword ptr [ebp - 0x144], esi
+     jmp 0x83c2fe
+     mov dword ptr [ebp - 0x150], eax
+     lea ecx, [ebp - 0x150]
+     mov eax, dword ptr [0x11299cc]
+     push ecx
+     add eax, 0x60
+##### 846860.txt  reads=2
+-- field 1 (body 0) @846882
+     add ecx, 2
+     mov dword ptr [edi], ecx
+     cmp ecx, dword ptr [ebx + 4]
+     jle 0x846894
+     xor eax, eax
+     jmp 0x84689c
+     mov eax, dword ptr [ebx + 8]
+     movzx eax, word ptr [eax + ecx - 2]
+     cwde 
+     movd xmm1, eax
+     mov eax, dword ptr [0x11299c0]
+     cvtdq2ps xmm1, xmm1
+     divss xmm1, dword ptr [0x10550a0]
+     cmp dword ptr [eax + 0x6a0], esi
+     je 0x8469a2
+-- field 5 (body 4) @846897
+     cwde 
+     movd xmm1, eax
+     mov eax, dword ptr [0x11299c0]
+     cvtdq2ps xmm1, xmm1
+     divss xmm1, dword ptr [0x10550a0]
+     cmp dword ptr [eax + 0x6a0], esi
+     je 0x8469a2
+     mov edi, dword ptr [0x11299cc]
+     test esi, esi
+     js 0x8469a2
+     lea eax, [ebp - 4]
+     mov dword ptr [ebp - 4], esi
+     push eax
+     lea eax, [ebp - 0x10]
+     push eax
+##### A2FA50.txt  reads=0
+##### A7C780.txt  reads=4
+-- field 1 (body 0) @A7C7C0
+     movzx eax, al
+     sub eax, 1
+     je 0xa7c86e
+     sub eax, 1
+     je 0xa7c7ed
+     mov ecx, edi
+     push 2
+     sub eax, 1
+     je 0xa7c7e3
+     lea eax, [edx + 1]
+     mov dword ptr [esi], eax
+     call 0xa76360
+     jmp 0xa7c912
+     add edx, 2
+     mov dword ptr [esi], edx
+-- field 2 (body 1) @A7C7FD
+     push 1
+     mov ecx, edi
+     movsx esi, ax
+     call 0xa76360
+     lea eax, [esi - 1]
+     push eax
+     call 0x55e460
+     mov esi, eax
+     test esi, esi
+     je 0xa7c912
+     push dword ptr [esi + 4]
+     call 0x510330
+     mov edi, eax
+     test edi, edi
+     je 0xa7c912
+-- field 4 (body 3) @A7C87E
+     add edx, 5
+     cwde 
+     mov dword ptr [esi], edx
+     mov dword ptr [ebp + 0xc], eax
+     cmp edx, dword ptr [ebx + 4]
+     jle 0xa7c895
+     xor al, al
+     jmp 0xa7c89b
+     mov eax, dword ptr [ecx]
+     mov al, byte ptr [eax + edx - 1]
+     movzx eax, al
+     push eax
+     push ecx
+     mov ecx, edi
+     call 0xa76680
+-- field 10 (body 9) @A7C897
+     movzx eax, al
+     push eax
+     push ecx
+     mov ecx, edi
+     call 0xa76680
+     mov eax, dword ptr [ebp + 0xc]
+     dec eax
+     push eax
+     call 0x55e460
+     mov esi, eax
+     test esi, esi
+     je 0xa7c912
+     push dword ptr [esi + 4]
+     call 0x510330
+     mov edi, eax
+##### AE69A0.txt  reads=3
+-- field 0 (body -1) @AE6A49
+     movzx eax, al
+     mov dword ptr [ebp - 0x5c], eax
+     mov dword ptr [ebp - 0x54], 0
+     test eax, eax
+     je 0xae6cff
+     mov ecx, dword ptr [edi]
+     mov eax, dword ptr [ebp - 0x4c]
+     add ecx, 2
+     mov edx, dword ptr [ebp - 0x40]
+     mov dword ptr [edi], ecx
+     cmp ecx, dword ptr [eax + 4]
+     jle 0xae6a78
+     xor eax, eax
+     jmp 0xae6a7f
+     mov eax, dword ptr [esi]
+-- field 2 (body 1) @AE6A7A
+     movsx esi, ax
+     test esi, esi
+     jle 0xae6ad5
+     lea eax, [ecx + esi]
+     mov ecx, dword ptr [ebp - 0x4c]
+     mov dword ptr [edi], eax
+     cmp eax, dword ptr [ecx + 4]
+     jle 0xae6aa9
+     cmp dword ptr [ebp - 0x2c], 0xf
+     lea eax, [ebp - 0x40]
+     mov dword ptr [ebp - 0x30], 0
+     cmova eax, edx
+     mov byte ptr [eax], 0
+     jmp 0xae6b04
+     push 0x20
+-- field 4 (body 3) @AE6B1C
+     movsx esi, ax
+     test esi, esi
+     jle 0xae6b75
+     lea eax, [ecx + esi]
+     mov dword ptr [edi], eax
+     cmp eax, dword ptr [edx + 4]
+     jle 0xae6b49
+     cmp dword ptr [ebp - 0x14], 0xf
+     lea eax, [ebp - 0x28]
+     mov dword ptr [ebp - 0x18], 0
+     cmova eax, dword ptr [ebp - 0x28]
+     mov byte ptr [eax], 0
+     jmp 0xae6ba6
+     push 0x20
+     push esi
+##### E103A0.txt  reads=2
+-- field 3 (body 2) @E1043D
+     mov dword ptr [ebp - 0x30], eax
+     mov eax, esi
+     mov edx, dword ptr [ebp - 0x30]
+     add eax, 4
+     movsx edx, dx
+     mov dword ptr [ebp - 0x54], edx
+     mov edx, dword ptr [ebp - 0x40]
+     mov dword ptr [edi], eax
+     mov dword ptr [ebp - 0x30], eax
+     cmp eax, dword ptr [edx + 4]
+     jle 0xe10469
+     mov dword ptr [ebp - 0x48], 0
+     jmp 0xe10477
+     mov esi, dword ptr [ebp - 0x30]
+     mov eax, dword ptr [ecx]
+-- field 11 (body 10) @E10553
+     mov dword ptr [ebp - 0x2c], eax
+     mov eax, esi
+     mov edx, dword ptr [ebp - 0x2c]
+     add eax, 2
+     movsx edx, dx
+     mov dword ptr [ebp - 0x64], edx
+     mov edx, dword ptr [ebp - 0x40]
+     mov dword ptr [edi], eax
+     mov dword ptr [ebp - 0x30], eax
+     cmp eax, dword ptr [edx + 4]
+     jle 0xe1057f
+     mov dword ptr [ebp - 0x2c], 0
+     jmp 0xe1058e
+     mov esi, dword ptr [ebp - 0x30]
+     mov eax, dword ptr [ecx]

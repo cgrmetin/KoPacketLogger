@@ -1,0 +1,16 @@
+### 836110 kF_71 SPEC=38 (u8) @836342
+   mov ecx, dword ptr [0x11299c0]
+   mov byte ptr [ebp - 0x459], al
+   mov eax, dword ptr [ebp - 0x46c]
+   mov dl, byte ptr [ebp - 0x459]
+   mov byte ptr [eax + ecx + 0x754], dl
+   mov edx, dword ptr [ebp - 0x468]
+   mov eax, dword ptr [edx]
+   add eax, 2
+   mov dword ptr [edx], eax
+   mov dword ptr [ebp - 0x474], eax
+   cmp eax, dword ptr [edi + 4]
+   jle 0x836381
+   xor eax, eax
+   jmp 0x83638f
+   mov eax, dword ptr [edi + 8]

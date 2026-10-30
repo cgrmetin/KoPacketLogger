@@ -1,0 +1,56 @@
+### 825640 kF_21 FIELD~10 u16 @8256F9
+   mov ecx, dword ptr [esi + 0x23c]
+   test ecx, ecx
+   je 0x82597f
+   push eax
+   push dword ptr [esp + 0x18]
+   push 0
+   push dword ptr [esp + 0x1c]
+   call 0xe3dcb0
+   jmp 0x82597f
+   mov esi, dword ptr [esi + 0x23c]
+   test esi, esi
+   je 0x82597f
+   mov ecx, esi
+### 825640 kF_21 FIELD~12 u8 @8258F9
+   cmp al, 1
+   jne 0x825920
+   mov ecx, esi
+   call 0xd4d2a0
+   push ebx
+   push edi
+   mov ecx, esi
+   call 0xd4c3d0
+   test al, al
+   je 0x82597f
+   mov eax, dword ptr [esi]
+   mov ecx, esi
+   push 1
+### 8164E0 kF_3A FIELD~4 u16 @816511
+   mov dword ptr [esp + 0x10], eax
+   mov esi, dword ptr [0x11299c0]
+   lea eax, [esp + 0x1c]
+   mov edi, dword ptr [0x11299cc]
+   push eax
+   lea eax, [esp + 0x28]
+   mov esi, dword ptr [esi + 0x660]
+   push eax
+   lea ecx, [edi + 0x60]
+   mov dword ptr [esp + 0x24], esi
+   call 0x4d9dd0
+   mov eax, dword ptr [esp + 0x2c]
+   cmp byte ptr [eax + 0xd], 0
+### 836110 kF_71 FIELD~37 u8 @8362CF
+   cmp al, 1
+   jne 0x836169
+   inc ecx
+   mov dword ptr [edx], ecx
+   cmp ecx, dword ptr [edi + 4]
+   jle 0x8362e7
+   xor al, al
+   jmp 0x8362ee
+   mov eax, dword ptr [edi + 8]
+   mov al, byte ptr [ecx + eax - 1]
+   mov ecx, dword ptr [0x11299c0]
+   movzx eax, al
+   mov dword ptr [ebp - 0x464], eax

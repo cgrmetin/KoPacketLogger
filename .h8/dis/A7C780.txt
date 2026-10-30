@@ -1,0 +1,139 @@
+A7C780: push ebp
+A7C781: mov ebp, esp
+A7C783: push -1
+A7C785: push 0xf495d6
+A7C78A: mov eax, dword ptr fs:[0]
+A7C790: push eax
+A7C791: push ebx
+A7C792: push esi
+A7C793: push edi
+A7C794: mov eax, dword ptr [0x110f680]
+A7C799: xor eax, ebp
+A7C79B: push eax
+A7C79C: lea eax, [ebp - 0xc]
+A7C79F: mov dword ptr fs:[0], eax
+A7C7A5: mov edi, ecx
+A7C7A7: mov esi, dword ptr [ebp + 0xc]
+A7C7AA: mov ebx, dword ptr [ebp + 8]
+A7C7AD: mov edx, dword ptr [esi]
+A7C7AF: inc edx
+A7C7B0: lea ecx, [ebx + 8]
+A7C7B3: mov dword ptr [esi], edx
+A7C7B5: cmp edx, dword ptr [ebx + 4]
+A7C7B8: jle 0xa7c7be
+A7C7BA: xor al, al
+A7C7BC: jmp 0xa7c7c4
+A7C7BE: mov eax, dword ptr [ecx]
+A7C7C0: mov al, byte ptr [eax + edx - 1]
+A7C7C4: movzx eax, al
+A7C7C7: sub eax, 1
+A7C7CA: je 0xa7c86e
+A7C7D0: sub eax, 1
+A7C7D3: je 0xa7c7ed
+A7C7D5: mov ecx, edi
+A7C7D7: push 2
+A7C7D9: sub eax, 1
+A7C7DC: je 0xa7c7e3
+A7C7DE: lea eax, [edx + 1]
+A7C7E1: mov dword ptr [esi], eax
+A7C7E3: call 0xa76360
+A7C7E8: jmp 0xa7c912
+A7C7ED: add edx, 2
+A7C7F0: mov dword ptr [esi], edx
+A7C7F2: cmp edx, dword ptr [ebx + 4]
+A7C7F5: jle 0xa7c7fb
+A7C7F7: xor eax, eax
+A7C7F9: jmp 0xa7c802
+A7C7FB: mov eax, dword ptr [ecx]
+A7C7FD: movzx eax, word ptr [eax + edx - 2]
+A7C802: push 1
+A7C804: mov ecx, edi
+A7C806: movsx esi, ax
+A7C809: call 0xa76360
+A7C80E: lea eax, [esi - 1]
+A7C811: push eax
+A7C812: call 0x55e460
+A7C817: mov esi, eax
+A7C819: test esi, esi
+A7C81B: je 0xa7c912
+A7C821: push dword ptr [esi + 4]
+A7C824: call 0x510330
+A7C829: mov edi, eax
+A7C82B: test edi, edi
+A7C82D: je 0xa7c912
+A7C833: mov ecx, dword ptr [0x1129a7c]
+A7C839: test ecx, ecx
+A7C83B: je 0xa7c912
+A7C841: cmp dword ptr [ecx + 0x430], 0
+A7C848: je 0xa7c912
+A7C84E: sub esp, 0x18
+A7C851: lea eax, [esi + 0xa0]
+A7C857: mov ecx, esp
+A7C859: mov dword ptr [ebp + 0xc], esp
+A7C85C: push eax
+A7C85D: call 0x4d8fe0
+A7C862: mov dword ptr [ebp - 4], 1
+A7C869: jmp 0xa7c8f3
+A7C86E: add edx, 2
+A7C871: mov dword ptr [esi], edx
+A7C873: cmp edx, dword ptr [ebx + 4]
+A7C876: jle 0xa7c87c
+A7C878: xor eax, eax
+A7C87A: jmp 0xa7c883
+A7C87C: mov eax, dword ptr [ecx]
+A7C87E: movzx eax, word ptr [eax + edx - 2]
+A7C883: add edx, 5
+A7C886: cwde 
+A7C887: mov dword ptr [esi], edx
+A7C889: mov dword ptr [ebp + 0xc], eax
+A7C88C: cmp edx, dword ptr [ebx + 4]
+A7C88F: jle 0xa7c895
+A7C891: xor al, al
+A7C893: jmp 0xa7c89b
+A7C895: mov eax, dword ptr [ecx]
+A7C897: mov al, byte ptr [eax + edx - 1]
+A7C89B: movzx eax, al
+A7C89E: push eax
+A7C89F: push ecx
+A7C8A0: mov ecx, edi
+A7C8A2: call 0xa76680
+A7C8A7: mov eax, dword ptr [ebp + 0xc]
+A7C8AA: dec eax
+A7C8AB: push eax
+A7C8AC: call 0x55e460
+A7C8B1: mov esi, eax
+A7C8B3: test esi, esi
+A7C8B5: je 0xa7c912
+A7C8B7: push dword ptr [esi + 4]
+A7C8BA: call 0x510330
+A7C8BF: mov edi, eax
+A7C8C1: test edi, edi
+A7C8C3: je 0xa7c912
+A7C8C5: mov ecx, dword ptr [0x1129a7c]
+A7C8CB: test ecx, ecx
+A7C8CD: je 0xa7c912
+A7C8CF: cmp dword ptr [ecx + 0x430], 0
+A7C8D6: je 0xa7c912
+A7C8D8: sub esp, 0x18
+A7C8DB: lea eax, [esi + 0x80]
+A7C8E1: mov ecx, esp
+A7C8E3: mov dword ptr [ebp + 0xc], esp
+A7C8E6: push eax
+A7C8E7: call 0x4d8fe0
+A7C8EC: mov dword ptr [ebp - 4], 0
+A7C8F3: mov eax, dword ptr [0x1129a7c]
+A7C8F8: push 0
+A7C8FA: push dword ptr [edi + 0x6a0]
+A7C900: mov ecx, dword ptr [eax + 0x430]
+A7C906: mov dword ptr [ebp - 4], 0xffffffff
+A7C90D: call 0x8eaa00
+A7C912: mov al, 1
+A7C914: mov ecx, dword ptr [ebp - 0xc]
+A7C917: mov dword ptr fs:[0], ecx
+A7C91E: pop ecx
+A7C91F: pop edi
+A7C920: pop esi
+A7C921: pop ebx
+A7C922: mov esp, ebp
+A7C924: pop ebp
+A7C925: ret 8

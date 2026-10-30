@@ -1,0 +1,65 @@
+### kF_07 70DF40 cnt=eax fields=[160]
+   off=1700 byte  | STORE edx+0x6d0 = eax | 0070E03F
+   off=1701 dword  | STORE edx+0xd70 = ecx | 0070E08C
+   off=1705 dword  | STORE edx+0xd70 = ecx | 0070E090
+   off=1709 dword  | STORE edx+0xd78 = edi | 0070E0F2
+   off=1713 dword  | STORE edx+0xd78 = edi | 0070E0F6
+### kF_07 8455A0 cnt=edi fields=[160]
+   off=2 dword  | STORE esp+0x10 = edi | 008455EA
+### kF_10 846DC0 cnt=ecx fields=[37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 59, 60, 61, 62]
+   off=0 byte  | CMP 1 | 00846F68
+   off=1 word  | - | 00846F94
+   off=3 word  | - | 00846FB8
+   off=5 word  | CMP 2 | 00846FDC
+   off=7 word  | CMP 2 | 00847029
+   off=7 word  | CMP 0x1a | 00847059
+   off=9 word  | CMP 0x1a | 0084707D
+   off=11 byte  | - | 008470B9
+   off=12 byte  | - | 008470D7
+   off=13 byte  | - | 008470FC
+   off=14 byte  | - | 00847119
+   off=19 byte  | - | 00847133
+   STRING@20 (field 20?) 
+   STRING@24 (field 24?) 
+   STRING@7329 (field 7329?) 
+   STRING@7333 (field 7333?) 
+   STRING@7353 (field 7353?) 
+   STRING@7357 (field 7357?) 
+   STRING@7361 (field 7361?) 
+   STRING@7365 (field 7365?) 
+   STRING@7369 (field 7369?) 
+   STRING@7373 (field 7373?) 
+### kF_18 837750 cnt=None fields=[37, 41, 43, 595]
+### kF_30 81A520 cnt=None fields=[26, 32, 34, 39]
+### kF_3E 814020 cnt=None fields=[46]
+### kF_4B 80FDE0 cnt=ecx fields=[10, 461, 462, 2570, 2572]
+   off=0 byte  | CMP 1 | 0080FE45
+   off=1 word  | - | 0080FEE2
+   off=5 word  | - | 0080FFE7
+   STRING@7 (field 7?) 
+   off=11 word  | - | 00810014
+   STRING@13 (field 13?) 
+   off=19 word  | - | 0081005E
+### kF_6D 7F9630 cnt=eax fields=[155, 159, 161, 165]
+   off=0 byte  | CMP 5 | 007F9692
+   off=0 byte  | CMP 1 | 007F96C7
+   off=1 byte  | STORE esi+0x7b8 = eax | 007F9A1B
+   off=2 word  | STORE esi+0x7b8 = eax | 007F9A5B
+   off=4 word  | STORE esi+0x7bc = eax | 007F9A8C
+   off=6 word  | STORE esi+0x7c0 = eax | 007F9ABD
+   off=8 dword  | STORE esi+0x7c4 = eax | 007F9AEE
+   off=12 word  | STORE esi+0x7c8 = eax | 007F9B1D
+   off=14 byte  | STORE esi+0x8f0 = ax | 007F9B4C
+   STRING@15 (field 15?) 
+### kF_83 8C6500 cnt=None fields=[10, 45, 50, 90, 91, 131]
+### kF_99 7E2640 cnt=edi fields=[27, 28, 29, 30, 32, 34, 35, 36]
+   off=0 byte  | CMP 5 | 007E298F
+### kF_C3 DE2F70 cnt=eax fields=[947, 951, 959, 960, 968, 969, 970, 971, 972, 973, 978]
+   off=0 byte  | CMP 1 | 00DE307E
+   off=9 word  | - | 00DE3337
+   off=11 dword  | STORE esi+0x444 = eax | 00DE34BD
+   off=15 dword  | STORE esi+0x448 = eax | 00DE34FA
+   off=20 dword  | STORE esi+0x158 = xmm0 | 00DE3528
+   off=24 byte  | STORE esi+0x154 = eax | 00DE356E
+   off=23 word  | - | 00DE3856
+   STRING@38 (field 38?) 

@@ -1,0 +1,175 @@
+##### 7119B0 -> kF_02 | all reads 25 | hits []
+##### AE69A0 -> kF_02 | all reads 25 | hits []
+##### E103A0 -> kF_02 | all reads 16 | hits []
+##### 846860 -> kF_09 | all reads 26 | hits []
+##### A7C780 -> kF_09 | all reads 4 | hits []
+##### 83C160 -> kF_11 | all reads 55 | hits []
+##### 825640 -> kF_21 | all reads 16 | hits [(11, 10, 'u8')]
+-- FIELD 11 (u8) @8258F9
+     cmp al, 1
+     jne 0x825920
+     mov ecx, esi
+     call 0xd4d2a0
+     push ebx
+     push edi
+     mov ecx, esi
+     call 0xd4c3d0
+     test al, al
+##### 8164E0 -> kF_3A | all reads 35 | hits [(4, 0, 'u16'), (4, 0, 'u16'), (4, 0, 'u16'), (4, 0, 'u16')]
+-- FIELD 4 (u16) @816511
+     mov dword ptr [esp + 0x10], eax
+     mov esi, dword ptr [0x11299c0]
+     lea eax, [esp + 0x1c]
+     mov edi, dword ptr [0x11299cc]
+     push eax
+     lea eax, [esp + 0x28]
+     mov esi, dword ptr [esi + 0x660]
+     push eax
+     lea ecx, [edi + 0x60]
+-- FIELD 4 (u16) @819CC3
+     mov dword ptr [ebp - 0xc4], eax
+     lea edi, [esi + 4]
+     mov dword ptr [edx], edi
+     cmp edi, dword ptr [ecx + 4]
+     jle 0x819cdb
+     xor edi, edi
+     jmp 0x819ce7
+     mov eax, dword ptr [ebp - 0xc8]
+     mov eax, dword ptr [eax]
+-- FIELD 4 (u16) @81B6AE
+     mov dword ptr [ebp - 0xd8], eax
+     mov ecx, dword ptr [edi + 0x24c]
+     test ecx, ecx
+     je 0x81b6ed
+     mov ecx, dword ptr [ecx + 0x374]
+     mov eax, dword ptr [ecx]
+     cmp eax, ecx
+     je 0x81b6ed
+     nop 
+-- FIELD 4 (u16) @81B75B
+     mov dword ptr [ebp - 0xd8], eax
+     mov ecx, dword ptr [edi + 0x24c]
+     test ecx, ecx
+     je 0x81b79d
+     mov ecx, dword ptr [ecx + 0x374]
+     mov eax, dword ptr [ecx]
+     cmp eax, ecx
+     je 0x81b79d
+     nop dword ptr [eax + eax]
+##### 813B70 -> kF_44 | all reads 23 | hits []
+##### 80D2F0 -> kF_4E | all reads 61 | hits []
+##### 836110 -> kF_71 | all reads 51 | hits [(38, 37, 'u8')]
+-- FIELD 38 (u8) @8362EA
+     mov ecx, dword ptr [0x11299c0]
+     movzx eax, al
+     mov dword ptr [ebp - 0x464], eax
+     mov dword ptr [ebp - 0x46c], 0
+     test eax, eax
+     je 0x8363c0
+     lea eax, [ecx + 0x73c]
+     mov dword ptr [ebp - 0x478], eax
+     nop dword ptr [eax + eax]
+##### 7E8770 -> kF_85 | all reads 20 | hits []
+##### 7E2000 -> kF_A9 | all reads 89 | hits [(47, 45, 'u16'), (52, 51, 'u8')]
+-- FIELD 47 (u16) @7E568A
+     mov ecx, dword ptr [edi + 0x5a8]
+     movsx esi, ax
+     test ecx, ecx
+     je 0x7e5856
+     call 0xdd6da0
+     mov ecx, dword ptr [edi + 0x5a8]
+     push 1
+     mov eax, dword ptr [ecx]
+     call dword ptr [eax + 0x64]
+-- FIELD 52 (u8) @7E574B
+     mov byte ptr [ebp - 0x12a], al
+     mov ecx, dword ptr [edi + 0x5a8]
+     test ecx, ecx
+     je 0x7e5856
+     call 0xdd6da0
+     mov ecx, dword ptr [edi + 0x5a8]
+     push 1
+     mov eax, dword ptr [ecx]
+     call dword ptr [eax + 0x64]
+##### A2FA50 -> kF_O_1E | all reads 22 | hits [(1, 0, 'u8'), (3, 1, 'u16'), (1, 0, 'u8'), (1, 0, 'u8')]
+-- FIELD 1 (u8) @A3050B
+     test al, al
+     jne 0xa30a03
+     mov eax, dword ptr [ebp - 0x68]
+     add ecx, 2
+     mov dword ptr [esi], ecx
+     cmp ecx, dword ptr [eax + 4]
+     jle 0xa30528
+     xor ecx, ecx
+     jmp 0xa30532
+-- FIELD 3 (u16) @A3052A
+     mov eax, dword ptr [ebp - 0x68]
+     xorps xmm0, xmm0
+     movsx ecx, cx
+     movups xmmword ptr [ebp - 0x4c], xmm0
+     mov dword ptr [ebp - 0x3c], 0
+     mov dword ptr [ebp - 0x38], 0
+     mov dword ptr [ebp - 0x78], ecx
+     mov dword ptr [ebp - 0x3c], 0
+     mov dword ptr [ebp - 0x38], 0xf
+-- FIELD 1 (u8) @A30A8E
+     test al, al
+     jne 0xa30b5e
+     lea eax, [edx + 4]
+     mov dword ptr [ecx], eax
+     mov ecx, esi
+     call 0xa2a300
+     mov ecx, esi
+     call 0xa288c0
+     mov eax, dword ptr [esi]
+-- FIELD 1 (u8) @A31552
+     test al, al
+     jne 0xa315fb
+     xorps xmm0, xmm0
+     mov dword ptr [ebp - 0x18], 0
+     movups xmmword ptr [ebp - 0x28], xmm0
+     mov dword ptr [ebp - 0x14], 0
+     mov dword ptr [ebp - 0x18], 0
+     mov dword ptr [ebp - 0x14], 0xf
+     mov byte ptr [ebp - 0x28], al
+##### 77C3B0 -> kF_O_D5 | all reads 12 | hits [(2, 0, 'u16'), (2, 0, 'u16'), (2, 0, 'u16'), (2, 0, 'u16')]
+-- FIELD 2 (u16) @77C45D
+     cwde 
+     mov dword ptr [edx + 0x390], eax
+     mov ecx, dword ptr [edi]
+     inc ecx
+     mov dword ptr [edi], ecx
+     cmp ecx, dword ptr [esi + 4]
+     jle 0x77c477
+     xor al, al
+     jmp 0x77c47e
+-- FIELD 2 (u16) @77C4B2
+     mov word ptr [edx + 0x37e], ax
+     mov ecx, dword ptr [edi]
+     add ecx, 2
+     mov dword ptr [edi], ecx
+     cmp ecx, dword ptr [esi + 4]
+     jle 0x77c4ce
+     xor eax, eax
+     jmp 0x77c4d6
+     mov eax, dword ptr [esi + 8]
+-- FIELD 2 (u16) @77C4D1
+     cwde 
+     mov dword ptr [ebp - 0x60], eax
+     mov dword ptr [ebp - 0x58], 0
+     test eax, eax
+     je 0x77c73d
+     nop dword ptr [eax]
+     xorps xmm0, xmm0
+     mov dword ptr [ebp - 0x28], 0
+     movups xmmword ptr [ebp - 0x38], xmm0
+-- FIELD 2 (u16) @77C591
+     add ecx, 2
+     cwde 
+     mov dword ptr [edi], ecx
+     mov dword ptr [ebp - 0x20], eax
+     cmp ecx, dword ptr [esi + 4]
+     jle 0x77c5a8
+     xor eax, eax
+     jmp 0x77c5b0
+     mov eax, dword ptr [esi + 8]

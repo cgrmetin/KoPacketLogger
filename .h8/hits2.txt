@@ -1,0 +1,639 @@
+######## 7119B0.txt n=4
+== spec_off=1 body=0 @7119D5
+   inc esi
+   mov dword ptr [edi], esi
+   cmp esi, dword ptr [edx + 4]
+   jle 0x7119e5
+   xor ch, ch
+   jmp 0x7119ec
+   mov eax, dword ptr [edx + 8]
+== spec_off=2 body=1 @7119E8
+   add esi, 2
+   mov dword ptr [edi], esi
+   cmp esi, dword ptr [edx + 4]
+   jle 0x711a00
+   mov dword ptr [esp + 0x10], 0
+   jmp 0x711a0c
+   mov eax, dword ptr [edx + 8]
+== spec_off=4 body=2 @711A03
+   mov dword ptr [esp + 0x10], eax
+   add esi, 2
+   mov dword ptr [edi], esi
+   cmp esi, dword ptr [edx + 4]
+   jle 0x711a1a
+   xor eax, eax
+   jmp 0x711a22
+== spec_off=6 body=4 @711A1D
+   movzx edx, ax
+   movzx eax, cl
+   sub eax, 1
+   jne 0x711bb8
+   mov esi, dword ptr [0x1129a7c]
+   test esi, esi
+   je 0x711bb8
+######## 77C3B0.txt n=12
+== spec_off=0 body=-2 @77C45D
+   cwde 
+   mov dword ptr [edx + 0x390], eax
+   mov ecx, dword ptr [edi]
+   inc ecx
+   mov dword ptr [edi], ecx
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x77c477
+== spec_off=0 body=-1 @77C47A
+   mov byte ptr [edx + 0x37c], al
+   mov ecx, dword ptr [edi]
+   inc ecx
+   mov dword ptr [edi], ecx
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x77c492
+   xor al, al
+== spec_off=0 body=-1 @77C495
+   mov byte ptr [edx + 0x37d], al
+   mov ecx, dword ptr [edi]
+   add ecx, 2
+   mov dword ptr [edi], ecx
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x77c4af
+   xor eax, eax
+== spec_off=0 body=-2 @77C4B2
+   mov word ptr [edx + 0x37e], ax
+   mov ecx, dword ptr [edi]
+   add ecx, 2
+   mov dword ptr [edi], ecx
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x77c4ce
+   xor eax, eax
+== spec_off=0 body=-2 @77C4D1
+   cwde 
+   mov dword ptr [ebp - 0x60], eax
+   mov dword ptr [ebp - 0x58], 0
+   test eax, eax
+   je 0x77c73d
+   nop dword ptr [eax]
+   xorps xmm0, xmm0
+== spec_off=0 body=-1 @77C52E
+   movzx ecx, al
+   mov dword ptr [ebp - 0x5c], ecx
+   test al, al
+   je 0x77c573
+   lea eax, [edx + ecx]
+   mov dword ptr [edi], eax
+   cmp eax, dword ptr [esi + 4]
+== spec_off=10 body=8 @77C591
+   add ecx, 2
+   cwde 
+   mov dword ptr [edi], ecx
+   mov dword ptr [ebp - 0x20], eax
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x77c5a8
+   xor eax, eax
+== spec_off=12 body=10 @77C5AB
+   inc ecx
+   cwde 
+   mov dword ptr [edi], ecx
+   mov dword ptr [ebp - 0x1c], eax
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x77c5c0
+   xor al, al
+== spec_off=13 body=12 @77C5C3
+   inc ecx
+   mov byte ptr [ebp - 0x18], al
+   mov dword ptr [edi], ecx
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x77c5d6
+   xor al, al
+   jmp 0x77c5dd
+== spec_off=14 body=13 @77C5D9
+   add ecx, 4
+   mov byte ptr [ebp - 0x17], al
+   mov dword ptr [edi], ecx
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x77c5ee
+   xor eax, eax
+   jmp 0x77c5f5
+== spec_off=18 body=14 @77C5F1
+   mov word ptr [ebp - 0x16], ax
+   mov eax, dword ptr [0x11299c0]
+   mov eax, dword ptr [eax + 0x6dc]
+   test eax, eax
+   je 0x77c60f
+   cmp eax, 0xfb
+   jne 0x77c627
+== spec_off=22 body=18 @77C620
+   mov dword ptr [ebp - 0x14], eax
+   mov ecx, dword ptr [ebp - 0x54]
+   add ecx, 0x370
+   mov eax, dword ptr [ecx + 4]
+   mov dword ptr [ebp - 0x5c], eax
+   cmp eax, dword ptr [ecx + 8]
+   je 0x77c688
+######## 7E2000.txt n=8
+== spec_off=0 body=-1 @7E204A
+   movzx eax, al
+   sub eax, 1
+   je 0x7e22e2
+   sub eax, 1
+   jne 0x7e2557
+   add edi, 4
+   mov dword ptr [esi], edi
+== spec_off=0 body=-4 @7E2070
+   add edi, 2
+   mov dword ptr [ebp - 0x148], eax
+   mov dword ptr [esi], edi
+   cmp edi, dword ptr [edx + 4]
+   jle 0x7e2090
+   mov dword ptr [ebp - 0x144], 0
+   jmp 0x7e209e
+== spec_off=0 body=-2 @7E2093
+   mov dword ptr [ebp - 0x144], eax
+   add edi, 2
+   mov dword ptr [esi], edi
+   cmp edi, dword ptr [edx + 4]
+   jle 0x7e20b4
+   mov dword ptr [ebp - 0x14c], 0
+   jmp 0x7e20c2
+== spec_off=0 body=-2 @7E20B7
+   mov dword ptr [ebp - 0x14c], eax
+   mov esi, dword ptr [ebp - 0x148]
+   mov eax, 0x10624dd3
+   mul esi
+   mov edi, edx
+   shr edi, 6
+   imul eax, edi, 0x3e8
+== spec_off=0 body=-4 @7E22F3
+   add edi, 2
+   mov dword ptr [ebp - 0x144], eax
+   mov dword ptr [esi], edi
+   cmp edi, dword ptr [edx + 4]
+   jle 0x7e2313
+   mov dword ptr [ebp - 0x150], 0
+   jmp 0x7e2321
+== spec_off=0 body=-2 @7E2316
+   mov dword ptr [ebp - 0x150], eax
+   add edi, 2
+   mov dword ptr [esi], edi
+   cmp edi, dword ptr [edx + 4]
+   jle 0x7e2337
+   mov dword ptr [ebp - 0x148], 0
+   jmp 0x7e2345
+== spec_off=0 body=-2 @7E233A
+   mov dword ptr [ebp - 0x148], eax
+   add edi, 2
+   mov dword ptr [esi], edi
+   cmp edi, dword ptr [edx + 4]
+   jle 0x7e235b
+   mov dword ptr [ebp - 0x14c], 0
+   jmp 0x7e2369
+== spec_off=0 body=-2 @7E235E
+   mov dword ptr [ebp - 0x14c], eax
+   mov esi, dword ptr [ebp - 0x144]
+   mov eax, 0x10624dd3
+   mul esi
+   mov edi, edx
+   shr edi, 6
+   imul eax, edi, 0x3e8
+######## 7E8770.txt n=5
+== spec_off=0 body=-1 @7E87BE
+   movzx eax, al
+   dec eax
+   cmp eax, 4
+   ja 0x7e8ea7
+   jmp dword ptr [eax*4 + 0x7e8ecc]
+   mov ecx, dword ptr [0x11299c0]
+   push 0
+== spec_off=0 body=-1 @7E89AC
+   mov edi, dword ptr [ebp + 8]
+   mov byte ptr [ebp - 0xc8], al
+   mov eax, dword ptr [ebp - 0xcc]
+   add eax, 2
+   mov dword ptr [edx], eax
+   mov dword ptr [ebp - 0xc0], eax
+   cmp eax, dword ptr [edi + 4]
+== spec_off=0 body=-2 @7E89DB
+   mov ecx, dword ptr [esi + 0x56c]
+   test ecx, ecx
+   je 0x7e8ea7
+   push eax
+   push dword ptr [ebp - 0xc8]
+   mov byte ptr [esi + 0xad8], 1
+   call 0x9d1160
+== spec_off=2 body=-2 @7E8A30
+   mov edi, dword ptr [ebp + 8]
+   mov dword ptr [ebp - 0xcc], eax
+   mov eax, dword ptr [ebp - 0xc0]
+   inc eax
+   mov dword ptr [edx], eax
+   mov dword ptr [ebp - 0xc0], eax
+   cmp eax, dword ptr [edi + 4]
+== spec_off=0 body=-1 @7E8A5D
+   cmp dword ptr [esi + 0x4d8], 0
+   mov byte ptr [ebp - 0xc1], cl
+   je 0x7e8dda
+   cmp dword ptr [0x1110250], 1
+   jne 0x7e8a8f
+   movss xmm1, dword ptr [0x111098c]
+   movss xmm0, dword ptr [0x1110990]
+######## 80D2F0.txt n=8
+== spec_off=0 body=-1 @80D36E
+   mov ah, al
+   cmp ah, 1
+   jne 0x80d340
+   inc edx
+   mov dword ptr [esi], edx
+   cmp edx, dword ptr [edi + 4]
+   jle 0x80d385
+== spec_off=4 body=3 @80D387
+   test al, al
+   jne 0x80d44e
+   xorps xmm0, xmm0
+   mov dword ptr [ebp - 0x170], 0
+   movups xmmword ptr [ebp - 0x180], xmm0
+   mov dword ptr [ebp - 0x16c], 0
+   mov dword ptr [ebp - 0x170], 0
+== spec_off=6 body=4 @80D466
+   xorps xmm0, xmm0
+   mov dword ptr [ebp - 0x158], 0
+   movups xmmword ptr [ebp - 0x168], xmm0
+   mov dword ptr [ebp - 0x154], 0
+   movsx esi, ax
+   mov dword ptr [ebp - 0x158], 0
+   mov dword ptr [ebp - 0x154], 0xf
+== spec_off=6 body=4 @80D57C
+   mov dword ptr [ebp - 0x1a8], eax
+   add edx, 4
+   mov dword ptr [esi], edx
+   cmp edx, dword ptr [edi + 4]
+   jle 0x80d59d
+   mov dword ptr [ebp - 0x1a4], 0
+   jmp 0x80d5a9
+== spec_off=10 body=6 @80D59F
+   mov dword ptr [ebp - 0x1a4], eax
+   xorps xmm0, xmm0
+   mov dword ptr [ebp - 0x158], 0
+   movups xmmword ptr [ebp - 0x168], xmm0
+   mov dword ptr [ebp - 0x154], 0
+   mov dword ptr [ebp - 0x158], 0
+   mov dword ptr [ebp - 0x154], 0xf
+== spec_off=11 body=10 @80D7D4
+   mov byte ptr [ebp - 0x199], al
+   xorps xmm0, xmm0
+   mov dword ptr [ebp - 0x170], 0
+   movups xmmword ptr [ebp - 0x180], xmm0
+   mov dword ptr [ebp - 0x16c], 0
+   mov dword ptr [ebp - 0x170], 0
+   mov dword ptr [ebp - 0x16c], 0xf
+== spec_off=0 body=-1 @80D8E5
+   movzx eax, al
+   mov edx, esi
+   push eax
+   lea eax, [ebp - 0x168]
+   mov ecx, edi
+   push eax
+   call 0x70af50
+== spec_off=2 body=0 @80D918
+   cmp dword ptr [ebp - 0x154], 0xf
+   lea edx, [ebp - 0x168]
+   mov ecx, dword ptr [ebp - 0x1a8]
+   cmova edx, dword ptr [ebp - 0x168]
+   inc ecx
+   cwde 
+   push eax
+######## 813B70.txt n=2
+== spec_off=0 body=-2 @813BD6
+   mov eax, dword ptr [ebp - 0x13c]
+   movsx edx, cx
+   xor ecx, ecx
+   mov dword ptr [ebp - 0x14c], edx
+   mov dword ptr [ebp - 0x140], ecx
+   cmp edi, edx
+   jge 0x813ed7
+== spec_off=0 body=-2 @813C14
+   movsx esi, ax
+   test esi, esi
+   jle 0x813c68
+   cmp esi, edx
+   jge 0x813c68
+   mov ecx, dword ptr [ebp - 0x144]
+   lea edx, [ebp - 0x148]
+######## 8164E0.txt n=1
+== spec_off=4 body=0 @816511
+   mov dword ptr [esp + 0x10], eax
+   mov esi, dword ptr [0x11299c0]
+   lea eax, [esp + 0x1c]
+   mov edi, dword ptr [0x11299cc]
+   push eax
+   lea eax, [esp + 0x28]
+   mov esi, dword ptr [esi + 0x660]
+######## 825640.txt n=5
+== spec_off=1 body=0 @825670
+   mov byte ptr [esp + 0x10], al
+   movzx eax, al
+   cmp eax, 5
+   ja 0x82597f
+   jmp dword ptr [eax*4 + 0x825998]
+   inc edx
+   mov dword ptr [ebx], edx
+== spec_off=2 body=1 @82569D
+   mov byte ptr [esp + 0x14], al
+   mov ecx, dword ptr [esi + 0x23c]
+   test ecx, ecx
+   je 0x82597f
+   push 0
+   push 0
+   push dword ptr [esp + 0x1c]
+== spec_off=6 body=2 @8256E0
+   mov dword ptr [esp + 0x14], eax
+   add edx, 4
+   mov dword ptr [ebx], edx
+   cmp edx, dword ptr [edi + 4]
+   jle 0x8256f6
+   xor eax, eax
+   jmp 0x8256fd
+== spec_off=10 body=6 @8256F9
+   mov ecx, dword ptr [esi + 0x23c]
+   test ecx, ecx
+   je 0x82597f
+   push eax
+   push dword ptr [esp + 0x18]
+   push 0
+   push dword ptr [esp + 0x1c]
+== spec_off=11 body=10 @8258F9
+   cmp al, 1
+   jne 0x825920
+   mov ecx, esi
+   call 0xd4d2a0
+   push ebx
+   push edi
+   mov ecx, esi
+######## 836110.txt n=9
+== spec_off=37 body=36 @8362CF
+   cmp al, 1
+   jne 0x836169
+   inc ecx
+   mov dword ptr [edx], ecx
+   cmp ecx, dword ptr [edi + 4]
+   jle 0x8362e7
+   xor al, al
+== spec_off=0 body=-1 @8362EA
+   mov ecx, dword ptr [0x11299c0]
+   movzx eax, al
+   mov dword ptr [ebp - 0x464], eax
+   mov dword ptr [ebp - 0x46c], 0
+   test eax, eax
+   je 0x8363c0
+   lea eax, [ecx + 0x73c]
+== spec_off=1 body=0 @836342
+   mov ecx, dword ptr [0x11299c0]
+   mov byte ptr [ebp - 0x459], al
+   mov eax, dword ptr [ebp - 0x46c]
+   mov dl, byte ptr [ebp - 0x459]
+   mov byte ptr [eax + ecx + 0x754], dl
+   mov edx, dword ptr [ebp - 0x468]
+   mov eax, dword ptr [edx]
+== spec_off=3 body=1 @83638A
+   mov ecx, dword ptr [ebp - 0x478]
+   cwde 
+   mov dword ptr [ecx], eax
+   add ecx, 4
+   mov eax, dword ptr [ebp - 0x46c]
+   inc eax
+   mov dword ptr [ebp - 0x478], ecx
+== spec_off=5 body=4 @8363DD
+   mov edi, dword ptr [ebp - 0x464]
+   test edi, edi
+   jne 0x8363fe
+   mov byte ptr [ecx + 0x734], 0
+   mov dword ptr [ecx + 0x730], 0xffffffff
+   jmp 0x836404
+   mov byte ptr [ecx + 0x734], al
+== spec_off=5 body=4 @836525
+   mov ecx, dword ptr [0x11299c0]
+   mov byte ptr [ecx + 0xe1c], al
+   mov eax, dword ptr [edx]
+   add eax, 4
+   mov dword ptr [edx], eax
+   mov dword ptr [ebp - 0x468], eax
+   cmp eax, dword ptr [edi + 4]
+== spec_off=9 body=5 @836554
+   mov esi, dword ptr [ebp - 0x460]
+   mov dword ptr [ecx + 0xe18], eax
+   cmp byte ptr [esi + 0x7eb], 0
+   mov dword ptr [esi + 0x7ec], 0x42700000
+   jne 0x83644a
+   mov byte ptr [ecx + 0xe1c], 5
+   mov dword ptr [ecx + 0xe18], 0
+== spec_off=9 body=8 @8365A8
+   mov ecx, dword ptr [0x11299c0]
+   mov byte ptr [ecx + 0xe3c], al
+   mov eax, dword ptr [edx]
+   add eax, 4
+   mov dword ptr [edx], eax
+   mov dword ptr [ebp - 0x468], eax
+   cmp eax, dword ptr [edi + 4]
+== spec_off=13 body=9 @8365D7
+   cmp byte ptr [0x1245b85], 0
+   mov dword ptr [ecx + 0xe38], eax
+   jne 0x836444
+   xorps xmm0, xmm0
+   mov dword ptr [ebp - 0x418], 0
+   movups xmmword ptr [ebp - 0x428], xmm0
+   mov dword ptr [ebp - 0x414], 0
+######## 83C160.txt n=4
+== spec_off=0 body=-4 @83C1B6
+   mov dword ptr [ebp - 0x14c], eax
+   mov eax, dword ptr [ebp - 0x144]
+   add ecx, 4
+   mov dword ptr [eax], ecx
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x83c1dc
+   mov dword ptr [ebp - 0x15c], 0
+== spec_off=8 body=4 @83C1DF
+   mov dword ptr [ebp - 0x15c], eax
+   mov eax, dword ptr [ebp - 0x144]
+   add ecx, 8
+   mov dword ptr [eax], ecx
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x83c20c
+   xorps xmm0, xmm0
+== spec_off=16 body=8 @83C20F
+   mov eax, dword ptr [eax + ecx - 4]
+   mov dword ptr [ebp - 0x150], eax
+   mov eax, dword ptr [ebp - 0x15c]
+   mov esi, dword ptr [0x11299c0]
+   mov dword ptr [ebp - 0x148], edx
+   test eax, eax
+   js 0x83c2f6
+== spec_off=16 body=12 @83C213
+   mov dword ptr [ebp - 0x150], eax
+   mov eax, dword ptr [ebp - 0x15c]
+   mov esi, dword ptr [0x11299c0]
+   mov dword ptr [ebp - 0x148], edx
+   test eax, eax
+   js 0x83c2f6
+   cmp eax, dword ptr [esi + 0x6a0]
+######## 846860.txt n=2
+== spec_off=4 body=0 @846882
+   add ecx, 2
+   mov dword ptr [edi], ecx
+   cmp ecx, dword ptr [ebx + 4]
+   jle 0x846894
+   xor eax, eax
+   jmp 0x84689c
+   mov eax, dword ptr [ebx + 8]
+== spec_off=6 body=4 @846897
+   cwde 
+   movd xmm1, eax
+   mov eax, dword ptr [0x11299c0]
+   cvtdq2ps xmm1, xmm1
+   divss xmm1, dword ptr [0x10550a0]
+   cmp dword ptr [eax + 0x6a0], esi
+   je 0x8469a2
+######## A2FA50.txt n=0
+######## A7C780.txt n=4
+== spec_off=1 body=0 @A7C7C0
+   movzx eax, al
+   sub eax, 1
+   je 0xa7c86e
+   sub eax, 1
+   je 0xa7c7ed
+   mov ecx, edi
+   push 2
+== spec_off=3 body=1 @A7C7FD
+   push 1
+   mov ecx, edi
+   movsx esi, ax
+   call 0xa76360
+   lea eax, [esi - 1]
+   push eax
+   call 0x55e460
+== spec_off=5 body=3 @A7C87E
+   add edx, 5
+   cwde 
+   mov dword ptr [esi], edx
+   mov dword ptr [ebp + 0xc], eax
+   cmp edx, dword ptr [ebx + 4]
+   jle 0xa7c895
+   xor al, al
+== spec_off=10 body=9 @A7C897
+   movzx eax, al
+   push eax
+   push ecx
+   mov ecx, edi
+   call 0xa76680
+   mov eax, dword ptr [ebp + 0xc]
+   dec eax
+######## AE69A0.txt n=3
+== spec_off=0 body=-1 @AE6A49
+   movzx eax, al
+   mov dword ptr [ebp - 0x5c], eax
+   mov dword ptr [ebp - 0x54], 0
+   test eax, eax
+   je 0xae6cff
+   mov ecx, dword ptr [edi]
+   mov eax, dword ptr [ebp - 0x4c]
+== spec_off=3 body=1 @AE6A7A
+   movsx esi, ax
+   test esi, esi
+   jle 0xae6ad5
+   lea eax, [ecx + esi]
+   mov ecx, dword ptr [ebp - 0x4c]
+   mov dword ptr [edi], eax
+   cmp eax, dword ptr [ecx + 4]
+== spec_off=5 body=3 @AE6B1C
+   movsx esi, ax
+   test esi, esi
+   jle 0xae6b75
+   lea eax, [ecx + esi]
+   mov dword ptr [edi], eax
+   cmp eax, dword ptr [edx + 4]
+   jle 0xae6b49
+######## E103A0.txt n=11
+== spec_off=2 body=0 @E10408
+   cwde 
+   mov dword ptr [ebp - 0x58], eax
+   mov dword ptr [ebp - 0x44], 0
+   test eax, eax
+   jle 0xe107b4
+   mov eax, dword ptr [edi]
+   add eax, 2
+== spec_off=4 body=2 @E1043D
+   mov dword ptr [ebp - 0x30], eax
+   mov eax, esi
+   mov edx, dword ptr [ebp - 0x30]
+   add eax, 4
+   movsx edx, dx
+   mov dword ptr [ebp - 0x54], edx
+   mov edx, dword ptr [ebp - 0x40]
+== spec_off=8 body=4 @E1046E
+   mov dword ptr [ebp - 0x48], eax
+   mov eax, esi
+   add eax, 2
+   mov dword ptr [edi], eax
+   mov dword ptr [ebp - 0x30], eax
+   cmp eax, dword ptr [edx + 4]
+   jle 0xe10488
+== spec_off=10 body=8 @E1048D
+   xorps xmm0, xmm0
+   mov dword ptr [ebp - 0x14], 0
+   mov dword ptr [ebp - 0x2c], eax
+   movups xmmword ptr [ebp - 0x28], xmm0
+   mov dword ptr [ebp - 0x18], 0
+   mov dword ptr [ebp - 0x14], 0xf
+   cwde 
+== spec_off=12 body=10 @E10553
+   mov dword ptr [ebp - 0x2c], eax
+   mov eax, esi
+   mov edx, dword ptr [ebp - 0x2c]
+   add eax, 2
+   movsx edx, dx
+   mov dword ptr [ebp - 0x64], edx
+   mov edx, dword ptr [ebp - 0x40]
+== spec_off=14 body=12 @E10584
+   mov dword ptr [ebp - 0x2c], eax
+   mov eax, esi
+   mov ecx, dword ptr [ebp - 0x2c]
+   inc eax
+   movsx ecx, cx
+   mov dword ptr [edi], eax
+   mov dword ptr [ebp - 0x68], ecx
+== spec_off=15 body=14 @E105B3
+   mov byte ptr [ebp - 0x39], al
+   mov eax, esi
+   movzx ecx, byte ptr [ebp - 0x39]
+   add eax, 2
+   mov dword ptr [edi], eax
+   mov dword ptr [ebp - 0x50], ecx
+   mov ecx, dword ptr [ebp - 0x38]
+== spec_off=17 body=15 @E105E4
+   mov dword ptr [ebp - 0x2c], eax
+   mov eax, esi
+   mov ecx, dword ptr [ebp - 0x2c]
+   add eax, 2
+   movsx ecx, cx
+   mov dword ptr [edi], eax
+   mov dword ptr [ebp - 0x4c], ecx
+== spec_off=19 body=17 @E10618
+   mov dword ptr [ebp - 0x2c], eax
+   mov eax, esi
+   mov ecx, dword ptr [ebp - 0x2c]
+   add eax, 2
+   movsx ecx, cx
+   mov dword ptr [edi], eax
+   mov dword ptr [ebp - 0x60], ecx
+== spec_off=21 body=19 @E1064C
+   mov dword ptr [ebp - 0x2c], eax
+   mov eax, esi
+   mov esi, dword ptr [ebp - 0x2c]
+   inc eax
+   movsx esi, si
+   mov dword ptr [edi], eax
+   mov dword ptr [ebp - 0x2c], esi
+== spec_off=22 body=21 @E10676
+   movzx eax, al
+   lea edx, [ebp - 0x28]
+   push eax
+   push dword ptr [ebp - 0x60]
+   mov eax, dword ptr [ebp - 0x28]
+   xorps xmm0, xmm0
+   push dword ptr [ebp - 0x2c]

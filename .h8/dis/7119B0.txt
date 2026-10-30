@@ -1,0 +1,163 @@
+7119B0: push ebp
+7119B1: mov ebp, esp
+7119B3: and esp, 0xfffffff8
+7119B6: mov edx, dword ptr [ebp + 8]
+7119B9: sub esp, 0x14
+7119BC: push ebx
+7119BD: push esi
+7119BE: push edi
+7119BF: mov edi, dword ptr [ebp + 0xc]
+7119C2: mov ebx, ecx
+7119C4: mov esi, dword ptr [edi]
+7119C6: inc esi
+7119C7: mov dword ptr [edi], esi
+7119C9: cmp esi, dword ptr [edx + 4]
+7119CC: jle 0x7119d2
+7119CE: xor cl, cl
+7119D0: jmp 0x7119d9
+7119D2: mov eax, dword ptr [edx + 8]
+7119D5: mov cl, byte ptr [eax + esi - 1]
+7119D9: inc esi
+7119DA: mov dword ptr [edi], esi
+7119DC: cmp esi, dword ptr [edx + 4]
+7119DF: jle 0x7119e5
+7119E1: xor ch, ch
+7119E3: jmp 0x7119ec
+7119E5: mov eax, dword ptr [edx + 8]
+7119E8: mov ch, byte ptr [eax + esi - 1]
+7119EC: add esi, 2
+7119EF: mov dword ptr [edi], esi
+7119F1: cmp esi, dword ptr [edx + 4]
+7119F4: jle 0x711a00
+7119F6: mov dword ptr [esp + 0x10], 0
+7119FE: jmp 0x711a0c
+711A00: mov eax, dword ptr [edx + 8]
+711A03: movzx eax, word ptr [eax + esi - 2]
+711A08: mov dword ptr [esp + 0x10], eax
+711A0C: add esi, 2
+711A0F: mov dword ptr [edi], esi
+711A11: cmp esi, dword ptr [edx + 4]
+711A14: jle 0x711a1a
+711A16: xor eax, eax
+711A18: jmp 0x711a22
+711A1A: mov eax, dword ptr [edx + 8]
+711A1D: movzx eax, word ptr [eax + esi - 2]
+711A22: movzx edx, ax
+711A25: movzx eax, cl
+711A28: sub eax, 1
+711A2B: jne 0x711bb8
+711A31: mov esi, dword ptr [0x1129a7c]
+711A37: test esi, esi
+711A39: je 0x711bb8
+711A3F: mov edi, dword ptr [0x11299c0]
+711A45: mov dword ptr [ebx + 0x10], eax
+711A48: mov dword ptr [ebx + 0xc], eax
+711A4B: mov dword ptr [ebx + 0x14], eax
+711A4E: mov byte ptr [ebx + 0x18], al
+711A51: movzx eax, ch
+711A54: mov dword ptr [edi + 0x6d0], eax
+711A5A: movsx eax, dx
+711A5D: cdq 
+711A5E: mov ecx, eax
+711A60: mov eax, edx
+711A62: mov dword ptr [esp + 0x1c], ecx
+711A66: mov dword ptr [edi + 0xd78], ecx
+711A6C: mov ecx, dword ptr [esp + 0x10]
+711A70: mov dword ptr [edi + 0xd7c], eax
+711A76: mov dword ptr [esp + 0x18], eax
+711A7A: movsx eax, cx
+711A7D: cdq 
+711A7E: mov ecx, eax
+711A80: mov eax, edx
+711A82: mov dword ptr [esp + 0x14], ecx
+711A86: mov dword ptr [edi + 0xd70], ecx
+711A8C: mov dword ptr [edi + 0xd74], eax
+711A92: mov ecx, dword ptr [ebx + 4]
+711A95: mov dword ptr [esp + 0x10], eax
+711A99: test ecx, ecx
+711A9B: je 0x711ab3
+711A9D: cmp byte ptr [ecx + 0xea], 0
+711AA4: je 0x711ab3
+711AA6: mov eax, dword ptr [ecx]
+711AA8: push 0
+711AAA: call dword ptr [eax + 0x64]
+711AAD: mov edi, dword ptr [0x11299c0]
+711AB3: mov ecx, dword ptr [esi + 0x254]
+711AB9: test ecx, ecx
+711ABB: je 0x711ad3
+711ABD: call 0xb5a3d0
+711AC2: mov ecx, dword ptr [esi + 0x254]
+711AC8: call 0xb5a420
+711ACD: mov edi, dword ptr [0x11299c0]
+711AD3: mov byte ptr [ebx + 0x18], 1
+711AD7: mov ecx, dword ptr [esi + 0x218]
+711ADD: test ecx, ecx
+711ADF: je 0x711af9
+711AE1: call 0xb834f0
+711AE6: mov ecx, dword ptr [esi + 0x218]
+711AEC: push 0
+711AEE: mov eax, dword ptr [ecx]
+711AF0: call dword ptr [eax + 0x64]
+711AF3: mov edi, dword ptr [0x11299c0]
+711AF9: mov ecx, dword ptr [esi + 0x3e8]
+711AFF: test ecx, ecx
+711B01: je 0x711b20
+711B03: push 1
+711B05: push dword ptr [esp + 0x14]
+711B09: push dword ptr [esp + 0x1c]
+711B0D: push dword ptr [esp + 0x24]
+711B11: push dword ptr [esp + 0x2c]
+711B15: call 0xe0bc10
+711B1A: mov edi, dword ptr [0x11299c0]
+711B20: mov ecx, dword ptr [esi + 0x3f0]
+711B26: test ecx, ecx
+711B28: je 0x711b36
+711B2A: lea eax, [edi + 0x6a4]
+711B30: push eax
+711B31: call 0xb5d8e0
+711B36: mov ecx, dword ptr [esi + 0x21c]
+711B3C: test ecx, ecx
+711B3E: je 0x711b50
+711B40: cmp byte ptr [ecx + 0xea], 0
+711B47: je 0x711b50
+711B49: mov eax, dword ptr [ecx]
+711B4B: push 0
+711B4D: call dword ptr [eax + 0x64]
+711B50: mov ecx, dword ptr [esi + 0x390]
+711B56: test ecx, ecx
+711B58: je 0x711b6a
+711B5A: cmp byte ptr [ecx + 0xea], 0
+711B61: je 0x711b6a
+711B63: mov eax, dword ptr [ecx]
+711B65: push 0
+711B67: call dword ptr [eax + 0x64]
+711B6A: mov ecx, dword ptr [esi + 0x250]
+711B70: test ecx, ecx
+711B72: je 0x711b84
+711B74: cmp byte ptr [ecx + 0xea], 0
+711B7B: je 0x711b84
+711B7D: mov eax, dword ptr [ecx]
+711B7F: push 0
+711B81: call dword ptr [eax + 0x64]
+711B84: mov ecx, dword ptr [esi + 0x57c]
+711B8A: test ecx, ecx
+711B8C: je 0x711b9e
+711B8E: cmp byte ptr [ecx + 0xea], 0
+711B95: je 0x711b9e
+711B97: mov eax, dword ptr [ecx]
+711B99: push 0
+711B9B: call dword ptr [eax + 0x64]
+711B9E: mov ecx, dword ptr [esi + 0x580]
+711BA4: test ecx, ecx
+711BA6: je 0x711bb8
+711BA8: cmp byte ptr [ecx + 0xea], 0
+711BAF: je 0x711bb8
+711BB1: mov eax, dword ptr [ecx]
+711BB3: push 0
+711BB5: call dword ptr [eax + 0x64]
+711BB8: pop edi
+711BB9: pop esi
+711BBA: pop ebx
+711BBB: mov esp, ebp
+711BBD: pop ebp
+711BBE: ret 8

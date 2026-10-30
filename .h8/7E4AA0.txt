@@ -1,0 +1,71 @@
+7E4AA0: push ebp
+7E4AA1: mov ebp, esp
+7E4AA3: push ecx
+7E4AA4: mov edx, dword ptr [ebp + 8]
+7E4AA7: push ebx
+7E4AA8: push esi
+7E4AA9: mov esi, dword ptr [ebp + 0xc]
+7E4AAC: mov ebx, ecx
+7E4AAE: push edi
+7E4AAF: mov dword ptr [ebp - 4], ebx
+7E4AB2: mov edi, dword ptr [esi]
+7E4AB4: inc edi
+7E4AB5: mov dword ptr [esi], edi
+7E4AB7: cmp edi, dword ptr [edx + 4]
+7E4ABA: jle 0x7e4ac0
+7E4ABC: xor al, al
+7E4ABE: jmp 0x7e4ac7
+7E4AC0: mov eax, dword ptr [edx + 8]
+7E4AC3: mov al, byte ptr [eax + edi - 1]
+7E4AC7: movzx eax, al
+7E4ACA: sub eax, 1
+7E4ACD: je 0x7e4b86
+7E4AD3: sub eax, 1
+7E4AD6: jne 0x7e4c2e
+7E4ADC: inc edi
+7E4ADD: mov dword ptr [esi], edi
+7E4ADF: cmp edi, dword ptr [edx + 4]
+7E4AE2: jle 0x7e4ae8
+7E4AE4: xor al, al
+7E4AE6: jmp 0x7e4aef
+7E4AE8: mov eax, dword ptr [edx + 8]
+7E4AEB: mov al, byte ptr [edi + eax - 1]
+7E4AEF: movzx eax, al
+7E4AF2: sub eax, 1
+7E4AF5: jne 0x7e4c2e
+7E4AFB: add edi, 8
+7E4AFE: mov dword ptr [esi], edi
+7E4B00: cmp edi, dword ptr [edx + 4]
+7E4B03: jg 0x7e4b0c
+7E4B05: mov eax, dword ptr [edx + 8]
+7E4B08: mov eax, dword ptr [edi + eax - 4]
+7E4B0C: mov esi, dword ptr [0x119f454]
+7E4B12: push eax
+7E4B13: mov byte ptr [esi + 0x39], 1
+7E4B17: call 0x78fa60
+7E4B1C: mov ecx, dword ptr [ebx + 0x4f4]
+7E4B22: test ecx, ecx
+7E4B24: je 0x7e4c2e
+7E4B2A: mov al, byte ptr [esi + 0x48]
+7E4B2D: movss xmm0, dword ptr [esi + 0x3c]
+7E4B32: cmp al, 1
+7E4B34: movss xmm1, dword ptr [esi + 0x44]
+7E4B39: movss xmm2, dword ptr [esi + 0x40]
+7E4B3E: setne al
+7E4B41: pop edi
+7E4B42: dec al
+7E4B44: mov byte ptr [ecx + 0x14], 1
+7E4B48: pop esi
+7E4B49: movss dword ptr [ecx + 8], xmm0
+7E4B4E: mov dword ptr [ecx + 0x18], 2
+7E4B55: mov dword ptr [ecx + 4], 0
+7E4B5C: movss dword ptr [ecx + 0xc], xmm1
+7E4B61: movss dword ptr [ecx + 0x10], xmm2
+7E4B66: mov byte ptr [ecx + 0x170], al
+7E4B6C: mov byte ptr [ecx + 0x171], al
+7E4B72: mov byte ptr [ecx + 0x172], al
+7E4B78: mov dword ptr [ecx + 0x1c], 4
+7E4B7F: pop ebx
+7E4B80: mov esp, ebp
+7E4B82: pop ebp
+7E4B83: ret 8

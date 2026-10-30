@@ -1,0 +1,70 @@
+== 70DF40 cnt=eax n=5
+   0070E03F spec=1 byte -> al  STORE edx 0x6d0 eax | mov dword ptr [edx + 0x6d0], eax
+   0070E08C spec=1 dword -> edi  STORE edx 0xd70 ecx | mov dword ptr [edx + 0xd70], ecx
+   0070E090 spec=5 dword -> eax  STORE edx 0xd70 ecx | mov dword ptr [edx + 0xd70], ecx
+   0070E0F2 spec=1 dword -> edi  STORE edx 0xd78 edi | mov dword ptr [edx + 0xd78], edi
+   0070E0F6 spec=5 dword -> eax  STORE edx 0xd78 edi | mov dword ptr [edx + 0xd78], edi
+== 8455A0 cnt=edi n=1
+   008455EA spec=3 dword -> edi  STORE esp 0x10 edi | mov dword ptr [esp + 0x10], edi
+== 846DC0 cnt=edx n=5
+   00846EA2 spec=1 byte -> dl  ?    | xor esi, esi
+   008471E2 spec=1 dword -> eax  ?    | mov dword ptr [esi], edx
+   008471FA spec=5 byte -> al  ?    | push eax
+   00847235 spec=1 word -> eax  ?    | mov dword ptr [esi], edx
+   00847258 spec=3 word -> eax  ?    | mov byte ptr [ebp - 0x5fe], 0
+== 837750 cnt=edx n=1
+   008377B9 spec=3 word -> eax  CMP 1 None None | cmp eax, 1
+== 81A520 cnt=eax n=15
+   0081A579 spec=0 byte -> al  CMP 8 None None | cmp eax, 8
+   0081A5A7 spec=-3 dword -> edi  ?    | jne 0x81a667
+   0081A91E spec=0 byte -> al  STORE edi 0x5c al | mov byte ptr [edi + 0x5c], al
+   0081AA41 spec=0 byte -> al  ?    | call 0x95b030
+   0081AA6D spec=-3 dword -> eax  ?    | mov dword ptr [esi], ecx
+   0081AA89 spec=-3 dword -> eax  ?    | mov ecx, edi
+   0081AAB7 spec=-3 dword -> eax  ?    | je 0x81aaad
+   0081AAD1 spec=-3 dword -> eax  ?    | je 0x81aaad
+   0081AB59 spec=0 byte -> al  ?    | mov dword ptr [esi], edx
+   0081AB75 spec=-3 dword -> eax  ?    | mov dword ptr [esi], edx
+   0081AB91 spec=-1 word -> eax  ?    | mov dword ptr [esi], edx
+   0081ABAE spec=-1 word -> eax  ?    | mov dword ptr [esi], edx
+   0081ABC6 spec=0 byte -> al  ?    | mov dword ptr [esi], edx
+   0081ABDD spec=-3 dword -> eax  ?    | je 0x81abf6
+   0081ACB5 spec=0 byte -> al  ?    | call 0x95cfb0
+== 814020 cnt=ecx n=5
+   00814095 spec=2 word -> eax  ?    | push eax
+   00814107 spec=1 word -> eax  ?    | mov dword ptr [edi], ecx
+   00814120 spec=3 word -> eax  CMP 15 None None | cmp ecx, 0xf
+   008141AE spec=37 word -> eax  ?    | mov dword ptr [ebp - 0x38], 0
+   00814210 spec=1 word -> eax  ?    | mov dword ptr [edi], ecx
+== 80FDE0 cnt=ecx n=5
+   0080FE45 spec=1 byte -> al  CMP 1 None None | cmp al, 1
+   0080FEE2 spec=1 word -> eax  ?    | mov dword ptr [ebp - 0x214], 0
+   0080FFE7 spec=3 word -> eax  ?    | push eax
+   00810014 spec=1 word -> eax  ?    | push eax
+   0081005E spec=3 word -> eax  ?    | mov dword ptr [esi], ecx
+== 7F9630 cnt=eax n=10
+   007F9692 spec=1 byte -> al  CMP 5 None None | cmp eax, 5
+   007F96B0 spec=1 byte -> al  CMP 1 None None | cmp al, 1
+   007F96C7 spec=1 byte -> al  CMP 1 None None | cmp al, 1
+   007F9A1B spec=2 byte -> al  ?    | movzx eax, byte ptr [ebp - 0x171]
+   007F9A5B spec=3 word -> eax  STORE esi 0x7b8 eax | mov dword ptr [esi + 0x7b8], eax
+   007F9A8C spec=1 word -> eax  STORE esi 0x7bc eax | mov dword ptr [esi + 0x7bc], eax
+   007F9ABD spec=1 word -> eax  STORE esi 0x7c0 eax | mov dword ptr [esi + 0x7c0], eax
+   007F9AEE spec=1 dword -> eax  STORE esi 0x7c4 eax | mov dword ptr [esi + 0x7c4], eax
+   007F9B1D spec=1 word -> eax  STORE esi 0x7c8 eax | mov dword ptr [esi + 0x7c8], eax
+   007F9B4C spec=1 byte -> al  STORE esi 0x8f0 ax | mov word ptr [esi + 0x8f0], ax
+== 8C6500 cnt=None n=0
+== 7E2640 cnt=edx n=2
+   007E26E3 spec=1 word -> eax  STORE esp 0x14 eax | mov dword ptr [esp + 0x14], eax
+   007E28A0 spec=6 word -> eax  STORE ecx 0x1b4 eax | mov dword ptr [ecx + 0x1b4], eax
+== DE2F70 cnt=eax n=10
+   00DE307E spec=0 byte -> al  CMP 1 None None | cmp al, 1
+   00DE3337 spec=-1 word -> eax  ?    | mov esi, dword ptr [ebp - 0x164]
+   00DE34BD spec=-3 dword -> eax  STORE esi 0x444 eax | mov dword ptr [esi + 0x444], eax
+   00DE34FA spec=-3 dword -> eax  STORE esi 0x448 eax | mov dword ptr [esi + 0x448], eax
+   00DE3528 spec=-3 dword -> eax  STORE esi 0x158 xmm0 | movss dword ptr [esi + 0x158], xmm0
+   00DE356E spec=0 byte -> al  STORE esi 0x154 eax | mov dword ptr [esi + 0x154], eax
+   00DE384E spec=7 word -> eax  ?    | mov dword ptr [ebp - 0x170], eax
+   00DE3856 spec=-1 word -> eax  ?    | mov dword ptr [ebp - 0x170], eax
+   00DE38C8 spec=0 byte -> al  ?    | mov cl, byte ptr [ebp - 0x145]
+   00DE390A spec=1 dword -> eax  ?    | mov edx, dword ptr [ebp - 0x150]

@@ -1,0 +1,56 @@
+### kF_07 h=70DF40 cnt=eax scope=[160]
+  0070E03F spec=1 byte -> al | STORE[edx+0x6d0]=eax
+  0070E08C spec=1 dword -> edi | STORE[edx+0xd70]=ecx
+  0070E090 spec=5 dword -> eax | STORE[edx+0xd70]=ecx
+  0070E0F2 spec=1 dword -> edi | STORE[edx+0xd78]=edi
+  0070E0F6 spec=5 dword -> eax | STORE[edx+0xd78]=edi
+### kF_07 h=8455A0 cnt=edi scope=[160]
+  008455EA spec=3 dword -> edi | STORE[esp+0x10]=edi
+### kF_10 h=846DC0 cnt=ecx scope=[37, 38, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 59, 60, 61, 62]
+  00846F68 spec=1 byte -> al | CMP 1
+  00846F94 spec=2 word -> eax | -
+  00846FB8 spec=4 word -> eax | -
+  00846FDC spec=6 word -> eax | CMP 2
+  00847029 spec=8 word -> eax | CMP 2
+  00847059 spec=8 word -> eax | CMP 26
+  0084707D spec=10 word -> eax | CMP 26
+  008470B9 spec=1 byte -> al | -
+  008470D7 spec=2 byte -> al | -
+  008470FC spec=3 byte -> al | -
+  00847119 spec=4 byte -> al | -
+  00847133 spec=9 byte -> al | -
+  008471BA STRING@9
+  0084720D STRING@None
+### kF_18 h=837750 cnt=None scope=[37, 41, 43, 595]
+### kF_30 h=81A520 cnt=None scope=[26, 32, 34, 39]
+### kF_3E h=814020 cnt=None scope=[46]
+### kF_4B h=80FDE0 cnt=ecx scope=[10, 461, 462, 2570, 2572]
+  0080FE45 spec=1 byte -> al | CMP 1
+  0080FEE2 spec=1 word -> eax | -
+  0080FFE7 spec=3 word -> eax | -
+  0080FFF9 STRING@4
+  00810014 spec=1 word -> eax | -
+  00810026 STRING@2
+  0081005E spec=3 word -> eax | -
+### kF_6D h=7F9630 cnt=eax scope=[155, 159, 161, 165]
+  007F9692 spec=1 byte -> al | CMP 5
+  007F96C7 spec=1 byte -> al | CMP 1
+  007F9A1B spec=2 byte -> al | STORE[esi+0x7b8]=eax
+  007F9A5B spec=3 word -> eax | STORE[esi+0x7b8]=eax
+  007F9A8C spec=1 word -> eax | STORE[esi+0x7bc]=eax
+  007F9ABD spec=1 word -> eax | STORE[esi+0x7c0]=eax
+  007F9AEE spec=1 dword -> eax | STORE[esi+0x7c4]=eax
+  007F9B1D spec=1 word -> eax | STORE[esi+0x7c8]=eax
+  007F9B4C spec=1 byte -> al | STORE[esi+0x8f0]=ax
+  007F9B9B STRING@1
+### kF_83 h=8C6500 cnt=None scope=[10, 45, 50, 90, 91, 131]
+### kF_99 h=7E2640 cnt=edi scope=[27, 28, 29, 30, 32, 34, 35, 36]
+  007E298F spec=1 byte -> al | CMP 5
+### kF_C3 h=DE2F70 cnt=eax scope=[947, 951, 959, 960, 968, 969, 970, 971, 972, 973, 978]
+  00DE307E spec=0 byte -> al | CMP 1
+  00DE3337 spec=-1 word -> eax | -
+  00DE34BD spec=-3 dword -> eax | STORE[esi+0x444]=eax
+  00DE34FA spec=-3 dword -> eax | STORE[esi+0x448]=eax
+  00DE3528 spec=-3 dword -> eax | STORE[esi+0x158]=xmm0
+  00DE356E spec=0 byte -> al | STORE[esi+0x154]=eax
+  00DE3856 spec=-1 word -> eax | -

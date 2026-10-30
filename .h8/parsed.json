@@ -1,0 +1,446 @@
+{
+ "7119B0": [
+  [
+   1,
+   "u8",
+   "7119D5",
+   "mov cl, byte ptr [eax + esi - 1]",
+   []
+  ],
+  [
+   2,
+   "u8",
+   "7119E8",
+   "mov ch, byte ptr [eax + esi - 1]",
+   [
+    "mov dword ptr [esp + 0x10], 0",
+    "mov dword ptr [esp + 0x10], eax"
+   ]
+  ],
+  [
+   3,
+   "u16",
+   "711A03",
+   "movzx eax, word ptr [eax + esi - 2]",
+   [
+    "mov dword ptr [esp + 0x10], eax"
+   ]
+  ],
+  [
+   5,
+   "u16",
+   "711A1D",
+   "movzx eax, word ptr [eax + esi - 2]",
+   [
+    "mov dword ptr [ebx + 0x10], eax"
+   ]
+  ]
+ ],
+ "77C3B0": [
+  [
+   9,
+   "u16",
+   "77C591",
+   "movzx eax, word ptr [eax + ecx - 2]",
+   []
+  ],
+  [
+   11,
+   "u16",
+   "77C5AB",
+   "movzx eax, word ptr [eax + ecx - 2]",
+   []
+  ],
+  [
+   13,
+   "u8",
+   "77C5C3",
+   "mov al, byte ptr [eax + ecx - 1]",
+   []
+  ],
+  [
+   14,
+   "u8",
+   "77C5D9",
+   "mov al, byte ptr [eax + ecx - 1]",
+   []
+  ],
+  [
+   15,
+   "u16",
+   "77C5F1",
+   "mov eax, dword ptr [eax + ecx - 4]",
+   [
+    "cmp eax, 0xfb"
+   ]
+  ],
+  [
+   19,
+   "u16",
+   "77C620",
+   "mov eax, dword ptr [eax + ecx - 4]",
+   []
+  ]
+ ],
+ "7E2000": [],
+ "7E8770": [
+  [
+   0,
+   "u8",
+   "7E87BE",
+   "mov al, byte ptr [edx + eax - 1]",
+   [
+    "jmp dword ptr [eax*4 + 0x7e8ecc]",
+    "push 0"
+   ]
+  ]
+ ],
+ "80D2F0": [
+  [
+   0,
+   "u8",
+   "80D36E",
+   "mov al, byte ptr [edx + eax - 1]",
+   []
+  ],
+  [
+   4,
+   "u8",
+   "80D387",
+   "mov al, byte ptr [eax + edx - 1]",
+   []
+  ],
+  [
+   5,
+   "u16",
+   "80D466",
+   "movzx eax, word ptr [eax + edx - 2]",
+   []
+  ],
+  [
+   5,
+   "u16",
+   "80D57C",
+   "movzx eax, word ptr [eax + edx - 2]",
+   []
+  ],
+  [
+   7,
+   "u16",
+   "80D59F",
+   "mov eax, dword ptr [eax + edx - 4]",
+   []
+  ],
+  [
+   11,
+   "u8",
+   "80D7D4",
+   "mov al, byte ptr [eax + edx - 1]",
+   []
+  ],
+  [
+   1,
+   "u16",
+   "80D918",
+   "movzx eax, word ptr [eax + ecx - 2]",
+   [
+    "cmp dword ptr [ebp - 0x154], 0xf",
+    "push eax",
+    "push edx",
+    "push ecx"
+   ]
+  ]
+ ],
+ "813B70": [
+  [
+   -1,
+   "u16",
+   "813BD6",
+   "movzx ecx, word ptr [edi + eax - 2]",
+   []
+  ],
+  [
+   -1,
+   "u16",
+   "813C14",
+   "movzx eax, word ptr [ecx + eax - 2]",
+   [
+    "push edx"
+   ]
+  ]
+ ],
+ "8164E0": [
+  [
+   1,
+   "u16",
+   "816511",
+   "mov eax, dword ptr [eax + ecx - 4]",
+   [
+    "mov dword ptr [esp + 0x10], eax",
+    "push eax",
+    "push eax"
+   ]
+  ]
+ ],
+ "825640": [
+  [
+   1,
+   "u8",
+   "825670",
+   "mov al, byte ptr [eax + edx - 1]",
+   [
+    "mov byte ptr [esp + 0x10], al",
+    "jmp dword ptr [eax*4 + 0x825998]"
+   ]
+  ],
+  [
+   2,
+   "u8",
+   "82569D",
+   "mov al, byte ptr [eax + edx - 1]",
+   [
+    "mov byte ptr [esp + 0x14], al",
+    "push 0",
+    "push 0",
+    "push dword ptr [esp + 0x1c]",
+    "push dword ptr [esp + 0x1c]"
+   ]
+  ],
+  [
+   3,
+   "u16",
+   "8256E0",
+   "mov eax, dword ptr [eax + edx - 4]",
+   [
+    "mov dword ptr [esp + 0x14], eax"
+   ]
+  ],
+  [
+   7,
+   "u16",
+   "8256F9",
+   "mov eax, dword ptr [eax + edx - 4]",
+   [
+    "push eax",
+    "push dword ptr [esp + 0x18]",
+    "push 0",
+    "push dword ptr [esp + 0x1c]"
+   ]
+  ],
+  [
+   11,
+   "u8",
+   "8258F9",
+   "mov al, byte ptr [eax + edx - 1]",
+   [
+    "push ebx",
+    "push edi"
+   ]
+  ]
+ ],
+ "836110": [
+  [
+   37,
+   "u8",
+   "8362CF",
+   "mov al, byte ptr [eax + ecx - 1]",
+   []
+  ],
+  [
+   1,
+   "u8",
+   "836342",
+   "mov al, byte ptr [ecx + eax - 1]",
+   []
+  ],
+  [
+   2,
+   "u16",
+   "83638A",
+   "movzx eax, word ptr [ecx + eax - 2]",
+   []
+  ],
+  [
+   5,
+   "u8",
+   "8363DD",
+   "mov al, byte ptr [edx + eax - 1]",
+   [
+    "mov byte ptr [ecx + 0x734], 0",
+    "mov dword ptr [ecx + 0x730], 0xffffffff",
+    "mov byte ptr [ecx + 0x734], al"
+   ]
+  ],
+  [
+   5,
+   "u8",
+   "836525",
+   "mov al, byte ptr [ecx + eax - 1]",
+   [
+    "mov byte ptr [ecx + 0xe1c], al"
+   ]
+  ],
+  [
+   6,
+   "u16",
+   "836554",
+   "mov eax, dword ptr [edx + eax - 4]",
+   [
+    "mov dword ptr [ecx + 0xe18], eax",
+    "cmp byte ptr [esi + 0x7eb], 0",
+    "mov dword ptr [esi + 0x7ec], 0x42700000",
+    "mov byte ptr [ecx + 0xe1c], 5",
+    "mov dword ptr [ecx + 0xe18], 0"
+   ]
+  ],
+  [
+   9,
+   "u8",
+   "8365A8",
+   "mov al, byte ptr [ecx + eax - 1]",
+   [
+    "mov byte ptr [ecx + 0xe3c], al"
+   ]
+  ],
+  [
+   10,
+   "u16",
+   "8365D7",
+   "mov eax, dword ptr [edx + eax - 4]",
+   [
+    "cmp byte ptr [0x1245b85], 0",
+    "mov dword ptr [ecx + 0xe38], eax"
+   ]
+  ]
+ ],
+ "83C160": [
+  [
+   5,
+   "u16",
+   "83C1DF",
+   "mov eax, dword ptr [eax + ecx - 4]",
+   []
+  ],
+  [
+   9,
+   "u16",
+   "83C20F",
+   "mov edx, dword ptr [eax + ecx - 8]",
+   [
+    "cmp eax, dword ptr [esi + 0x6a0]"
+   ]
+  ],
+  [
+   13,
+   "u16",
+   "83C213",
+   "mov eax, dword ptr [eax + ecx - 4]",
+   [
+    "cmp eax, dword ptr [esi + 0x6a0]"
+   ]
+  ]
+ ],
+ "846860": [
+  [
+   1,
+   "u16",
+   "846882",
+   "mov esi, dword ptr [eax + ecx - 4]",
+   []
+  ],
+  [
+   5,
+   "u16",
+   "846897",
+   "movzx eax, word ptr [eax + ecx - 2]",
+   [
+    "cmp dword ptr [eax + 0x6a0], esi"
+   ]
+  ]
+ ],
+ "A2FA50": [],
+ "A7C780": [
+  [
+   1,
+   "u8",
+   "A7C7C0",
+   "mov al, byte ptr [eax + edx - 1]",
+   [
+    "push 2"
+   ]
+  ],
+  [
+   2,
+   "u16",
+   "A7C7FD",
+   "movzx eax, word ptr [eax + edx - 2]",
+   [
+    "push 1",
+    "push eax"
+   ]
+  ],
+  [
+   4,
+   "u16",
+   "A7C87E",
+   "movzx eax, word ptr [eax + edx - 2]",
+   [
+    "mov dword ptr [ebp + 0xc], eax"
+   ]
+  ],
+  [
+   10,
+   "u8",
+   "A7C897",
+   "mov al, byte ptr [eax + edx - 1]",
+   [
+    "push eax",
+    "push ecx",
+    "push eax"
+   ]
+  ]
+ ],
+ "AE69A0": [
+  [
+   0,
+   "u8",
+   "AE6A49",
+   "mov al, byte ptr [ecx + eax - 1]",
+   []
+  ],
+  [
+   2,
+   "u16",
+   "AE6A7A",
+   "movzx eax, word ptr [eax + ecx - 2]",
+   [
+    "cmp dword ptr [ebp - 0x2c], 0xf"
+   ]
+  ],
+  [
+   4,
+   "u16",
+   "AE6B1C",
+   "movzx eax, word ptr [eax + ecx - 2]",
+   [
+    "cmp dword ptr [ebp - 0x14], 0xf"
+   ]
+  ]
+ ],
+ "E103A0": [
+  [
+   3,
+   "u16",
+   "E1043D",
+   "movzx eax, word ptr [esi + eax - 2]",
+   []
+  ],
+  [
+   11,
+   "u16",
+   "E10553",
+   "movzx eax, word ptr [esi + eax - 2]",
+   []
+  ]
+ ]
+}

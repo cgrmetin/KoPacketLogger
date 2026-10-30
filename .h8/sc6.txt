@@ -1,0 +1,28 @@
+### 836110 kF_71 OFF=38 (u8) @836342
+   mov ecx, dword ptr [0x11299c0]
+   mov byte ptr [ebp - 0x459], al
+   mov eax, dword ptr [ebp - 0x46c]
+   mov dl, byte ptr [ebp - 0x459]
+   mov byte ptr [eax + ecx + 0x754], dl
+   mov edx, dword ptr [ebp - 0x468]
+   mov eax, dword ptr [edx]
+   add eax, 2
+   mov dword ptr [edx], eax
+   mov dword ptr [ebp - 0x474], eax
+   cmp eax, dword ptr [edi + 4]
+   jle 0x836381
+   xor eax, eax
+### 77C3B0 kF_O_D5 OFF=2 (u8) @77C495
+   mov byte ptr [edx + 0x37d], al
+   mov ecx, dword ptr [edi]
+   add ecx, 2
+   mov dword ptr [edi], ecx
+   cmp ecx, dword ptr [esi + 4]
+   jle 0x77c4af
+   xor eax, eax
+   jmp 0x77c4b7
+   mov eax, dword ptr [esi + 8]
+   movzx eax, word ptr [ecx + eax - 2]
+   mov word ptr [edx + 0x37e], ax
+   mov ecx, dword ptr [edi]
+   add ecx, 2

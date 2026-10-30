@@ -1,0 +1,232 @@
+813B70: push ebp
+813B71: mov ebp, esp
+813B73: push -1
+813B75: push 0xf2194d
+813B7A: mov eax, dword ptr fs:[0]
+813B80: push eax
+813B81: sub esp, 0x144
+813B87: mov eax, dword ptr [0x110f680]
+813B8C: xor eax, ebp
+813B8E: mov dword ptr [ebp - 0x10], eax
+813B91: push esi
+813B92: push edi
+813B93: push eax
+813B94: lea eax, [ebp - 0xc]
+813B97: mov dword ptr fs:[0], eax
+813B9D: mov dword ptr [ebp - 0x144], ecx
+813BA3: mov ecx, dword ptr [ebp + 0xc]
+813BA6: mov eax, dword ptr [ebp + 8]
+813BA9: mov dword ptr [ebp - 0x13c], eax
+813BAF: mov dword ptr [ebp - 0x150], ecx
+813BB5: mov edi, dword ptr [ecx]
+813BB7: add edi, 2
+813BBA: lea esi, [eax + 8]
+813BBD: mov dword ptr [ecx], edi
+813BBF: mov dword ptr [ebp - 0x12c], esi
+813BC5: cmp edi, dword ptr [eax + 4]
+813BC8: jle 0x813bce
+813BCA: xor ecx, ecx
+813BCC: jmp 0x813be1
+813BCE: mov eax, dword ptr [esi]
+813BD0: mov dword ptr [ebp - 0x12c], esi
+813BD6: movzx ecx, word ptr [edi + eax - 2]
+813BDB: mov eax, dword ptr [ebp - 0x13c]
+813BE1: movsx edx, cx
+813BE4: xor ecx, ecx
+813BE6: mov dword ptr [ebp - 0x14c], edx
+813BEC: mov dword ptr [ebp - 0x140], ecx
+813BF2: cmp edi, edx
+813BF4: jge 0x813ed7
+813BFA: nop word ptr [eax + eax]
+813C00: lea ecx, [edi + 2]
+813C03: mov dword ptr [ebp - 0x148], ecx
+813C09: cmp ecx, dword ptr [eax + 4]
+813C0C: jle 0x813c12
+813C0E: xor eax, eax
+813C10: jmp 0x813c19
+813C12: mov eax, dword ptr [esi]
+813C14: movzx eax, word ptr [ecx + eax - 2]
+813C19: movsx esi, ax
+813C1C: test esi, esi
+813C1E: jle 0x813c68
+813C20: cmp esi, edx
+813C22: jge 0x813c68
+813C24: mov ecx, dword ptr [ebp - 0x144]
+813C2A: lea edx, [ebp - 0x148]
+813C30: inc dword ptr [ebp - 0x140]
+813C36: push edx
+813C37: push dword ptr [ebp - 0x13c]
+813C3D: mov eax, dword ptr [ecx]
+813C3F: call dword ptr [eax + 8]
+813C42: mov edx, dword ptr [ebp - 0x14c]
+813C48: add esi, 2
+813C4B: mov eax, dword ptr [ebp - 0x13c]
+813C51: add edi, esi
+813C53: mov esi, dword ptr [ebp - 0x12c]
+813C59: mov dword ptr [ebp - 0x148], edi
+813C5F: cmp edi, edx
+813C61: jl 0x813c00
+813C63: jmp 0x813ed7
+813C68: mov ecx, dword ptr [ebp - 0x140]
+813C6E: lea eax, [ebp - 0x110]
+813C74: push edx
+813C75: push esi
+813C76: push ecx
+813C77: push 0x102bcdc
+813C7C: push 0xff
+813C81: push eax
+813C82: call 0x4ddf00
+813C87: xorps xmm0, xmm0
+813C8A: mov dword ptr [ebp - 0x118], 0
+813C94: lea ecx, [ebp - 0x110]
+813C9A: mov dword ptr [ebp - 0x114], 0
+813CA4: add esp, 0x18
+813CA7: lea edx, [ecx + 1]
+813CAA: movups xmmword ptr [ebp - 0x128], xmm0
+813CB1: mov al, byte ptr [ecx]
+813CB3: inc ecx
+813CB4: test al, al
+813CB6: jne 0x813cb1
+813CB8: sub ecx, edx
+813CBA: lea eax, [ebp - 0x110]
+813CC0: push ecx
+813CC1: push eax
+813CC2: lea ecx, [ebp - 0x128]
+813CC8: call 0x4d96e0
+813CCD: mov dword ptr [ebp - 4], 0
+813CD4: cmp dword ptr [ebp - 0x118], 0
+813CDB: je 0x813e79
+813CE1: cmp dword ptr [ebp - 0x114], 0xf
+813CE8: lea eax, [ebp - 0x128]
+813CEE: cmova eax, dword ptr [ebp - 0x128]
+813CF5: push eax
+813CF6: push 0x1017cb4
+813CFB: call 0x638210
+813D00: mov eax, dword ptr [0x1129a94]
+813D05: add esp, 8
+813D08: test eax, eax
+813D0A: je 0x813e79
+813D10: cmp dword ptr [eax + 0xa0], 0
+813D17: je 0x813e79
+813D1D: mov eax, dword ptr [ebp - 0x118]
+813D23: xor edi, edi
+813D25: mov dword ptr [ebp - 0x138], 0
+813D2F: mov dword ptr [ebp - 0x144], eax
+813D35: mov dword ptr [ebp - 0x134], 0
+813D3F: mov dword ptr [ebp - 0x130], edi
+813D45: mov byte ptr [ebp - 4], 1
+813D49: lea esi, [eax + 4]
+813D4C: test esi, esi
+813D4E: je 0x813d90
+813D50: cmp esi, 0x7fffffff
+813D56: ja 0x813efc
+813D5C: push esi
+813D5D: lea ecx, [ebp - 0x138]
+813D63: call 0x4dd150
+813D68: push esi
+813D69: push edi
+813D6A: mov edi, dword ptr [ebp - 0x138]
+813D70: push edi
+813D71: call 0x5f03f0
+813D76: lea eax, [esi + edi]
+813D79: add esp, 0xc
+813D7C: mov esi, edi
+813D7E: mov dword ptr [ebp - 0x134], eax
+813D84: mov edi, dword ptr [ebp - 0x130]
+813D8A: mov eax, esi
+813D8C: mov ecx, esi
+813D8E: jmp 0x813da9
+813D90: push esi
+813D91: push 0
+813D93: push 0
+813D95: call 0x5f03f0
+813D9A: mov dword ptr [ebp - 0x134], esi
+813DA0: add esp, 0xc
+813DA3: xor esi, esi
+813DA5: xor eax, eax
+813DA7: xor ecx, ecx
+813DA9: mov byte ptr [eax], 0x47
+813DAC: mov eax, dword ptr [ebp - 0x144]
+813DB2: mov word ptr [ecx + 1], ax
+813DB6: mov eax, 3
+813DBB: mov ecx, dword ptr [ebp - 0x118]
+813DC1: mov dword ptr [ebp - 0x12c], eax
+813DC7: test ecx, ecx
+813DC9: je 0x813dfc
+813DCB: cmp dword ptr [ebp - 0x114], 0xf
+813DD2: lea eax, [ebp - 0x128]
+813DD8: push ecx
+813DD9: cmova eax, dword ptr [ebp - 0x128]
+813DE0: push eax
+813DE1: lea eax, [esi + 3]
+813DE4: push eax
+813DE5: call 0x5efab0
+813DEA: mov eax, dword ptr [ebp - 0x118]
+813DF0: add esp, 0xc
+813DF3: add eax, 3
+813DF6: mov dword ptr [ebp - 0x12c], eax
+813DFC: push 0xe35
+813E01: push 0x1021180
+813E06: push eax
+813E07: push dword ptr [ebp - 0x138]
+813E0D: call 0x70b5e0
+813E12: push dword ptr [ebp - 0x12c]
+813E18: mov ecx, dword ptr [0x1129a94]
+813E1E: push dword ptr [ebp - 0x138]
+813E24: call 0x70b360
+813E29: mov byte ptr [ebp - 4], 0
+813E2D: test esi, esi
+813E2F: je 0x813e79
+813E31: sub edi, esi
+813E33: cmp edi, 0x1000
+813E39: jb 0x813e51
+813E3B: mov ecx, dword ptr [esi - 4]
+813E3E: add edi, 0x23
+813E41: sub esi, ecx
+813E43: lea eax, [esi - 4]
+813E46: cmp eax, 0x1f
+813E49: ja 0x813f01
+813E4F: mov esi, ecx
+813E51: push edi
+813E52: push esi
+813E53: call 0x5edb2b
+813E58: add esp, 8
+813E5B: mov dword ptr [ebp - 0x138], 0
+813E65: mov dword ptr [ebp - 0x134], 0
+813E6F: mov dword ptr [ebp - 0x130], 0
+813E79: mov dword ptr [ebp - 4], 0xffffffff
+813E80: mov ecx, dword ptr [ebp - 0x114]
+813E86: cmp ecx, 0xf
+813E89: jbe 0x813eb6
+813E8B: mov edx, dword ptr [ebp - 0x128]
+813E91: inc ecx
+813E92: mov eax, edx
+813E94: cmp ecx, 0x1000
+813E9A: jb 0x813eac
+813E9C: mov edx, dword ptr [eax - 4]
+813E9F: add ecx, 0x23
+813EA2: sub eax, edx
+813EA4: add eax, -4
+813EA7: cmp eax, 0x1f
+813EAA: ja 0x813f01
+813EAC: push ecx
+813EAD: push edx
+813EAE: call 0x5edb2b
+813EB3: add esp, 8
+813EB6: mov edx, dword ptr [ebp - 0x14c]
+813EBC: mov dword ptr [ebp - 0x118], 0
+813EC6: mov dword ptr [ebp - 0x114], 0xf
+813ED0: mov byte ptr [ebp - 0x128], 0
+813ED7: mov eax, dword ptr [ebp - 0x150]
+813EDD: add dword ptr [eax], edx
+813EDF: mov ecx, dword ptr [ebp - 0xc]
+813EE2: mov dword ptr fs:[0], ecx
+813EE9: pop ecx
+813EEA: pop edi
+813EEB: pop esi
+813EEC: mov ecx, dword ptr [ebp - 0x10]
+813EEF: xor ecx, ebp
+813EF1: call 0x5edafa
+813EF6: mov esp, ebp
+813EF8: pop ebp
+813EF9: ret 8
