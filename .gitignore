@@ -105,3 +105,10 @@ $RECYCLE.BIN/
 ko-imgui.ini
 *.orig
 *.rej
+
+# ---------------------------------------------------------------------------
+# Ajan baglami ve kisisel notlar (public repoda gurultu)
+# ---------------------------------------------------------------------------
+AGENTS.md
+CLAUDE.md
+handoff.md

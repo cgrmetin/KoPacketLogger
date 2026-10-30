@@ -1,21 +1,18 @@
 # KoPacketLogger
 
 Knight Online istemci/sunucu TCP trafiğini yakalayıp çözen ve opcode bazında
-gösteren native bir araç. Eski C# (WinForms + SharpPcap) uygulamasının C++23
-karşılığı.
+gösteren native bir araç.
 
 ## Durum
 
 - `src/core` — AES-128-CBC çözme, çerçeve ayrıştırma (stream reassembly),
   WIZ opcode tablosu, `RawPacket -> DecodedPacket` çözücü. **Bağımsız**, UI'ya
   bağımlılığı yok.
-- `src/capture` — Npcap ile paket yakalama ve Ethernet/IP/TCP ayrıştırma.
+- `src/capture` — Npcap ile paket yakalama, Ethernet/IP/TCP ve 802.11
+  ayrıştırma.
 - `src/ui` — filtre, paket tamponu, log yazıcı, tema.
 - `src/main.cpp`, `src/app.h` — uygulama girişi ve ortak durum.
 - UI çizimi Dear ImGui ile yapılır (`third_party/imgui`).
-
-Legacy C# kodu `legacy-csharp` dalında ve `v0.1-csharp-legacy` etiketinde
-saklıdır.
 
 ## Gereksinimler
 
@@ -40,34 +37,26 @@ gerek yok. Derleme statik CRT (`/MT`) ile yapılır, tek `exe` üretilir.
 Betik sırayla `cmake`i PATH'te, VS 18 kurulumunda ve `vswhere` üzerinden arar;
 derleme ortamını `vcvars64.bat` ile kurar. Çıktı: `build/out/`.
 
-Elle:
-
-```powershell
-& 'C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe' `
-    -S . -B build -G "Visual Studio 18 2026" -A x64
-& '...\cmake.exe' --build build --config Release
-```
-
 ## Çalıştırma
 
 1. **Npcap** kurulu olmalı (kurulum sırasında "WinPcap API-compatible Mode"
    seçili olsun).
-2. Uygulamayı **yönetici olarak** çalıştırın; ham soket yakalama aksi halde
-   başarısız olur.
+2. Uygulamayı **yönetici olarak** çalıştırın; manifest `requireAdministrator`
+   taşır, UAC onayı ister.
 3. Arayüzden ağ adaptörünü seçin ve yakalamayı başlatın.
 
 Varsayılan BPF filtresi `tcp portrange 15100-15109 || port 15001`.
 
 ## Protokol özeti
 
-- Çerçeve: `[0..1]` big-endian uzunluk, `[2]` kripto türü (`0x01` client,
-  `0x02` server, `0x16` handshake), ardından gövde ve 2 byte kuyruk.
-- Şifreleme: AES-128-CBC + PKCS7, sabit IV.
-- Server anahtarı sabittir; client anahtarı handshake çerçevesinden okunur.
-- Opcode konumu yöne göre kayar: gelen pakette `plain[0]`, giden pakette
-  `plain[1]`. Bu varsayım IDA analiziyle doğrulanacak.
-
-Ayrıntılar: `D:\MyBrain\projects\KoPacketLogger\protokol-notlari.md`.
+- Çerçeve: `AA 55 | uint16 LE gövde uzunluğu | gövde | 55 AA`.
+- Gövde üç modda gelir: handshake öncesi düz, şifreli gelen (seçici + opcode),
+  şifreli giden (seçici + sıra + opcode).
+- Şifreleme: AES-CBC + PKCS#7, sabit IV. Anahtar seçici `1` oturum anahtarı,
+  `2` gömülü sabit anahtar.
+- Opcode çözülmüş düz metinde `plain[0]`'dır.
+- 802.11 (DLT 105/127) desteklenir; şifreli gövdede LLC/SNAP okunamaz, gövde
+  ham gösterilir.
 
 ## Uyarı
 
