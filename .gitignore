@@ -102,5 +102,6 @@ $RECYCLE.BIN/
 *.tmp_proj
 *~
 *.swp
+ko-imgui.ini
 *.orig
 *.rej

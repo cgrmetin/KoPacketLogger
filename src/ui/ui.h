@@ -12,6 +12,7 @@
 #include "ui/filters.h"
 #include "ui/log_writer.h"
 #include "ui/packet_buffer.h"
+#include "ui/settings.h"
 
 namespace ko::ui {
 
@@ -69,6 +70,10 @@ private:
   void setStatus(std::string text);
   void setError(std::string text);
 
+  // --- kalicilik ---
+  void loadPreferences();
+  void savePreferences();
+
   // --- durum ---
   AppState& state_;
   Capture capture_;
@@ -96,6 +101,14 @@ private:
   bool showWarnings_ = true;
   bool filterBarOpen_ = true;
   bool autoScroll_ = true;
+  bool followTail_ = true;
+  float lastScrollY_ = 0.0f;
+  bool scrollInitialized_ = false;
+
+  // Arayuz tercihleri; kapanista bir kez yazilir.
+  SettingsStore settings_;
+  std::string settingsPath_;
+  bool preferencesLoaded_ = false;
 
   double rate_ = 0.0;
   std::uint64_t rateCount_ = 0;

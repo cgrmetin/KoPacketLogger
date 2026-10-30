@@ -14,11 +14,11 @@ struct FieldSpec {
   const char* name;
 };
 
-// Bir opcode'un tam kaydi.
+// Bir opcode'un tam kaydi. In ve Out tablolari ayni bicimi kullanir.
 struct OpcodeInfo {
   std::uint8_t opcode;
   const char* name;
-  Direction dir;              // Yon; su an tablo yalnizca alim yolunu kapsiyor.
+  Direction dir;              // Yon; iki tablo da (In/Out) bu alani tasir.
   const FieldSpec* fields;    // nullptr = govde okunmuyor.
   std::uint8_t fieldCount;
   bool provisional;           // true = ad/yon/alanlar canli trafikle dogrulanmadi.
@@ -36,8 +36,9 @@ const char* opcodeName(std::uint8_t opcode);
 // Opcode'un bilinen tabloda olup olmadigini soyler.
 bool isKnownOpcode(std::uint8_t opcode);
 
-// Opcode'un beklenen yonu. Tablo su an yalnizca alim yolundan cikarildi,
-// bu yuzden bilinmeyen opcode icin `Direction::In` doner.
+// Opcode'un beklenen yonu. Bir opcode iki yonde de kayitliysa Direction::Out
+// doner (cagri yerleri govdeyi istemcide yazdigi icin alan yerlesimi daha
+// kesin). Hic kayit yoksa varsayilan Direction::In'dir.
 Direction opcodeDirection(std::uint8_t opcode);
 
 } // namespace ko

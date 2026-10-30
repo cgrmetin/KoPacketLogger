@@ -100,9 +100,22 @@ else()
   add_library(app ALIAS ko_app)
 endif()
 
+# Yonetici manifesti yalnizca exe'ye gomulur; statik lib yolunda kaynak derlenmez.
+if(APP_TARGET_TYPE STREQUAL "EXECUTABLE")
+  set(_app_rc "${CMAKE_CURRENT_SOURCE_DIR}/src/app.rc")
+  target_sources(KoPacketLogger PRIVATE "${_app_rc}")
+  # RC derleyicisi hedef include dizinlerini kullanmaz; goreli manifest yolu
+  # src dizinine gore cozulsun diye /I yalnizca bu kaynak dosyaya verilir.
+  set_property(SOURCE "${_app_rc}" APPEND PROPERTY COMPILE_FLAGS
+    "/I\"${CMAKE_CURRENT_SOURCE_DIR}/src\""
+  )
+endif()
+
 if(APP_TARGET_TYPE STREQUAL "EXECUTABLE")
   set(_app_target KoPacketLogger)
-  set(_exe_link_options /SUBSYSTEM:WINDOWS)
+  # Manifest .rc icinden RT_MANIFEST olarak gomulur; linker kendi manifestini
+  # uretirse CVT1100 (duplicate resource MANIFEST) verir. Uretimi kapat.
+  set(_exe_link_options /SUBSYSTEM:WINDOWS /MANIFEST:NO)
 else()
   set(_app_target ko_app)
   set(_exe_link_options "")

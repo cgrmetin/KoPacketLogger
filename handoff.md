@@ -99,22 +99,23 @@ powershell -ExecutionPolicy Bypass -File .\build.ps1 -Config Release
 
 ## 6. Doğrulama durumu
 
-Geçen: Release derlemesi sıfır uyarı, `ko_core` testleri 72/72, uygulama açılış duman testi, Npcap `pcap_findalldevs` 12+ arayüz.
+Geçen (2026-10-30): Release derlemesi sıfır uyarı; manifest exe'ye gömüldü (`FindResource` ile 1504 bayt okundu, `requireAdministrator` doğrulandı); uygulama açılıp zarif kapanışla `%LOCALAPPDATA%\KoPacketLogger\ui.ini` yazdı; geçici duman testi opcode tablosu ve 802.11 çözümlemesini geçti.
 
 **Geçmeyen: canlı KO trafiği.** Hiç test edilmedi. Aşağıdaki maddelerin hepsi bu yüzden açık.
 
+**Not:** Handoff eskiden "72/72 `ko_core` testi" diyordu; test kaynakları depoda YOK, hiç commit edilmemiş. Doğrulama geçici betiklerle yapıldı, kalıcı test altyapısı hâlâ yok.
+
 ## 7. Açık işler (öncelik sırasıyla)
 
-1. **Manifest'e `requireAdministrator` ekle.** Bu olmadan yönetici olmayan kabukta hiç paket gelmez ve sebep anlaşılmaz.
-2. **Canlı test.** Oyun açıkken yakala; handshake, seçici, `FC 1E` ve opcode konumunu gerçek trafikte teyit et.
-3. **`provisional` işaretlerini temizle.** 157 kaydın 139'u doğrulanmamış; alan adlarının çoğu `f1`, `f2`. Canlı trafik + IDA ile doğrula, doğrulananı işaretle.
-4. **Giden yön opcode haritası.** `pkt_send_wrap` 541 fonksiyondan çağrılıyor, merkezi dağıtıcı yok. `kOutTable` boş, tüm kayıtlar `Direction::In`. Giden opcode'lar için ayrı arama gerekiyor.
-5. **`fieldsTruncated` olan 83 kayıt.** String/skip sonrası alan listesi kesilmiş; IDA'da devamını çıkar.
-6. **`dword_112A878` ek 8 baytlık mod.** Handshake sonrası kapalı, uygulanmadı. Açan kod yolu bulunamadı (`0x8e32b3` fonksiyon dışı görünüyor).
-7. **`sub_7C4B80` intro yolu.** Farklı yerleşim (offset 1 uzunluk, offset 2'den anahtar), kapsam dışı bırakıldı.
-8. **802.11 ham Wi-Fi (DLT 105).** Çözülmüyor; o adaptör seçilirse hata döner. Ethernet modu seçilirse sorun yok.
-9. **`autoScroll_` davranışı.** Kullanıcı yukarı kaydırınca liste sona çekiliyor.
-10. **Panel görünürlük ayarları** oturumlar arası kalıcı değil.
+1. **Canlı test.** Oyun açıkken yakala; handshake, seçici, `FC 1E` ve opcode konumunu gerçek trafikte teyit et.
+2. **`provisional` işaretlerini temizle.** 76 kayıt doğrulanmamış (69 alım + 7 giden); alan adlarının çoğu `f1`, `f2`. Canlı trafik + IDA ile doğrula.
+3. **Giden opcode varyantları.** `kOutTable` 65 opcode ile dolu ama `0x30/0x3C/0x4F/0x72` gibi çok varyantlılarda yalnız en zengin çağrı yeri kayda alındı; diğer varyant alanları eksik.
+4. **Kalıcı test altyapısı.** `ko_core` için CMake test hedefi yok; ekle.
+5. **`dword_112A878` ek 8 baytlık mod.** Handshake sonrası kapalı, uygulanmadı. Açan kod yolu bulunamadı (`0x8e32b3` fonksiyon dışı görünüyor).
+6. **`sub_7C4B80` intro yolu.** Farklı yerleşim (offset 1 uzunluk, offset 2'den anahtar), kapsam dışı bırakıldı.
+7. **802.11 kalan kapsam.** WEP/WPA çözme yok (gövde ham geçer, port filtresi uygulanmaz); parçalı çerçeve birleştirme ve A-MSDU yok. Yönetim/kontrol çerçeveleri `err` ile raporlanıp atlanıyor.
+8. **String alan tipi.** `FieldType::Str` tek tip; `Str8`/`Str16` ayrımı yok.
+9. **`ko-imgui.ini` çalışma dizinine yazılıyor.** Depo kökünde birikiyor; `%LOCALAPPDATA%` altına taşınmalı.
 
 ## 8. Tuzaklar
 

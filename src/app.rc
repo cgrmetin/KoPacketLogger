@@ -1,0 +1,6 @@
+// Kaynak betigi: yonetici manifestini exe'ye gomer (RT_MANIFEST, ID 1).
+// Yalnizca EXE hedefinde derlenir; statik lib yolunda CMake tarafinda disarida birakilir.
+#pragma code_page(65001)
+#include <windows.h>
+
+1 RT_MANIFEST "app.manifest"

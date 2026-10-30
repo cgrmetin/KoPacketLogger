@@ -50,10 +50,15 @@ constexpr FieldSpec kF_01[] = {
     { 5, FieldType::U8, "f4" },
 };
 constexpr FieldSpec kF_02[] = {
-    { 1, FieldType::U8, "f1" },
-    { 2, FieldType::U8, "f2" },
-    { 3, FieldType::U16, "f3" },
-    { 5, FieldType::U16, "f4" },
+    { 1, FieldType::U16, "f1" },
+    { 2, FieldType::U16, "f2" },
+    { 4, FieldType::U16, "f3" },
+    { 6, FieldType::U16, "f4" },
+    { 7, FieldType::U8, "f5" },
+    { 8, FieldType::U16, "f6" },
+    { 112, FieldType::U16, "f7" },
+    { 116, FieldType::U16, "f8" },
+    { 120, FieldType::U16, "f9" },
 };
 constexpr FieldSpec kF_03[] = {
     { 1, FieldType::U8, "f1" },
@@ -66,20 +71,53 @@ constexpr FieldSpec kF_03[] = {
     { 14, FieldType::U16, "f8" },
     { 16, FieldType::U16, "f9" },
     { 18, FieldType::U16, "f10" },
+    { 118, FieldType::U8, "f11" },
+    { 1818, FieldType::U8, "f12" },
+    { 1820, FieldType::U16, "f13" },
+    { 1822, FieldType::U8, "f14" },
+    { 1857, FieldType::U8, "f15" },
 };
 constexpr FieldSpec kF_04[] = {
     { 1, FieldType::U8, "f1" },
-    { 2, FieldType::U64, "f2" },
-    { 10, FieldType::U64, "f3" },
-    { 18, FieldType::U8, "f4" },
-    { 19, FieldType::Str, "f5" },
+    { 2, FieldType::U16, "f2" },
+    { 4, FieldType::Str, "f3" },
+    { 5, FieldType::U8, "f4" },
+    { 7, FieldType::U16, "f5" },
+    { 9, FieldType::U8, "f6" },
+    { 11, FieldType::Str, "f7" },
+    { 12, FieldType::U8, "f8" },
+    { 47, FieldType::U8, "f9" },
+    { 48, FieldType::Str, "f10" },
+    { 49, FieldType::U8, "f11" },
+    { 51, FieldType::U16, "f12" },
+    { 53, FieldType::U16, "f13" },
+    { 55, FieldType::U16, "f14" },
+    { 57, FieldType::U16, "f15" },
+    { 161, FieldType::U8, "f16" },
+    { 1861, FieldType::U8, "f17" },
+    { 1863, FieldType::U16, "f18" },
+    { 1865, FieldType::U8, "f19" },
+    { 1900, FieldType::U8, "f20" },
 };
 constexpr FieldSpec kF_05[] = {
-    { 1, FieldType::U32, "f1" },
-    { 5, FieldType::U16, "f2" },
-    { 7, FieldType::U16, "f3" },
-    { 9, FieldType::U16, "f4" },
-    { 11, FieldType::U8, "f5" },
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+    { 4, FieldType::Str, "f3" },
+    { 34, FieldType::U8, "f4" },
+    { 36, FieldType::U16, "f5" },
+    { 38, FieldType::U8, "f6" },
+    { 40, FieldType::Str, "f7" },
+    { 41, FieldType::U8, "f8" },
+    { 76, FieldType::U8, "f9" },
+    { 77, FieldType::Str, "f10" },
+    { 78, FieldType::U8, "f11" },
+    { 80, FieldType::U16, "f12" },
+    { 82, FieldType::U16, "f13" },
+    { 84, FieldType::U16, "f14" },
+    { 86, FieldType::U16, "f15" },
+    { 190, FieldType::U8, "f16" },
+    { 1890, FieldType::U8, "f17" },
+    { 1892, FieldType::U16, "f18" },
 };
 constexpr FieldSpec kF_06[] = {
     { 1, FieldType::U32, "obj_id" },
@@ -91,6 +129,28 @@ constexpr FieldSpec kF_06[] = {
 };
 constexpr FieldSpec kF_07[] = {
     { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+    { 106, FieldType::U16, "f3" },
+    { 108, FieldType::U16, "f4" },
+    { 110, FieldType::U16, "f5" },
+    { 112, FieldType::U16, "f6" },
+    { 114, FieldType::U16, "f7" },
+    { 116, FieldType::U16, "f8" },
+    { 118, FieldType::U16, "f9" },
+    { 119, FieldType::U16, "f10" },
+    { 123, FieldType::U16, "f11" },
+    { 128, FieldType::U16, "f12" },
+    { 137, FieldType::U16, "f13" },
+    { 139, FieldType::U16, "f14" },
+    { 141, FieldType::U16, "f15" },
+    { 143, FieldType::U16, "f16" },
+    { 145, FieldType::U16, "f17" },
+    { 147, FieldType::U8, "f18" },
+    { 152, FieldType::Str, "f19" },
+    { 153, FieldType::U8, "f20" },
+    { 157, FieldType::Str, "f21" },
+    { 158, FieldType::U16, "f22" },
+    { 160, FieldType::U16, "f23" },
 };
 constexpr FieldSpec kF_08[] = {
     { 1, FieldType::U8, "f1" },
@@ -99,22 +159,63 @@ constexpr FieldSpec kF_08[] = {
     { 7, FieldType::U32, "f4" },
 };
 constexpr FieldSpec kF_09[] = {
-    { 1, FieldType::U32, "f1" },
-    { 5, FieldType::U16, "f2" },
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+    { 3, FieldType::U16, "f3" },
+    { 4, FieldType::U16, "f4" },
+    { 5, FieldType::U8, "f5" },
+    { 7, FieldType::U16, "f6" },
+    { 9, FieldType::U16, "f7" },
+    { 11, FieldType::U16, "f8" },
+    { 13, FieldType::U16, "f9" },
+    { 15, FieldType::U8, "f10" },
+    { 20, FieldType::Str, "f11" },
+    { 21, FieldType::U8, "f12" },
+    { 25, FieldType::Str, "f13" },
+    { 26, FieldType::U16, "f14" },
+    { 28, FieldType::U16, "f15" },
+    { 30, FieldType::Str, "f16" },
+    { 31, FieldType::Str, "f17" },
+    { 32, FieldType::Str, "f18" },
+    { 33, FieldType::Str, "f19" },
+    { 34, FieldType::Str, "f20" },
+    { 35, FieldType::Str, "f21" },
+    { 36, FieldType::Str, "f22" },
+    { 37, FieldType::Str, "f23" },
+    { 38, FieldType::Str, "f24" },
+    { 39, FieldType::Str, "f25" },
+    { 40, FieldType::Str, "f26" },
+    { 41, FieldType::Str, "f27" },
+    { 42, FieldType::Str, "f28" },
+    { 43, FieldType::Str, "f29" },
+    { 44, FieldType::Str, "f30" },
+    { 45, FieldType::Str, "f31" },
+    { 46, FieldType::Str, "f32" },
+    { 47, FieldType::Str, "f33" },
+    { 48, FieldType::Str, "f34" },
+    { 49, FieldType::Str, "f35" },
+    { 50, FieldType::Str, "f36" },
+    { 51, FieldType::Str, "f37" },
+    { 52, FieldType::Str, "f38" },
+    { 53, FieldType::Str, "f39" },
+    { 54, FieldType::Str, "f40" },
+    { 55, FieldType::Str, "f41" },
+    { 56, FieldType::Str, "f42" },
 };
 constexpr FieldSpec kF_0A[] = {
-    { 1, FieldType::U32, "npc_id" },
-    { 5, FieldType::U16, "shape_id" },
-    { 7, FieldType::U8, "kind" },
-    { 8, FieldType::U16, "uid" },
-    { 10, FieldType::U32, "resource_id" },
-    { 14, FieldType::U8, "status" },
+    { 1, FieldType::U32, "f1" },
+    { 5, FieldType::U16, "f2" },
+    { 7, FieldType::U8, "f3" },
+    { 8, FieldType::U16, "f4" },
+    { 10, FieldType::U32, "f5" },
+    { 14, FieldType::U8, "f6" },
     { 15, FieldType::U32, "f7" },
     { 19, FieldType::U16, "f8" },
     { 21, FieldType::U32, "f9" },
     { 25, FieldType::U32, "f10" },
     { 29, FieldType::U8, "f11" },
-    { 30, FieldType::Str, "name" },
+    { 30, FieldType::Str, "f12" },
+    { 43, FieldType::U16, "f13" },
 };
 constexpr FieldSpec kF_0B[] = {
     { 1, FieldType::U8, "obj_id" },
@@ -131,10 +232,29 @@ constexpr FieldSpec kF_0E[] = {
     { 1, FieldType::U32, "f1" },
     { 5, FieldType::U8, "f2" },
     { 6, FieldType::Str, "f3" },
+    { 7, FieldType::U16, "f4" },
+    { 9, FieldType::U8, "f5" },
+    { 11, FieldType::U8, "f6" },
+    { 31, FieldType::U8, "f7" },
+    { 33, FieldType::U16, "f8" },
+    { 37, FieldType::U8, "f9" },
+    { 38, FieldType::U8, "f10" },
+    { 42, FieldType::U16, "f11" },
+    { 44, FieldType::U16, "f12" },
+    { 46, FieldType::U16, "f13" },
+    { 48, FieldType::U8, "f14" },
+    { 52, FieldType::U8, "f15" },
+    { 54, FieldType::U16, "f16" },
+    { 56, FieldType::U8, "f17" },
+    { 60, FieldType::U8, "f18" },
+    { 84, FieldType::U16, "f19" },
+    { 108, FieldType::U8, "f20" },
+    { 128, FieldType::U8, "f21" },
+    { 129, FieldType::U16, "f22" },
 };
 constexpr FieldSpec kF_10[] = {
-    { 1, FieldType::U8, "chat_type" },
-    { 2, FieldType::U64, "sender_id" },
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U64, "f2" },
     { 10, FieldType::U64, "f3" },
     { 18, FieldType::U8, "f4" },
     { 19, FieldType::U16, "f5" },
@@ -147,15 +267,59 @@ constexpr FieldSpec kF_10[] = {
     { 32, FieldType::U8, "f12" },
     { 33, FieldType::U8, "f13" },
     { 34, FieldType::U8, "f14" },
+    { 35, FieldType::Str, "f15" },
+    { 36, FieldType::Str, "f16" },
+    { 37, FieldType::Str, "f17" },
+    { 38, FieldType::Str, "f18" },
+    { 39, FieldType::Str, "f19" },
+    { 40, FieldType::Str, "f20" },
+    { 41, FieldType::Str, "f21" },
+    { 42, FieldType::Str, "f22" },
+    { 43, FieldType::Str, "f23" },
+    { 44, FieldType::Str, "f24" },
+    { 45, FieldType::Str, "f25" },
+    { 46, FieldType::Str, "f26" },
+    { 47, FieldType::Str, "f27" },
+    { 48, FieldType::Str, "f28" },
+    { 49, FieldType::Str, "f29" },
+    { 50, FieldType::Str, "f30" },
+    { 51, FieldType::Str, "f31" },
+    { 52, FieldType::Str, "f32" },
+    { 53, FieldType::Str, "f33" },
+    { 54, FieldType::Str, "f34" },
+    { 55, FieldType::U16, "f35" },
+    { 59, FieldType::Str, "f36" },
+    { 60, FieldType::Str, "f37" },
+    { 61, FieldType::Str, "f38" },
+    { 62, FieldType::Str, "f39" },
 };
 constexpr FieldSpec kF_11[] = {
     { 1, FieldType::U32, "f1" },
     { 5, FieldType::U32, "f2" },
+    { 36, FieldType::U8, "f3" },
+    { 132, FieldType::U8, "f4" },
+    { 167, FieldType::U16, "f5" },
 };
 constexpr FieldSpec kF_12[] = {
-    { 1, FieldType::Coord, "f1" },
-    { 3, FieldType::Coord, "f2" },
-    { 5, FieldType::U16, "dir" },
+    { 1, FieldType::U16, "f1" },
+    { 3, FieldType::U16, "f2" },
+    { 5, FieldType::U16, "f3" },
+    { 6, FieldType::U16, "f4" },
+    { 11, FieldType::U16, "f5" },
+    { 20, FieldType::U16, "f6" },
+    { 22, FieldType::U16, "f7" },
+    { 24, FieldType::U16, "f8" },
+    { 25, FieldType::U16, "f9" },
+    { 27, FieldType::U16, "f10" },
+    { 29, FieldType::U16, "f11" },
+    { 31, FieldType::U8, "f12" },
+    { 36, FieldType::Str, "f13" },
+    { 37, FieldType::U8, "f14" },
+    { 41, FieldType::Str, "f15" },
+    { 42, FieldType::U16, "f16" },
+    { 44, FieldType::U16, "f17" },
+    { 46, FieldType::Str, "f18" },
+    { 47, FieldType::Str, "f19" },
 };
 constexpr FieldSpec kF_14[] = {
     { 1, FieldType::U8, "f1" },
@@ -165,18 +329,54 @@ constexpr FieldSpec kF_15[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U16, "f2" },
     { 4, FieldType::U32, "f3" },
+    { 71, FieldType::U8, "f4" },
+    { 75, FieldType::Str, "f5" },
+    { 76, FieldType::U8, "f6" },
+    { 144, FieldType::U8, "f7" },
+    { 146, FieldType::U16, "f8" },
+    { 148, FieldType::U8, "f9" },
+    { 150, FieldType::U8, "f10" },
+    { 151, FieldType::U8, "f11" },
+    { 153, FieldType::U16, "f12" },
+    { 155, FieldType::U8, "f13" },
+    { 159, FieldType::U8, "f14" },
+    { 161, FieldType::U16, "f15" },
+    { 163, FieldType::U16, "f16" },
+    { 165, FieldType::U16, "f17" },
+    { 167, FieldType::U8, "f18" },
+    { 171, FieldType::U8, "f19" },
+    { 175, FieldType::U8, "f20" },
+    { 177, FieldType::U8, "f21" },
+    { 179, FieldType::U16, "f22" },
+    { 181, FieldType::U16, "f23" },
+    { 183, FieldType::U8, "f24" },
+    { 187, FieldType::U8, "f25" },
+    { 191, FieldType::U8, "f26" },
+    { 193, FieldType::U8, "f27" },
+    { 197, FieldType::U8, "f28" },
+    { 202, FieldType::U8, "f29" },
 };
 constexpr FieldSpec kF_16[] = {
     { 1, FieldType::U16, "f1" },
 };
 constexpr FieldSpec kF_17[] = {
-    { 1, FieldType::U16, "hp" },
-    { 3, FieldType::U16, "max_hp" },
-    { 5, FieldType::U32, "delta" },
+    { 1, FieldType::U16, "f1" },
+    { 3, FieldType::U16, "f2" },
+    { 5, FieldType::U32, "f3" },
+    { 39, FieldType::U8, "f4" },
+    { 43, FieldType::U16, "f5" },
+    { 45, FieldType::U8, "f6" },
+    { 597, FieldType::U16, "f7" },
+    { 599, FieldType::U8, "f8" },
 };
 constexpr FieldSpec kF_18[] = {
-    { 1, FieldType::U16, "msp" },
-    { 3, FieldType::U16, "max_msp" },
+    { 1, FieldType::U16, "f1" },
+    { 3, FieldType::U16, "f2" },
+    { 4, FieldType::U16, "f3" },
+    { 37, FieldType::U8, "f4" },
+    { 41, FieldType::U16, "f5" },
+    { 43, FieldType::U8, "f6" },
+    { 595, FieldType::U16, "f7" },
 };
 constexpr FieldSpec kF_19[] = {
     { 1, FieldType::U8, "f1" },
@@ -200,9 +400,20 @@ constexpr FieldSpec kF_1B[] = {
     { 24, FieldType::U16, "f10" },
     { 26, FieldType::U32, "f11" },
     { 30, FieldType::U32, "f12" },
+    { 39, FieldType::U8, "f13" },
 };
 constexpr FieldSpec kF_1C[] = {
     { 1, FieldType::U16, "f1" },
+    { 3, FieldType::U16, "f2" },
+    { 5, FieldType::U8, "f3" },
+    { 9, FieldType::U16, "f4" },
+    { 11, FieldType::U16, "f5" },
+    { 13, FieldType::U8, "f6" },
+    { 15, FieldType::U16, "f7" },
+    { 17, FieldType::Str, "f8" },
+    { 18, FieldType::U8, "f9" },
+    { 20, FieldType::U8, "f10" },
+    { 40, FieldType::U16, "f11" },
 };
 constexpr FieldSpec kF_1D[] = {
     { 1, FieldType::U16, "f1" },
@@ -221,6 +432,12 @@ constexpr FieldSpec kF_20[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U8, "f2" },
     { 3, FieldType::U16, "f3" },
+    { 7, FieldType::U8, "f4" },
+    { 9, FieldType::U16, "f5" },
+    { 11, FieldType::U16, "f6" },
+    { 15, FieldType::Str, "f7" },
+    { 16, FieldType::U8, "f8" },
+    { 20, FieldType::U16, "f9" },
 };
 constexpr FieldSpec kF_21[] = {
     { 1, FieldType::U8, "f1" },
@@ -230,11 +447,13 @@ constexpr FieldSpec kF_21[] = {
     { 11, FieldType::U8, "f5" },
 };
 constexpr FieldSpec kF_22[] = {
-    { 1, FieldType::U32, "target_id" },
+    { 1, FieldType::U32, "f1" },
     { 5, FieldType::U8, "f2" },
-    { 6, FieldType::U32, "hp" },
-    { 10, FieldType::U32, "max_hp" },
+    { 6, FieldType::U32, "f3" },
+    { 10, FieldType::U32, "f4" },
     { 14, FieldType::U8, "f5" },
+    { 115, FieldType::U8, "f6" },
+    { 119, FieldType::U8, "f7" },
 };
 constexpr FieldSpec kF_23[] = {
     { 1, FieldType::U32, "f1" },
@@ -249,18 +468,28 @@ constexpr FieldSpec kF_24[] = {
 };
 constexpr FieldSpec kF_25[] = {
     { 1, FieldType::U32, "f1" },
+    { 36, FieldType::U16, "f2" },
+    { 38, FieldType::U16, "f3" },
+    { 40, FieldType::U16, "f4" },
+    { 144, FieldType::U8, "f5" },
+    { 148, FieldType::U8, "f6" },
 };
 constexpr FieldSpec kF_26[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U32, "f2" },
     { 6, FieldType::U8, "f3" },
+    { 7, FieldType::Str, "f4" },
+    { 8, FieldType::Str, "f5" },
+    { 9, FieldType::U8, "f6" },
+    { 10, FieldType::U16, "f7" },
+    { 12, FieldType::U16, "f8" },
 };
 constexpr FieldSpec kF_28[] = {
     { 1, FieldType::U8, "f1" },
-    { 2, FieldType::Coord, "f2" },
-    { 4, FieldType::Coord, "f3" },
-    { 6, FieldType::Coord, "f4" },
-    { 8, FieldType::Coord, "f5" },
+    { 2, FieldType::U16, "f2" },
+    { 4, FieldType::U16, "f3" },
+    { 6, FieldType::U16, "f4" },
+    { 8, FieldType::U16, "f5" },
     { 10, FieldType::U32, "f6" },
     { 14, FieldType::U8, "f7" },
 };
@@ -283,6 +512,17 @@ constexpr FieldSpec kF_2D[] = {
     { 10, FieldType::U16, "f4" },
     { 12, FieldType::U8, "f5" },
     { 13, FieldType::U8, "f6" },
+    { 14, FieldType::Str, "f7" },
+    { 15, FieldType::Str, "f8" },
+    { 16, FieldType::Str, "f9" },
+    { 17, FieldType::Str, "f10" },
+    { 18, FieldType::Str, "f11" },
+    { 19, FieldType::Str, "f12" },
+    { 20, FieldType::Str, "f13" },
+    { 21, FieldType::U16, "f14" },
+    { 22, FieldType::Str, "f15" },
+    { 23, FieldType::Str, "f16" },
+    { 24, FieldType::U8, "f17" },
 };
 constexpr FieldSpec kF_2E[] = {
     { 1, FieldType::U8, "f1" },
@@ -290,6 +530,27 @@ constexpr FieldSpec kF_2E[] = {
 constexpr FieldSpec kF_2F[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::Str, "f2" },
+    { 3, FieldType::Str, "f3" },
+    { 4, FieldType::Str, "f4" },
+    { 5, FieldType::Str, "f5" },
+    { 6, FieldType::Str, "f6" },
+    { 7, FieldType::Str, "f7" },
+    { 8, FieldType::Str, "f8" },
+    { 9, FieldType::Str, "f9" },
+    { 10, FieldType::Str, "f10" },
+    { 11, FieldType::Str, "f11" },
+    { 12, FieldType::Str, "f12" },
+    { 13, FieldType::Str, "f13" },
+    { 14, FieldType::Str, "f14" },
+    { 15, FieldType::Str, "f15" },
+    { 16, FieldType::Str, "f16" },
+    { 17, FieldType::Str, "f17" },
+    { 18, FieldType::Str, "f18" },
+    { 19, FieldType::U8, "f19" },
+    { 54, FieldType::U16, "f20" },
+    { 56, FieldType::U16, "f21" },
+    { 58, FieldType::U8, "f22" },
+    { 93, FieldType::U8, "f23" },
 };
 constexpr FieldSpec kF_30[] = {
     { 1, FieldType::U8, "f1" },
@@ -310,6 +571,11 @@ constexpr FieldSpec kF_30[] = {
 };
 constexpr FieldSpec kF_31[] = {
     { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+    { 3, FieldType::U8, "f3" },
+    { 19, FieldType::U8, "f4" },
+    { 48, FieldType::Str, "f5" },
+    { 49, FieldType::Str, "f6" },
 };
 constexpr FieldSpec kF_33[] = {
     { 1, FieldType::U8, "f1" },
@@ -341,6 +607,13 @@ constexpr FieldSpec kF_38[] = {
 };
 constexpr FieldSpec kF_3A[] = {
     { 1, FieldType::U32, "f1" },
+    { 2, FieldType::U16, "f2" },
+    { 4, FieldType::U8, "f3" },
+    { 8, FieldType::U16, "f4" },
+    { 10, FieldType::U16, "f5" },
+    { 14, FieldType::Str, "f6" },
+    { 15, FieldType::U8, "f7" },
+    { 19, FieldType::U16, "f8" },
 };
 constexpr FieldSpec kF_3D[] = {
     { 1, FieldType::U16, "f1" },
@@ -352,12 +625,22 @@ constexpr FieldSpec kF_3D[] = {
     { 14, FieldType::U16, "f7" },
     { 16, FieldType::U32, "f8" },
     { 20, FieldType::U32, "f9" },
+    { 555, FieldType::U16, "f10" },
+    { 557, FieldType::U8, "f11" },
+    { 561, FieldType::U16, "f12" },
+    { 569, FieldType::U16, "f13" },
 };
 constexpr FieldSpec kF_3E[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U16, "f2" },
     { 4, FieldType::U16, "f3" },
     { 6, FieldType::U16, "f4" },
+    { 8, FieldType::Str, "f5" },
+    { 9, FieldType::U16, "f6" },
+    { 11, FieldType::U16, "f7" },
+    { 13, FieldType::U16, "f8" },
+    { 44, FieldType::U16, "f9" },
+    { 46, FieldType::U8, "f10" },
 };
 constexpr FieldSpec kF_3F[] = {
     { 1, FieldType::U8, "f1" },
@@ -370,6 +653,12 @@ constexpr FieldSpec kF_40[] = {
     { 18, FieldType::U16, "f4" },
     { 20, FieldType::U16, "f5" },
     { 22, FieldType::Str, "f6" },
+    { 26, FieldType::U8, "f7" },
+    { 34, FieldType::U16, "f8" },
+    { 36, FieldType::U16, "f9" },
+    { 38, FieldType::U16, "f10" },
+    { 40, FieldType::U8, "f11" },
+    { 45, FieldType::U16, "f12" },
 };
 constexpr FieldSpec kF_44[] = {
     { 1, FieldType::U16, "f1" },
@@ -390,19 +679,25 @@ constexpr FieldSpec kF_45[] = {
 };
 constexpr FieldSpec kF_46[] = {
     { 1, FieldType::Str, "f1" },
-    { 3, FieldType::U8, "f2" },
-    { 4, FieldType::U16, "f3" },
-    { 6, FieldType::U8, "f4" },
+    { 3, FieldType::Str, "f2" },
 };
 constexpr FieldSpec kF_49[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U16, "f2" },
     { 4, FieldType::Str, "f3" },
+    { 35, FieldType::U16, "f4" },
+    { 147, FieldType::U16, "f5" },
+    { 149, FieldType::U16, "f6" },
+    { 151, FieldType::U16, "f7" },
+    { 186, FieldType::U16, "f8" },
+    { 188, FieldType::U16, "f9" },
 };
 constexpr FieldSpec kF_4A[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U32, "f2" },
     { 6, FieldType::U32, "f3" },
+    { 8, FieldType::U8, "f4" },
+    { 12, FieldType::U8, "f5" },
 };
 constexpr FieldSpec kF_4B[] = {
     { 1, FieldType::U8, "f1" },
@@ -410,6 +705,13 @@ constexpr FieldSpec kF_4B[] = {
     { 4, FieldType::U16, "f3" },
     { 6, FieldType::U16, "f4" },
     { 8, FieldType::Str, "f5" },
+    { 10, FieldType::Str, "f6" },
+    { 11, FieldType::U16, "f7" },
+    { 13, FieldType::U8, "f8" },
+    { 461, FieldType::Str, "f9" },
+    { 462, FieldType::U8, "f10" },
+    { 2570, FieldType::U16, "f11" },
+    { 2572, FieldType::U16, "f12" },
 };
 constexpr FieldSpec kF_4E[] = {
     { 1, FieldType::U8, "f1" },
@@ -418,6 +720,23 @@ constexpr FieldSpec kF_4E[] = {
     { 8, FieldType::U8, "f4" },
     { 9, FieldType::U8, "f5" },
     { 10, FieldType::Str, "f6" },
+    { 45, FieldType::Str, "f7" },
+    { 46, FieldType::U16, "f8" },
+    { 48, FieldType::U8, "f9" },
+    { 52, FieldType::U16, "f10" },
+    { 86, FieldType::Str, "f11" },
+    { 87, FieldType::Str, "f12" },
+    { 88, FieldType::Str, "f13" },
+    { 89, FieldType::U8, "f14" },
+    { 124, FieldType::Str, "f15" },
+    { 125, FieldType::Str, "f16" },
+    { 126, FieldType::Str, "f17" },
+    { 127, FieldType::Str, "f18" },
+    { 128, FieldType::Str, "f19" },
+    { 129, FieldType::Str, "f20" },
+    { 130, FieldType::U8, "f21" },
+    { 165, FieldType::Str, "f22" },
+    { 166, FieldType::Str, "f23" },
 };
 constexpr FieldSpec kF_4F[] = {
     { 1, FieldType::U8, "f1" },
@@ -440,11 +759,27 @@ constexpr FieldSpec kF_53[] = {
 constexpr FieldSpec kF_54[] = {
     { 1, FieldType::U32, "f1" },
     { 5, FieldType::U8, "f2" },
+    { 6, FieldType::Str, "f3" },
+    { 7, FieldType::Str, "f4" },
+    { 8, FieldType::Str, "f5" },
+    { 9, FieldType::Str, "f6" },
+    { 10, FieldType::Str, "f7" },
+    { 11, FieldType::Str, "f8" },
+    { 12, FieldType::Str, "f9" },
+    { 13, FieldType::Str, "f10" },
+    { 14, FieldType::U16, "f11" },
+    { 15, FieldType::Str, "f12" },
+    { 16, FieldType::Str, "f13" },
+    { 17, FieldType::U8, "f14" },
+    { 52, FieldType::U8, "f15" },
+    { 87, FieldType::U8, "f16" },
+    { 183, FieldType::U8, "f17" },
 };
 constexpr FieldSpec kF_55[] = {
     { 1, FieldType::U32, "f1" },
     { 5, FieldType::U8, "f2" },
     { 6, FieldType::U32, "f3" },
+    { 39, FieldType::Str, "f4" },
 };
 constexpr FieldSpec kF_57[] = {
     { 1, FieldType::U8, "f1" },
@@ -477,6 +812,14 @@ constexpr FieldSpec kF_5E[] = {
 constexpr FieldSpec kF_5F[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U8, "f2" },
+    { 3, FieldType::Str, "f3" },
+    { 4, FieldType::Str, "f4" },
+    { 5, FieldType::Str, "f5" },
+    { 6, FieldType::Str, "f6" },
+    { 7, FieldType::Str, "f7" },
+    { 8, FieldType::Str, "f8" },
+    { 9, FieldType::U8, "f9" },
+    { 10, FieldType::U8, "f10" },
 };
 constexpr FieldSpec kF_60[] = {
     { 1, FieldType::U8, "f1" },
@@ -497,6 +840,15 @@ constexpr FieldSpec kF_64[] = {
     { 5, FieldType::U16, "f4" },
     { 7, FieldType::U32, "f5" },
     { 11, FieldType::U32, "f6" },
+    { 325, FieldType::Str, "f7" },
+    { 326, FieldType::Str, "f8" },
+    { 327, FieldType::U16, "f9" },
+    { 329, FieldType::Str, "f10" },
+    { 330, FieldType::U16, "f11" },
+    { 366, FieldType::U16, "f12" },
+    { 402, FieldType::U16, "f13" },
+    { 438, FieldType::U8, "f14" },
+    { 442, FieldType::U16, "f15" },
 };
 constexpr FieldSpec kF_65[] = {
     { 1, FieldType::U8, "f1" },
@@ -536,13 +888,54 @@ constexpr FieldSpec kF_6C[] = {
     { 7, FieldType::U32, "f3" },
     { 11, FieldType::U8, "f4" },
     { 12, FieldType::Str, "f5" },
+    { 102, FieldType::U16, "f6" },
+    { 104, FieldType::U16, "f7" },
+    { 106, FieldType::U8, "f8" },
+    { 141, FieldType::U8, "f9" },
+    { 142, FieldType::U8, "f10" },
+    { 144, FieldType::U8, "f11" },
+    { 148, FieldType::U16, "f12" },
+    { 152, FieldType::U16, "f13" },
+    { 154, FieldType::U8, "f14" },
+    { 158, FieldType::U8, "f15" },
+    { 262, FieldType::U8, "f16" },
+    { 366, FieldType::U8, "f17" },
 };
 constexpr FieldSpec kF_6D[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U8, "f2" },
+    { 3, FieldType::U8, "f3" },
+    { 5, FieldType::U16, "f4" },
+    { 7, FieldType::U8, "f5" },
+    { 8, FieldType::U8, "f6" },
+    { 12, FieldType::Str, "f7" },
+    { 13, FieldType::U16, "f8" },
+    { 109, FieldType::U16, "f9" },
+    { 111, FieldType::U16, "f10" },
+    { 113, FieldType::U8, "f11" },
+    { 148, FieldType::U8, "f12" },
+    { 149, FieldType::U8, "f13" },
+    { 151, FieldType::U8, "f14" },
+    { 155, FieldType::U16, "f15" },
+    { 159, FieldType::U16, "f16" },
+    { 161, FieldType::U8, "f17" },
+    { 165, FieldType::U8, "f18" },
 };
 constexpr FieldSpec kF_6E[] = {
     { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+    { 290, FieldType::U8, "f3" },
+    { 291, FieldType::U8, "f4" },
+    { 293, FieldType::U16, "f5" },
+    { 295, FieldType::U8, "f6" },
+    { 296, FieldType::U8, "f7" },
+    { 300, FieldType::Str, "f8" },
+    { 301, FieldType::U16, "f9" },
+    { 397, FieldType::U16, "f10" },
+    { 399, FieldType::U16, "f11" },
+    { 401, FieldType::U8, "f12" },
+    { 436, FieldType::U8, "f13" },
+    { 437, FieldType::U8, "f14" },
 };
 constexpr FieldSpec kF_70[] = {
     { 1, FieldType::U16, "f1" },
@@ -553,16 +946,22 @@ constexpr FieldSpec kF_71[] = {
     { 3, FieldType::U8, "f3" },
     { 4, FieldType::U16, "f4" },
     { 6, FieldType::U8, "f5" },
+    { 36, FieldType::U8, "f6" },
+    { 37, FieldType::U8, "f7" },
+    { 38, FieldType::U8, "f8" },
 };
 constexpr FieldSpec kF_73[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U16, "f2" },
+    { 4, FieldType::U8, "f3" },
 };
 constexpr FieldSpec kF_74[] = {
     { 1, FieldType::U32, "f1" },
     { 5, FieldType::U16, "f2" },
     { 7, FieldType::U32, "f3" },
     { 11, FieldType::U16, "f4" },
+    { 37, FieldType::U16, "f5" },
+    { 38, FieldType::U8, "f6" },
 };
 constexpr FieldSpec kF_75[] = {
     { 1, FieldType::U8, "f1" },
@@ -579,10 +978,23 @@ constexpr FieldSpec kF_76[] = {
 constexpr FieldSpec kF_78[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::Str, "f2" },
+    { 3, FieldType::U8, "f3" },
+    { 38, FieldType::U16, "f4" },
 };
 constexpr FieldSpec kF_79[] = {
     { 1, FieldType::U16, "f1" },
     { 3, FieldType::U32, "f2" },
+    { 37, FieldType::U16, "f3" },
+    { 72, FieldType::U16, "f4" },
+};
+constexpr FieldSpec kF_3C[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+    { 4, FieldType::Str, "f3" },
+    { 5, FieldType::U16, "f4" },
+    { 6, FieldType::U8, "f5" },
+    { 41, FieldType::U16, "f6" },
+    { 43, FieldType::U8, "f7" },
 };
 constexpr FieldSpec kF_7A[] = {
     { 1, FieldType::U8, "f1" },
@@ -590,6 +1002,12 @@ constexpr FieldSpec kF_7A[] = {
 constexpr FieldSpec kF_7C[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::Str, "f2" },
+    { 3, FieldType::Str, "f3" },
+    { 4, FieldType::Str, "f4" },
+    { 5, FieldType::Str, "f5" },
+    { 6, FieldType::Str, "f6" },
+    { 7, FieldType::Str, "f7" },
+    { 8, FieldType::Str, "f8" },
 };
 constexpr FieldSpec kF_7D[] = {
     { 1, FieldType::U8, "f1" },
@@ -619,6 +1037,8 @@ constexpr FieldSpec kF_81[] = {
     { 24, FieldType::U16, "f13" },
     { 26, FieldType::U16, "f14" },
     { 28, FieldType::Str, "f15" },
+    { 33, FieldType::U8, "f16" },
+    { 67, FieldType::U8, "f17" },
 };
 constexpr FieldSpec kF_82[] = {
     { 1, FieldType::U8, "f1" },
@@ -628,7 +1048,18 @@ constexpr FieldSpec kF_84[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U64, "f2" },
     { 10, FieldType::U64, "f3" },
-    { 18, FieldType::Coord, "f4" },
+    { 18, FieldType::U8, "f4" },
+};
+constexpr FieldSpec kF_83[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+    { 6, FieldType::U16, "f3" },
+    { 10, FieldType::U16, "f4" },
+    { 45, FieldType::U8, "f5" },
+    { 50, FieldType::U16, "f6" },
+    { 90, FieldType::U16, "f7" },
+    { 91, FieldType::U16, "f8" },
+    { 131, FieldType::U16, "f9" },
 };
 constexpr FieldSpec kF_85[] = {
     { 1, FieldType::U8, "f1" },
@@ -637,10 +1068,29 @@ constexpr FieldSpec kF_85[] = {
     { 5, FieldType::U32, "f4" },
     { 9, FieldType::U8, "f5" },
     { 10, FieldType::U8, "f6" },
+    { 100, FieldType::U8, "f7" },
+    { 101, FieldType::Str, "f8" },
+    { 102, FieldType::Str, "f9" },
+    { 103, FieldType::Str, "f10" },
+    { 104, FieldType::Str, "f11" },
+    { 105, FieldType::Str, "f12" },
+    { 106, FieldType::Str, "f13" },
+    { 107, FieldType::U16, "f14" },
+    { 109, FieldType::U16, "f15" },
+    { 111, FieldType::U8, "f16" },
 };
 constexpr FieldSpec kF_86[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U8, "f2" },
+    { 3, FieldType::U16, "f3" },
+    { 5, FieldType::U8, "f4" },
+    { 37, FieldType::U8, "f5" },
+    { 133, FieldType::U8, "f6" },
+    { 134, FieldType::Str, "f7" },
+    { 135, FieldType::Str, "f8" },
+    { 136, FieldType::Str, "f9" },
+    { 137, FieldType::Str, "f10" },
+    { 138, FieldType::Str, "f11" },
 };
 constexpr FieldSpec kF_87[] = {
     { 1, FieldType::U8, "f1" },
@@ -689,6 +1139,16 @@ constexpr FieldSpec kF_95[] = {
     { 7, FieldType::U16, "f3" },
     { 9, FieldType::U16, "f4" },
     { 11, FieldType::Str, "f5" },
+    { 12, FieldType::U16, "f6" },
+    { 14, FieldType::U8, "f7" },
+    { 15, FieldType::U8, "f8" },
+    { 16, FieldType::U16, "f9" },
+    { 18, FieldType::U16, "f10" },
+    { 20, FieldType::U8, "f11" },
+    { 55, FieldType::U8, "f12" },
+    { 79, FieldType::U8, "f13" },
+    { 2863, FieldType::U8, "f14" },
+    { 2867, FieldType::U8, "f15" },
 };
 constexpr FieldSpec kF_97[] = {
     { 1, FieldType::U16, "f1" },
@@ -705,6 +1165,21 @@ constexpr FieldSpec kF_99[] = {
     { 7, FieldType::U16, "f5" },
     { 9, FieldType::U8, "f6" },
     { 10, FieldType::U32, "f7" },
+    { 12, FieldType::U16, "f8" },
+    { 15, FieldType::U16, "f9" },
+    { 17, FieldType::U8, "f10" },
+    { 19, FieldType::U16, "f11" },
+    { 21, FieldType::U16, "f12" },
+    { 23, FieldType::U16, "f13" },
+    { 25, FieldType::U16, "f14" },
+    { 27, FieldType::Str, "f15" },
+    { 28, FieldType::U16, "f16" },
+    { 29, FieldType::U8, "f17" },
+    { 30, FieldType::U16, "f18" },
+    { 32, FieldType::U16, "f19" },
+    { 34, FieldType::U8, "f20" },
+    { 35, FieldType::U8, "f21" },
+    { 36, FieldType::U16, "f22" },
 };
 constexpr FieldSpec kF_9A[] = {
     { 1, FieldType::U8, "f1" },
@@ -732,16 +1207,43 @@ constexpr FieldSpec kF_A9[] = {
     { 2, FieldType::U32, "f2" },
     { 6, FieldType::U16, "f3" },
     { 8, FieldType::U16, "f4" },
+    { 33, FieldType::U8, "f5" },
+    { 41, FieldType::U16, "f6" },
+    { 43, FieldType::U16, "f7" },
+    { 45, FieldType::U16, "f8" },
+    { 47, FieldType::U8, "f9" },
+    { 52, FieldType::U16, "f10" },
+    { 56, FieldType::U16, "f11" },
+    { 58, FieldType::U8, "f12" },
+    { 60, FieldType::U16, "f13" },
+    { 62, FieldType::U16, "f14" },
+    { 64, FieldType::U16, "f15" },
+    { 66, FieldType::U16, "f16" },
+    { 68, FieldType::Str, "f17" },
+    { 69, FieldType::U16, "f18" },
+    { 70, FieldType::U8, "f19" },
+    { 71, FieldType::U16, "f20" },
+    { 73, FieldType::U16, "f21" },
+    { 75, FieldType::U8, "f22" },
+    { 76, FieldType::U8, "f23" },
 };
 constexpr FieldSpec kF_AC[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U8, "f2" },
     { 3, FieldType::U32, "f3" },
     { 7, FieldType::U32, "f4" },
+    { 38, FieldType::U16, "f5" },
 };
 constexpr FieldSpec kF_B5[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U8, "f2" },
+    { 3, FieldType::Str, "f3" },
+    { 4, FieldType::Str, "f4" },
+    { 5, FieldType::Str, "f5" },
+    { 6, FieldType::Str, "f6" },
+    { 7, FieldType::Str, "f7" },
+    { 8, FieldType::Str, "f8" },
+    { 9, FieldType::U8, "f9" },
 };
 constexpr FieldSpec kF_B6[] = {
     { 1, FieldType::U8, "f1" },
@@ -750,6 +1252,9 @@ constexpr FieldSpec kF_B6[] = {
     { 4, FieldType::U8, "f4" },
     { 5, FieldType::U8, "f5" },
     { 6, FieldType::U8, "f6" },
+    { 28, FieldType::U8, "f7" },
+    { 30, FieldType::U16, "f8" },
+    { 32, FieldType::U8, "f9" },
 };
 constexpr FieldSpec kF_B7[] = {
     { 1, FieldType::U8, "f1" },
@@ -761,6 +1266,8 @@ constexpr FieldSpec kF_B8[] = {
 constexpr FieldSpec kF_B9[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U8, "f2" },
+    { 3, FieldType::U16, "f3" },
+    { 4, FieldType::U16, "f4" },
 };
 constexpr FieldSpec kF_BD[] = {
     { 1, FieldType::U8, "f1" },
@@ -771,6 +1278,10 @@ constexpr FieldSpec kF_C0[] = {
 constexpr FieldSpec kF_C2[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U8, "f2" },
+    { 4, FieldType::U8, "f3" },
+    { 5, FieldType::U8, "f4" },
+    { 6, FieldType::U8, "f5" },
+    { 7, FieldType::U8, "f6" },
 };
 constexpr FieldSpec kF_C3[] = {
     { 1, FieldType::U8, "f1" },
@@ -778,11 +1289,27 @@ constexpr FieldSpec kF_C3[] = {
     { 10, FieldType::U8, "f3" },
     { 11, FieldType::U64, "f4" },
     { 19, FieldType::U8, "f5" },
+    { 947, FieldType::U8, "f6" },
+    { 951, FieldType::U8, "f7" },
+    { 959, FieldType::Str, "f8" },
+    { 960, FieldType::U8, "f9" },
+    { 968, FieldType::Str, "f10" },
+    { 969, FieldType::Str, "f11" },
+    { 970, FieldType::Str, "f12" },
+    { 971, FieldType::Str, "f13" },
+    { 972, FieldType::Str, "f14" },
+    { 973, FieldType::U8, "f15" },
+    { 978, FieldType::U8, "f16" },
 };
 constexpr FieldSpec kF_C5[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U16, "f2" },
     { 4, FieldType::U16, "f3" },
+    { 114, FieldType::U16, "f4" },
+    { 116, FieldType::U16, "f5" },
+    { 118, FieldType::U16, "f6" },
+    { 153, FieldType::U16, "f7" },
+    { 155, FieldType::U16, "f8" },
 };
 constexpr FieldSpec kF_C7[] = {
     { 1, FieldType::U8, "f1" },
@@ -805,11 +1332,17 @@ constexpr FieldSpec kF_CC[] = {
 };
 constexpr FieldSpec kF_CE[] = {
     { 1, FieldType::U16, "f1" },
+    { 3, FieldType::U16, "f2" },
+    { 38, FieldType::U16, "f3" },
 };
 constexpr FieldSpec kF_CF[] = {
     { 1, FieldType::U8, "f1" },
     { 2, FieldType::U8, "f2" },
     { 3, FieldType::U8, "f3" },
+    { 10, FieldType::U16, "f4" },
+    { 11, FieldType::U8, "f5" },
+    { 15, FieldType::U8, "f6" },
+    { 35, FieldType::Str, "f7" },
 };
 constexpr FieldSpec kF_D0[] = {
     { 1, FieldType::U8, "f1" },
@@ -838,6 +1371,7 @@ constexpr FieldSpec kF_D5[] = {
     { 15, FieldType::U8, "f10" },
     { 16, FieldType::U32, "f11" },
     { 20, FieldType::U32, "f12" },
+    { 42, FieldType::U16, "f13" },
 };
 constexpr FieldSpec kF_D6[] = {
     { 1, FieldType::U8, "f1" },
@@ -855,163 +1389,528 @@ constexpr FieldSpec kF_D9[] = {
     { 4, FieldType::Str, "f3" },
 };
 
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_01 = { 0x01, "WIZ_LOGIN_UNVERIFIED", Direction::In, kF_01, 4, true, false, true, true };
-constexpr OpcodeInfo kI_02 = { 0x02, "WIZ_NEW_CHAR_UNVERIFIED", Direction::In, kF_02, 4, true, true, false, false };
-constexpr OpcodeInfo kI_03 = { 0x03, "WIZ_DEL_CHAR_UNVERIFIED", Direction::In, kF_03, 10, true, true, false, false };
-constexpr OpcodeInfo kI_04 = { 0x04, "WIZ_SEL_CHAR_UNVERIFIED", Direction::In, kF_04, 5, true, true, true, false };
-constexpr OpcodeInfo kI_05 = { 0x05, "WIZ_SEL_NATION_UNVERIFIED", Direction::In, kF_05, 5, true, true, false, false };
+constexpr OpcodeInfo kI_02 = { 0x02, "WIZ_NEW_CHAR", Direction::In, kF_02, 9, false, false, false, false };
+constexpr OpcodeInfo kI_03 = { 0x03, "WIZ_DEL_CHAR", Direction::In, kF_03, 15, false, false, false, false };
+constexpr OpcodeInfo kI_04 = { 0x04, "WIZ_SEL_CHAR", Direction::In, kF_04, 20, false, false, true, false };
+constexpr OpcodeInfo kI_05 = { 0x05, "WIZ_SEL_NATION", Direction::In, kF_05, 18, false, false, false, false };
 constexpr OpcodeInfo kI_06 = { 0x06, "WIZ_MOVE", Direction::In, kF_06, 6, false, false, false, false };
-constexpr OpcodeInfo kI_07 = { 0x07, "WIZ_USER_INOUT_UNVERIFIED", Direction::In, kF_07, 1, true, true, false, false };
+constexpr OpcodeInfo kI_07 = { 0x07, "WIZ_USER_INOUT", Direction::In, kF_07, 23, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_08 = { 0x08, "WIZ_ATTACK_UNVERIFIED", Direction::In, kF_08, 4, true, false, false, false };
-constexpr OpcodeInfo kI_09 = { 0x09, "WIZ_ROTATE_UNVERIFIED", Direction::In, kF_09, 2, true, true, false, false };
-constexpr OpcodeInfo kI_0A = { 0x0A, "WIZ_NPC_INOUT", Direction::In, kF_0A, 12, false, true, false, true };
+constexpr OpcodeInfo kI_09 = { 0x09, "WIZ_ROTATE", Direction::In, kF_09, 42, false, false, false, false };
+constexpr OpcodeInfo kI_0A = { 0x0A, "WIZ_NPC_INOUT", Direction::In, kF_0A, 13, false, false, false, true };
 constexpr OpcodeInfo kI_0B = { 0x0B, "WIZ_NPC_MOVE", Direction::In, kF_0B, 6, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_0C = { 0x0C, "WIZ_ALLCHAR_INFO_REQ_UNVERIFIED", Direction::In, kF_0C, 1, true, false, false, false };
+// provisional: Handler govde okumuyor; islev yalnizca switch konumundan cikarildi, alan yok.
 constexpr OpcodeInfo kI_0D = { 0x0D, "WIZ_GAMESTART_UNVERIFIED", Direction::In, nullptr, 0, true, false, false, false };
-constexpr OpcodeInfo kI_0E = { 0x0E, "WIZ_MYINFO", Direction::In, kF_0E, 3, false, true, false, false };
-constexpr OpcodeInfo kI_10 = { 0x10, "WIZ_CHAT", Direction::In, kF_10, 14, false, true, false, false };
-constexpr OpcodeInfo kI_11 = { 0x11, "WIZ_DEAD_UNVERIFIED", Direction::In, kF_11, 2, true, true, false, false };
-constexpr OpcodeInfo kI_12 = { 0x12, "WIZ_REGENE_UNVERIFIED", Direction::In, kF_12, 3, true, true, false, false };
+constexpr OpcodeInfo kI_0E = { 0x0E, "WIZ_MYINFO", Direction::In, kF_0E, 22, false, false, false, false };
+constexpr OpcodeInfo kI_10 = { 0x10, "WIZ_CHAT", Direction::In, kF_10, 39, false, false, false, false };
+constexpr OpcodeInfo kI_11 = { 0x11, "WIZ_DEAD", Direction::In, kF_11, 5, false, false, false, false };
+constexpr OpcodeInfo kI_12 = { 0x12, "WIZ_REGENE", Direction::In, kF_12, 19, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_14 = { 0x14, "WIZ_WEATHER_UNVERIFIED", Direction::In, kF_14, 2, true, false, false, false };
-constexpr OpcodeInfo kI_15 = { 0x15, "WIZ_REGIONCHANGE_UNVERIFIED", Direction::In, kF_15, 3, true, true, false, false };
+constexpr OpcodeInfo kI_15 = { 0x15, "WIZ_REGIONCHANGE", Direction::In, kF_15, 29, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_16 = { 0x16, "WIZ_REQ_USERIN_UNVERIFIED", Direction::In, kF_16, 1, true, false, false, false };
-constexpr OpcodeInfo kI_17 = { 0x17, "WIZ_HP_CHANGE_UNVERIFIED", Direction::In, kF_17, 3, true, true, false, false };
-constexpr OpcodeInfo kI_18 = { 0x18, "WIZ_MSP_CHANGE_UNVERIFIED", Direction::In, kF_18, 2, true, true, false, false };
+constexpr OpcodeInfo kI_17 = { 0x17, "WIZ_HP_CHANGE", Direction::In, kF_17, 8, false, false, false, false };
+constexpr OpcodeInfo kI_18 = { 0x18, "WIZ_MSP_CHANGE", Direction::In, kF_18, 7, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_19 = { 0x19, "WIZ_ITEM_LOG_UNVERIFIED", Direction::In, kF_19, 1, true, false, false, true };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_1A = { 0x1A, "WIZ_EXP_CHANGE_UNVERIFIED", Direction::In, kF_1A, 4, true, false, false, false };
-constexpr OpcodeInfo kI_1B = { 0x1B, "WIZ_LEVEL_CHANGE", Direction::In, kF_1B, 12, false, true, false, false };
-constexpr OpcodeInfo kI_1C = { 0x1C, "WIZ_NPC_REGION_UNVERIFIED", Direction::In, kF_1C, 1, true, true, false, false };
+constexpr OpcodeInfo kI_1B = { 0x1B, "WIZ_LEVEL_CHANGE", Direction::In, kF_1B, 13, false, false, false, false };
+constexpr OpcodeInfo kI_1C = { 0x1C, "WIZ_NPC_REGION", Direction::In, kF_1C, 11, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_1D = { 0x1D, "WIZ_REQ_NPCIN_UNVERIFIED", Direction::In, kF_1D, 1, true, false, false, false };
+// provisional: Handler govde okumuyor; islev yalnizca switch konumundan cikarildi, alan yok.
 constexpr OpcodeInfo kI_1E = { 0x1E, "WIZ_WARP_UNVERIFIED", Direction::In, nullptr, 0, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_1F = { 0x1F, "WIZ_ITEM_MOVE_UNVERIFIED", Direction::In, kF_1F, 8, true, false, false, false };
-constexpr OpcodeInfo kI_20 = { 0x20, "WIZ_NPC_EVENT_UNVERIFIED", Direction::In, kF_20, 3, true, true, false, false };
+constexpr OpcodeInfo kI_20 = { 0x20, "WIZ_NPC_EVENT", Direction::In, kF_20, 9, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_21 = { 0x21, "WIZ_ITEM_TRADE_UNVERIFIED", Direction::In, kF_21, 5, true, false, false, false };
-constexpr OpcodeInfo kI_22 = { 0x22, "WIZ_TARGET_HP", Direction::In, kF_22, 5, false, true, false, false };
+constexpr OpcodeInfo kI_22 = { 0x22, "WIZ_TARGET_HP", Direction::In, kF_22, 7, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_23 = { 0x23, "WIZ_ITEM_DROP_UNVERIFIED", Direction::In, kF_23, 3, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_24 = { 0x24, "WIZ_BUNDLE_OPEN_REQ_UNVERIFIED", Direction::In, kF_24, 4, true, false, false, false };
-constexpr OpcodeInfo kI_25 = { 0x25, "WIZ_TRADE_NPC_UNVERIFIED", Direction::In, kF_25, 1, true, true, false, false };
-constexpr OpcodeInfo kI_26 = { 0x26, "WIZ_ITEM_GET_UNVERIFIED", Direction::In, kF_26, 3, true, true, false, false };
-constexpr OpcodeInfo kI_27 = { 0x27, "WIZ_ZONE_CHANGE_UNVERIFIED", Direction::In, nullptr, 0, true, true, false, false };
-constexpr OpcodeInfo kI_28 = { 0x28, "WIZ_POINT_CHANGE_UNVERIFIED", Direction::In, kF_28, 7, true, true, false, false };
-constexpr OpcodeInfo kI_29 = { 0x29, "WIZ_STATE_CHANGE_UNVERIFIED", Direction::In, kF_29, 3, true, true, false, false };
-constexpr OpcodeInfo kI_2A = { 0x2A, "WIZ_LOYALTY_CHANGE_UNVERIFIED", Direction::In, kF_2A, 5, true, true, false, false };
-constexpr OpcodeInfo kI_2B = { 0x2B, "WIZ_VERSION_CHECK_UNVERIFIED", Direction::In, nullptr, 0, true, true, true, false };
-constexpr OpcodeInfo kI_2D = { 0x2D, "WIZ_USERLOOK_CHANGE", Direction::In, kF_2D, 6, false, true, false, false };
+constexpr OpcodeInfo kI_25 = { 0x25, "WIZ_TRADE_NPC", Direction::In, kF_25, 6, false, false, false, false };
+constexpr OpcodeInfo kI_26 = { 0x26, "WIZ_ITEM_GET", Direction::In, kF_26, 8, false, false, false, false };
+constexpr OpcodeInfo kI_27 = { 0x27, "WIZ_ZONE_CHANGE", Direction::In, nullptr, 0, false, false, false, false };
+constexpr OpcodeInfo kI_28 = { 0x28, "WIZ_POINT_CHANGE", Direction::In, kF_28, 7, false, false, false, false };
+constexpr OpcodeInfo kI_29 = { 0x29, "WIZ_STATE_CHANGE", Direction::In, kF_29, 3, false, false, false, false };
+constexpr OpcodeInfo kI_2A = { 0x2A, "WIZ_LOYALTY_CHANGE", Direction::In, kF_2A, 5, false, false, false, false };
+constexpr OpcodeInfo kI_2B = { 0x2B, "WIZ_VERSION_CHECK", Direction::In, nullptr, 0, false, false, true, false };
+constexpr OpcodeInfo kI_2D = { 0x2D, "WIZ_USERLOOK_CHANGE", Direction::In, kF_2D, 17, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_2E = { 0x2E, "WIZ_NOTICE_UNVERIFIED", Direction::In, kF_2E, 1, true, false, false, false };
-constexpr OpcodeInfo kI_2F = { 0x2F, "WIZ_PARTY_UNVERIFIED", Direction::In, kF_2F, 2, true, true, false, false };
+constexpr OpcodeInfo kI_2F = { 0x2F, "WIZ_PARTY", Direction::In, kF_2F, 23, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_30 = { 0x30, "WIZ_EXCHANGE_UNVERIFIED", Direction::In, kF_30, 15, true, false, false, false };
-constexpr OpcodeInfo kI_31 = { 0x31, "WIZ_MAGIC_PROCESS_UNVERIFIED", Direction::In, kF_31, 1, true, true, false, false };
+constexpr OpcodeInfo kI_31 = { 0x31, "WIZ_MAGIC_PROCESS", Direction::In, kF_31, 6, false, false, false, false };
 constexpr OpcodeInfo kI_33 = { 0x33, "WIZ_OBJECT_EVENT", Direction::In, kF_33, 6, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_34 = { 0x34, "WIZ_CLASS_CHANGE_UNVERIFIED", Direction::In, kF_34, 3, true, false, false, false };
-constexpr OpcodeInfo kI_35 = { 0x35, "WIZ_CHAT_TARGET_UNVERIFIED", Direction::In, kF_35, 6, true, true, false, false };
+constexpr OpcodeInfo kI_35 = { 0x35, "WIZ_CHAT_TARGET", Direction::In, kF_35, 6, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_36 = { 0x36, "WIZ_CONCURRENTUSER_UNVERIFIED", Direction::In, kF_36, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_38 = { 0x38, "WIZ_DURATION_UNVERIFIED", Direction::In, kF_38, 2, true, false, false, false };
-constexpr OpcodeInfo kI_3A = { 0x3A, "WIZ_REPAIR_NPC_UNVERIFIED", Direction::In, kF_3A, 1, true, true, false, false };
+constexpr OpcodeInfo kI_3A = { 0x3A, "WIZ_REPAIR_NPC", Direction::In, kF_3A, 8, false, false, false, false };
+// provisional: Handler govde okumuyor; islev yalnizca switch konumundan cikarildi, alan yok.
 constexpr OpcodeInfo kI_3B = { 0x3B, "WIZ_ITEM_REPAIR_UNVERIFIED", Direction::In, nullptr, 0, true, false, false, false };
-constexpr OpcodeInfo kI_3C = { 0x3C, "WIZ_KNIGHTS_PROCESS_UNVERIFIED", Direction::In, nullptr, 0, true, true, false, false };
-constexpr OpcodeInfo kI_3D = { 0x3D, "WIZ_ITEM_COUNT_CHANGE_UNVERIFIED", Direction::In, kF_3D, 9, true, true, false, false };
-constexpr OpcodeInfo kI_3E = { 0x3E, "WIZ_KNIGHTS_LIST_UNVERIFIED", Direction::In, kF_3E, 4, true, true, false, false };
+constexpr OpcodeInfo kI_3C = { 0x3C, "WIZ_KNIGHTS_PROCESS", Direction::In, kF_3C, 7, false, false, false, false };
+constexpr OpcodeInfo kI_3D = { 0x3D, "WIZ_ITEM_COUNT_CHANGE", Direction::In, kF_3D, 13, false, false, false, false };
+constexpr OpcodeInfo kI_3E = { 0x3E, "WIZ_KNIGHTS_LIST", Direction::In, kF_3E, 10, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_3F = { 0x3F, "WIZ_ITEM_REMOVE_UNVERIFIED", Direction::In, kF_3F, 2, true, false, false, false };
-constexpr OpcodeInfo kI_40 = { 0x40, "WIZ_OPERATOR", Direction::In, kF_40, 6, false, true, false, false };
+constexpr OpcodeInfo kI_40 = { 0x40, "WIZ_OPERATOR", Direction::In, kF_40, 12, false, false, false, false };
 constexpr OpcodeInfo kI_42 = { 0x42, "WIZ_COMPRESS_PACKET", Direction::In, nullptr, 0, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_44 = { 0x44, "WIZ_CONTINOUS_PACKET_UNVERIFIED", Direction::In, kF_44, 5, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_45 = { 0x45, "WIZ_WAREHOUSE_UNVERIFIED", Direction::In, kF_45, 8, true, false, false, false };
-constexpr OpcodeInfo kI_46 = { 0x46, "WIZ_SERVER_CHANGE_UNVERIFIED", Direction::In, kF_46, 4, true, true, true, false };
-constexpr OpcodeInfo kI_49 = { 0x49, "WIZ_FRIEND_PROCESS_UNVERIFIED", Direction::In, kF_49, 3, true, true, false, false };
-constexpr OpcodeInfo kI_4A = { 0x4A, "WIZ_GOLD_CHANGE_UNVERIFIED", Direction::In, kF_4A, 3, true, true, false, false };
-constexpr OpcodeInfo kI_4B = { 0x4B, "WIZ_WARP_LIST_UNVERIFIED", Direction::In, kF_4B, 5, true, true, false, false };
-constexpr OpcodeInfo kI_4E = { 0x4E, "WIZ_CORPSE_UNVERIFIED", Direction::In, kF_4E, 6, true, true, false, false };
+constexpr OpcodeInfo kI_46 = { 0x46, "WIZ_SERVER_CHANGE", Direction::In, kF_46, 2, false, false, true, false };
+constexpr OpcodeInfo kI_49 = { 0x49, "WIZ_FRIEND_PROCESS", Direction::In, kF_49, 9, false, false, false, false };
+constexpr OpcodeInfo kI_4A = { 0x4A, "WIZ_GOLD_CHANGE", Direction::In, kF_4A, 5, false, false, false, false };
+constexpr OpcodeInfo kI_4B = { 0x4B, "WIZ_WARP_LIST", Direction::In, kF_4B, 12, false, false, false, false };
+constexpr OpcodeInfo kI_4E = { 0x4E, "WIZ_CORPSE", Direction::In, kF_4E, 23, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_4F = { 0x4F, "WIZ_PARTY_BBS_UNVERIFIED", Direction::In, kF_4F, 1, true, false, false, false };
-constexpr OpcodeInfo kI_50 = { 0x50, "WIZ_MARKET_BBS_UNVERIFIED", Direction::In, kF_50, 5, true, true, false, false };
+constexpr OpcodeInfo kI_50 = { 0x50, "WIZ_MARKET_BBS", Direction::In, kF_50, 5, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_53 = { 0x53, "WIZ_MAP_EVENT_UNVERIFIED", Direction::In, kF_53, 6, true, false, false, false };
-constexpr OpcodeInfo kI_54 = { 0x54, "WIZ_WEIGHT_CHANGE_UNVERIFIED", Direction::In, kF_54, 2, true, true, false, false };
-constexpr OpcodeInfo kI_55 = { 0x55, "WIZ_SELECT_MSG_UNVERIFIED", Direction::In, kF_55, 3, true, true, false, false };
+constexpr OpcodeInfo kI_54 = { 0x54, "WIZ_WEIGHT_CHANGE", Direction::In, kF_54, 17, false, false, false, false };
+constexpr OpcodeInfo kI_55 = { 0x55, "WIZ_SELECT_MSG", Direction::In, kF_55, 4, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_57 = { 0x57, "WIZ_BATTLE_EVENT_UNVERIFIED", Direction::In, kF_57, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_58 = { 0x58, "WIZ_AUTHORITY_CHANGE_UNVERIFIED", Direction::In, kF_58, 3, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_59 = { 0x59, "WIZ_EDIT_BOX_UNVERIFIED", Direction::In, kF_59, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_5A = { 0x5A, "WIZ_SANTA_UNVERIFIED", Direction::In, kF_5A, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_5B = { 0x5B, "WIZ_ITEM_UPGRADE_UNVERIFIED", Direction::In, kF_5B, 1, true, false, false, false };
+// provisional: Handler govde okumuyor; islev yalnizca switch konumundan cikarildi, alan yok.
 constexpr OpcodeInfo kI_5D = { 0x5D, "WIZ_PACKET2_UNVERIFIED", Direction::In, nullptr, 0, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_5E = { 0x5E, "WIZ_ZONEABILITY_UNVERIFIED", Direction::In, kF_5E, 9, true, false, false, false };
-constexpr OpcodeInfo kI_5F = { 0x5F, "WIZ_EVENT_UNVERIFIED", Direction::In, kF_5F, 2, true, true, false, false };
+constexpr OpcodeInfo kI_5F = { 0x5F, "WIZ_EVENT", Direction::In, kF_5F, 10, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_60 = { 0x60, "WIZ_STEALTH_UNVERIFIED", Direction::In, kF_60, 2, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_61 = { 0x61, "WIZ_ROOM_PACKETPROCESS_UNVERIFIED", Direction::In, kF_61, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_63 = { 0x63, "WIZ_PACKET3_UNVERIFIED", Direction::In, kF_63, 3, true, false, false, false };
-constexpr OpcodeInfo kI_64 = { 0x64, "WIZ_QUEST", Direction::In, kF_64, 6, false, true, false, false };
+constexpr OpcodeInfo kI_64 = { 0x64, "WIZ_QUEST", Direction::In, kF_64, 15, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_65 = { 0x65, "WIZ_PACKET4_UNVERIFIED", Direction::In, kF_65, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_66 = { 0x66, "WIZ_KISS_UNVERIFIED", Direction::In, kF_66, 2, true, false, false, false };
-constexpr OpcodeInfo kI_68 = { 0x68, "WIZ_MERCHANT", Direction::In, kF_68, 2, false, true, false, false };
+constexpr OpcodeInfo kI_68 = { 0x68, "WIZ_MERCHANT", Direction::In, kF_68, 2, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_69 = { 0x69, "WIZ_MERCHANT_INOUT_UNVERIFIED", Direction::In, kF_69, 16, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_6A = { 0x6A, "WIZ_SHOPPING_MALL_UNVERIFIED", Direction::In, kF_6A, 1, true, false, false, false };
+// provisional: Handler govde okumuyor; islev yalnizca switch konumundan cikarildi, alan yok.
 constexpr OpcodeInfo kI_6B = { 0x6B, "WIZ_SERVER_INDEX_UNVERIFIED", Direction::In, nullptr, 0, true, false, false, false };
-constexpr OpcodeInfo kI_6C = { 0x6C, "WIZ_EFFECT_UNVERIFIED", Direction::In, kF_6C, 5, true, true, false, false };
-constexpr OpcodeInfo kI_6D = { 0x6D, "WIZ_SIEGE_UNVERIFIED", Direction::In, kF_6D, 2, true, true, false, false };
-constexpr OpcodeInfo kI_6E = { 0x6E, "WIZ_NAME_CHANGE_UNVERIFIED", Direction::In, kF_6E, 1, true, true, false, false };
+constexpr OpcodeInfo kI_6C = { 0x6C, "WIZ_EFFECT", Direction::In, kF_6C, 17, false, false, false, false };
+constexpr OpcodeInfo kI_6D = { 0x6D, "WIZ_SIEGE", Direction::In, kF_6D, 18, false, false, false, false };
+constexpr OpcodeInfo kI_6E = { 0x6E, "WIZ_NAME_CHANGE", Direction::In, kF_6E, 14, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_70 = { 0x70, "WIZ_CAPE_UNVERIFIED", Direction::In, kF_70, 1, true, false, false, false };
-constexpr OpcodeInfo kI_71 = { 0x71, "WIZ_PREMIUM", Direction::In, kF_71, 5, false, true, false, false };
-constexpr OpcodeInfo kI_72 = { 0x72, "WIZ_HACKTOOL_UNVERIFIED", Direction::In, nullptr, 0, true, true, true, false };
-constexpr OpcodeInfo kI_73 = { 0x73, "WIZ_RENTAL_UNVERIFIED", Direction::In, kF_73, 2, true, true, false, false };
-constexpr OpcodeInfo kI_74 = { 0x74, "WIZ_PACKET5_UNVERIFIED", Direction::In, kF_74, 4, true, true, false, false };
+constexpr OpcodeInfo kI_71 = { 0x71, "WIZ_PREMIUM", Direction::In, kF_71, 8, false, false, false, false };
+constexpr OpcodeInfo kI_72 = { 0x72, "WIZ_HACKTOOL", Direction::In, nullptr, 0, false, false, true, false };
+constexpr OpcodeInfo kI_73 = { 0x73, "WIZ_RENTAL", Direction::In, kF_73, 3, false, false, false, false };
+constexpr OpcodeInfo kI_74 = { 0x74, "WIZ_PACKET5", Direction::In, kF_74, 6, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_75 = { 0x75, "WIZ_CHALLENGE_UNVERIFIED", Direction::In, kF_75, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_76 = { 0x76, "WIZ_PET_UNVERIFIED", Direction::In, kF_76, 7, true, false, false, false };
-constexpr OpcodeInfo kI_78 = { 0x78, "WIZ_KING_UNVERIFIED", Direction::In, kF_78, 2, true, true, false, false };
-constexpr OpcodeInfo kI_79 = { 0x79, "WIZ_SKILLDATA", Direction::In, kF_79, 2, false, true, false, false };
+constexpr OpcodeInfo kI_78 = { 0x78, "WIZ_KING", Direction::In, kF_78, 4, false, false, false, false };
+constexpr OpcodeInfo kI_79 = { 0x79, "WIZ_SKILLDATA", Direction::In, kF_79, 4, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_7A = { 0x7A, "WIZ_PROGRAMCHECK_UNVERIFIED", Direction::In, kF_7A, 1, true, false, false, false };
+// provisional: Handler govde okumuyor; islev yalnizca switch konumundan cikarildi, alan yok.
 constexpr OpcodeInfo kI_7B = { 0x7B, "WIZ_BIFROST_UNVERIFIED", Direction::In, nullptr, 0, true, false, false, false };
-constexpr OpcodeInfo kI_7C = { 0x7C, "WIZ_REPORT", Direction::In, kF_7C, 2, false, true, false, false };
-constexpr OpcodeInfo kI_7D = { 0x7D, "WIZ_LOGOSSHOUT_UNVERIFIED", Direction::In, kF_7D, 7, true, true, false, false };
+constexpr OpcodeInfo kI_7C = { 0x7C, "WIZ_REPORT", Direction::In, kF_7C, 8, false, false, false, false };
+constexpr OpcodeInfo kI_7D = { 0x7D, "WIZ_LOGOSSHOUT", Direction::In, kF_7D, 7, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_80 = { 0x80, "WIZ_RANK_UNVERIFIED", Direction::In, kF_80, 1, true, false, false, false };
-constexpr OpcodeInfo kI_81 = { 0x81, "WIZ_STORY_UNVERIFIED", Direction::In, kF_81, 15, true, true, false, false };
-constexpr OpcodeInfo kI_82 = { 0x82, "WIZ_PACKET8_UNVERIFIED", Direction::In, kF_82, 2, true, true, false, false };
-constexpr OpcodeInfo kI_83 = { 0x83, "WIZ_PACKET9_UNVERIFIED", Direction::In, nullptr, 0, true, true, false, false };
-constexpr OpcodeInfo kI_84 = { 0x84, "WIZ_PACKET10_UNVERIFIED", Direction::In, kF_84, 4, true, true, false, false };
-constexpr OpcodeInfo kI_85 = { 0x85, "WIZ_PACKET11_UNVERIFIED", Direction::In, kF_85, 6, true, true, false, false };
-constexpr OpcodeInfo kI_86 = { 0x86, "WIZ_MINING_UNVERIFIED", Direction::In, kF_86, 2, true, true, false, false };
+constexpr OpcodeInfo kI_81 = { 0x81, "WIZ_STORY", Direction::In, kF_81, 17, false, false, false, false };
+constexpr OpcodeInfo kI_82 = { 0x82, "WIZ_PACKET8", Direction::In, kF_82, 2, false, false, false, false };
+constexpr OpcodeInfo kI_83 = { 0x83, "WIZ_PACKET9", Direction::In, kF_83, 9, false, false, false, false };
+constexpr OpcodeInfo kI_84 = { 0x84, "WIZ_PACKET10", Direction::In, kF_84, 4, false, false, false, false };
+constexpr OpcodeInfo kI_85 = { 0x85, "WIZ_PACKET11", Direction::In, kF_85, 16, false, false, false, false };
+constexpr OpcodeInfo kI_86 = { 0x86, "WIZ_MINING", Direction::In, kF_86, 11, false, false, false, false };
 constexpr OpcodeInfo kI_87 = { 0x87, "WIZ_HELMET", Direction::In, kF_87, 3, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_88 = { 0x88, "WIZ_PVP_UNVERIFIED", Direction::In, kF_88, 1, true, false, false, false };
-constexpr OpcodeInfo kI_89 = { 0x89, "WIZ_CHANGE_HAIR_UNVERIFIED", Direction::In, nullptr, 0, true, true, true, false };
+constexpr OpcodeInfo kI_89 = { 0x89, "WIZ_CHANGE_HAIR", Direction::In, nullptr, 0, false, false, true, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_8B = { 0x8B, "WIZ_PACKET13_UNVERIFIED", Direction::In, kF_8B, 2, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_8D = { 0x8D, "WIZ_PACKET15_UNVERIFIED", Direction::In, kF_8D, 7, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_90 = { 0x90, "WIZ_DEATH_LIST_UNVERIFIED", Direction::In, kF_90, 3, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_91 = { 0x91, "WIZ_CLANPOINTS_BATTLE_UNVERIFIED", Direction::In, kF_91, 2, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_92 = { 0x92, "OP_92_UNVERIFIED", Direction::In, kF_92, 9, true, false, false, false };
-constexpr OpcodeInfo kI_95 = { 0x95, "OP_95_UNVERIFIED", Direction::In, kF_95, 5, true, true, false, false };
+constexpr OpcodeInfo kI_95 = { 0x95, "OP_95", Direction::In, kF_95, 15, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_97 = { 0x97, "OP_97_UNVERIFIED", Direction::In, kF_97, 2, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_98 = { 0x98, "OP_98_UNVERIFIED", Direction::In, kF_98, 1, true, false, false, false };
-constexpr OpcodeInfo kI_99 = { 0x99, "OP_99_UNVERIFIED", Direction::In, kF_99, 7, true, true, false, false };
-constexpr OpcodeInfo kI_9A = { 0x9A, "OP_9A_UNVERIFIED", Direction::In, kF_9A, 6, true, true, false, false };
+constexpr OpcodeInfo kI_99 = { 0x99, "OP_99", Direction::In, kF_99, 22, false, false, false, false };
+constexpr OpcodeInfo kI_9A = { 0x9A, "OP_9A", Direction::In, kF_9A, 6, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_9B = { 0x9B, "OP_9B_UNVERIFIED", Direction::In, kF_9B, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_9C = { 0x9C, "OP_9C_UNVERIFIED", Direction::In, kF_9C, 1, true, false, false, false };
-constexpr OpcodeInfo kI_9F = { 0x9F, "OP_9F_UNVERIFIED", Direction::In, nullptr, 0, true, true, true, false };
-constexpr OpcodeInfo kI_A0 = { 0xA0, "WIZ_XINCODE", Direction::In, kF_A0, 2, false, true, true, false };
+constexpr OpcodeInfo kI_9F = { 0x9F, "OP_9F", Direction::In, nullptr, 0, false, false, true, false };
+constexpr OpcodeInfo kI_A0 = { 0xA0, "WIZ_XINCODE", Direction::In, kF_A0, 2, false, false, true, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_A5 = { 0xA5, "OP_A5_UNVERIFIED", Direction::In, kF_A5, 1, true, false, false, false };
-constexpr OpcodeInfo kI_A9 = { 0xA9, "OP_A9_UNVERIFIED", Direction::In, kF_A9, 4, true, true, false, false };
-constexpr OpcodeInfo kI_AC = { 0xAC, "OP_AC_UNVERIFIED", Direction::In, kF_AC, 4, true, true, false, false };
+constexpr OpcodeInfo kI_A9 = { 0xA9, "OP_A9", Direction::In, kF_A9, 23, false, false, false, false };
+constexpr OpcodeInfo kI_AC = { 0xAC, "OP_AC", Direction::In, kF_AC, 5, false, false, false, false };
+// provisional: Handler govde okumuyor; islev yalnizca switch konumundan cikarildi, alan yok.
 constexpr OpcodeInfo kI_B4 = { 0xB4, "OP_B4_UNVERIFIED", Direction::In, nullptr, 0, true, false, false, false };
-constexpr OpcodeInfo kI_B5 = { 0xB5, "OP_B5_UNVERIFIED", Direction::In, kF_B5, 2, true, true, false, false };
-constexpr OpcodeInfo kI_B6 = { 0xB6, "OP_B6_UNVERIFIED", Direction::In, kF_B6, 6, true, true, false, false };
+constexpr OpcodeInfo kI_B5 = { 0xB5, "OP_B5", Direction::In, kF_B5, 9, false, false, false, false };
+constexpr OpcodeInfo kI_B6 = { 0xB6, "OP_B6", Direction::In, kF_B6, 9, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_B7 = { 0xB7, "OP_B7_UNVERIFIED", Direction::In, kF_B7, 1, true, false, false, false };
-constexpr OpcodeInfo kI_B8 = { 0xB8, "OP_B8_UNVERIFIED", Direction::In, kF_B8, 2, true, true, false, false };
-constexpr OpcodeInfo kI_B9 = { 0xB9, "OP_B9_UNVERIFIED", Direction::In, kF_B9, 2, true, true, false, false };
+constexpr OpcodeInfo kI_B8 = { 0xB8, "OP_B8", Direction::In, kF_B8, 2, false, false, false, false };
+constexpr OpcodeInfo kI_B9 = { 0xB9, "OP_B9", Direction::In, kF_B9, 4, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_BD = { 0xBD, "OP_BD_UNVERIFIED", Direction::In, kF_BD, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_C0 = { 0xC0, "OP_C0_UNVERIFIED", Direction::In, kF_C0, 1, true, false, false, false };
-constexpr OpcodeInfo kI_C2 = { 0xC2, "OP_C2_UNVERIFIED", Direction::In, kF_C2, 2, true, true, false, false };
-constexpr OpcodeInfo kI_C3 = { 0xC3, "OP_C3_UNVERIFIED", Direction::In, kF_C3, 5, true, true, false, false };
-constexpr OpcodeInfo kI_C5 = { 0xC5, "OP_C5_UNVERIFIED", Direction::In, kF_C5, 3, true, true, false, false };
-constexpr OpcodeInfo kI_C7 = { 0xC7, "OP_C7_UNVERIFIED", Direction::In, kF_C7, 8, true, true, false, false };
+constexpr OpcodeInfo kI_C2 = { 0xC2, "OP_C2", Direction::In, kF_C2, 6, false, false, false, false };
+constexpr OpcodeInfo kI_C3 = { 0xC3, "OP_C3", Direction::In, kF_C3, 16, false, false, false, false };
+constexpr OpcodeInfo kI_C5 = { 0xC5, "OP_C5", Direction::In, kF_C5, 8, false, false, false, false };
+constexpr OpcodeInfo kI_C7 = { 0xC7, "OP_C7", Direction::In, kF_C7, 8, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_C8 = { 0xC8, "OP_C8_UNVERIFIED", Direction::In, kF_C8, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_CB = { 0xCB, "OP_CB_UNVERIFIED", Direction::In, kF_CB, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_CC = { 0xCC, "OP_CC_UNVERIFIED", Direction::In, kF_CC, 1, true, false, false, false };
-constexpr OpcodeInfo kI_CE = { 0xCE, "OP_CE_UNVERIFIED", Direction::In, kF_CE, 1, true, true, false, false };
-constexpr OpcodeInfo kI_CF = { 0xCF, "OP_CF_UNVERIFIED", Direction::In, kF_CF, 3, true, true, false, false };
+constexpr OpcodeInfo kI_CE = { 0xCE, "OP_CE", Direction::In, kF_CE, 3, false, false, false, false };
+constexpr OpcodeInfo kI_CF = { 0xCF, "OP_CF", Direction::In, kF_CF, 7, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_D0 = { 0xD0, "OP_D0_UNVERIFIED", Direction::In, kF_D0, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_D1 = { 0xD1, "OP_D1_UNVERIFIED", Direction::In, kF_D1, 1, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_D3 = { 0xD3, "OP_D3_UNVERIFIED", Direction::In, kF_D3, 6, true, false, false, false };
-constexpr OpcodeInfo kI_D5 = { 0xD5, "OP_D5_UNVERIFIED", Direction::In, kF_D5, 12, true, true, false, false };
+constexpr OpcodeInfo kI_D5 = { 0xD5, "OP_D5", Direction::In, kF_D5, 13, false, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_D6 = { 0xD6, "OP_D6_UNVERIFIED", Direction::In, kF_D6, 2, true, false, false, false };
+// provisional: Alan sirasi handler okumalarindan cikarildi; alan anlamlari ve ad canli trafikle dogrulanmadi.
 constexpr OpcodeInfo kI_D7 = { 0xD7, "OP_D7_UNVERIFIED", Direction::In, kF_D7, 4, true, false, false, false };
-constexpr OpcodeInfo kI_D9 = { 0xD9, "OP_D9_UNVERIFIED", Direction::In, kF_D9, 3, true, true, false, false };
-constexpr OpcodeInfo kI_FE = { 0xFE, "OP_FE_UNVERIFIED", Direction::In, nullptr, 0, true, true, true, false };
+constexpr OpcodeInfo kI_D9 = { 0xD9, "OP_D9", Direction::In, kF_D9, 3, false, false, false, false };
+constexpr OpcodeInfo kI_FE = { 0xFE, "OP_FE", Direction::In, nullptr, 0, false, false, true, false };
+
+// ---------------------------------------------------------------------------
+// GIDEN YON (pkt_send_wrap cagri yerleri)
+//
+// Her kayit bir cagri yerinden cikarildi: tamponun 0. WORD'une yazilan deger
+// opcode (dusuk bayt) + varyant (yuksek bayt), sonraki yazimlar alanlardir.
+// Opcode'un kendisi de tamponun 0. baytina yazilir; alanlar 1'den baslar.
+// variant = true olan kayitlarda offset 1 alt secicidir (U8).
+// ---------------------------------------------------------------------------
+constexpr FieldSpec kF_O_05[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_0C[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_10[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_12[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_14[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_19[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_1E[] = {
+    { 1, FieldType::U8, "f1" },
+    { 3, FieldType::U8, "f2" },
+};
+constexpr FieldSpec kF_O_1F[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+};
+constexpr FieldSpec kF_O_20[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_21[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_26[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+    { 3, FieldType::U8, "f3" },
+};
+constexpr FieldSpec kF_O_2F[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_30[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_32[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_34[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+};
+constexpr FieldSpec kF_O_35[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+};
+constexpr FieldSpec kF_O_3B[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+};
+constexpr FieldSpec kF_O_3C[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+    { 3, FieldType::U8, "f3" },
+};
+constexpr FieldSpec kF_O_40[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_41[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_49[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+};
+constexpr FieldSpec kF_O_4F[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+    { 3, FieldType::U8, "f3" },
+};
+constexpr FieldSpec kF_O_50[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+    { 3, FieldType::U16, "f3" },
+    { 5, FieldType::Str, "f4" },
+};
+constexpr FieldSpec kF_O_51[] = {
+    { 1, FieldType::U16, "f1" },
+};
+constexpr FieldSpec kF_O_55[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+};
+constexpr FieldSpec kF_O_57[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+};
+constexpr FieldSpec kF_O_5B[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U32, "f2" },
+    { 6, FieldType::U8, "f3" },
+    { 7, FieldType::U32, "f4" },
+};
+constexpr FieldSpec kF_O_5F[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+};
+constexpr FieldSpec kF_O_61[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+};
+constexpr FieldSpec kF_O_62[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_68[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+};
+constexpr FieldSpec kF_O_6A[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_6D[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+};
+constexpr FieldSpec kF_O_6E[] = {
+    { 2, FieldType::U16, "f1" },
+    { 4, FieldType::Str, "f2" },
+};
+constexpr FieldSpec kF_O_70[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_72[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+};
+constexpr FieldSpec kF_O_73[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_75[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_77[] = {
+    { 1, FieldType::U8, "f1" },
+    { 4, FieldType::U8, "f2" },
+    { 5, FieldType::Str, "f3" },
+};
+constexpr FieldSpec kF_O_78[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+    { 3, FieldType::U32, "f3" },
+    { 7, FieldType::U8, "f4" },
+};
+constexpr FieldSpec kF_O_79[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_7A[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_7C[] = {
+    { 1, FieldType::U8, "f1" },
+    { 3, FieldType::Str, "f2" },
+};
+constexpr FieldSpec kF_O_7D[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_84[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_85[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_89[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_98[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_99[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+};
+constexpr FieldSpec kF_O_9A[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_9C[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_AC[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_B5[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U16, "f2" },
+};
+constexpr FieldSpec kF_O_B9[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_CC[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_CF[] = {
+    { 1, FieldType::U8, "f1" },
+};
+constexpr FieldSpec kF_O_D5[] = {
+    { 1, FieldType::U8, "f1" },
+    { 2, FieldType::U8, "f2" },
+};
+constexpr FieldSpec kF_O_F9[] = {
+    { 1, FieldType::U16, "f1" },
+    { 3, FieldType::U16, "f2" },
+    { 5, FieldType::U16, "f3" },
+    { 7, FieldType::Str, "f4" },
+};
+
+// Adlar ayni opcode'un alim kaydindan turetildi; govde okumayan cagri
+// yerlerinde "_UNVERIFIED" soneki ve provisional = true birakildi.
+// provisional: Cagri yeri govdeye alan yazmiyor (sabit opcode); islev adi cagri yerinden turetildi.
+constexpr OpcodeInfo kO_01 = { 0x01, "WIZ_LOGIN_OUT_UNVERIFIED", Direction::Out, nullptr, 0, true, false, false, false };
+constexpr OpcodeInfo kO_05 = { 0x05, "WIZ_SEL_NATION_OUT", Direction::Out, kF_O_05, 1, false, false, false, false };
+// provisional: Cagri yeri govdeye alan yazmiyor (sabit opcode); islev adi cagri yerinden turetildi.
+constexpr OpcodeInfo kO_09 = { 0x09, "WIZ_ROTATE_OUT_UNVERIFIED", Direction::Out, nullptr, 0, true, false, false, false };
+constexpr OpcodeInfo kO_0C = { 0x0C, "WIZ_ALLCHAR_INFO_REQ_OUT", Direction::Out, kF_O_0C, 1, false, false, false, true };
+constexpr OpcodeInfo kO_10 = { 0x10, "WIZ_CHAT_OUT", Direction::Out, kF_O_10, 1, false, false, false, false };
+constexpr OpcodeInfo kO_12 = { 0x12, "WIZ_REGENE_OUT", Direction::Out, kF_O_12, 1, false, false, false, false };
+constexpr OpcodeInfo kO_14 = { 0x14, "WIZ_WEATHER_OUT", Direction::Out, kF_O_14, 1, false, false, false, false };
+constexpr OpcodeInfo kO_19 = { 0x19, "WIZ_ITEM_LOG_OUT", Direction::Out, kF_O_19, 1, false, false, false, true };
+constexpr OpcodeInfo kO_1E = { 0x1E, "WIZ_WARP_OUT", Direction::Out, kF_O_1E, 2, false, false, false, false };
+constexpr OpcodeInfo kO_1F = { 0x1F, "WIZ_ITEM_MOVE_OUT", Direction::Out, kF_O_1F, 2, false, false, false, false };
+constexpr OpcodeInfo kO_20 = { 0x20, "WIZ_NPC_EVENT_OUT", Direction::Out, kF_O_20, 1, false, false, false, false };
+constexpr OpcodeInfo kO_21 = { 0x21, "WIZ_ITEM_TRADE_OUT", Direction::Out, kF_O_21, 1, false, false, false, true };
+constexpr OpcodeInfo kO_26 = { 0x26, "WIZ_ITEM_GET_OUT", Direction::Out, kF_O_26, 3, false, false, false, false };
+// provisional: Cagri yeri govdeye alan yazmiyor (sabit opcode); islev adi cagri yerinden turetildi.
+constexpr OpcodeInfo kO_2B = { 0x2B, "WIZ_VERSION_CHECK_OUT_UNVERIFIED", Direction::Out, nullptr, 0, true, false, false, false };
+constexpr OpcodeInfo kO_2F = { 0x2F, "WIZ_PARTY_OUT", Direction::Out, kF_O_2F, 1, false, false, false, true };
+constexpr OpcodeInfo kO_30 = { 0x30, "WIZ_EXCHANGE_OUT", Direction::Out, kF_O_30, 1, false, false, false, true };
+constexpr OpcodeInfo kO_32 = { 0x32, "OP_32_OUT", Direction::Out, kF_O_32, 1, false, false, false, false };
+constexpr OpcodeInfo kO_34 = { 0x34, "WIZ_CLASS_CHANGE_OUT", Direction::Out, kF_O_34, 2, false, false, false, true };
+constexpr OpcodeInfo kO_35 = { 0x35, "WIZ_CHAT_TARGET_OUT", Direction::Out, kF_O_35, 2, false, false, false, true };
+constexpr OpcodeInfo kO_3B = { 0x3B, "WIZ_ITEM_REPAIR_OUT", Direction::Out, kF_O_3B, 2, false, false, false, false };
+constexpr OpcodeInfo kO_3C = { 0x3C, "WIZ_KNIGHTS_PROCESS_OUT", Direction::Out, kF_O_3C, 3, false, false, false, true };
+constexpr OpcodeInfo kO_40 = { 0x40, "WIZ_OPERATOR_OUT", Direction::Out, kF_O_40, 1, false, false, false, false };
+constexpr OpcodeInfo kO_41 = { 0x41, "OP_41_OUT", Direction::Out, kF_O_41, 1, false, false, false, false };
+// provisional: Cagri yeri govdeye alan yazmiyor (sabit opcode); islev adi cagri yerinden turetildi.
+constexpr OpcodeInfo kO_48 = { 0x48, "OP_48_OUT_UNVERIFIED", Direction::Out, nullptr, 0, true, false, false, false };
+constexpr OpcodeInfo kO_49 = { 0x49, "WIZ_FRIEND_PROCESS_OUT", Direction::Out, kF_O_49, 2, false, false, false, true };
+constexpr OpcodeInfo kO_4F = { 0x4F, "WIZ_PARTY_BBS_OUT", Direction::Out, kF_O_4F, 3, false, false, false, false };
+constexpr OpcodeInfo kO_50 = { 0x50, "WIZ_MARKET_BBS_OUT", Direction::Out, kF_O_50, 4, false, false, false, true };
+constexpr OpcodeInfo kO_51 = { 0x51, "OP_51_OUT", Direction::Out, kF_O_51, 1, false, false, false, false };
+constexpr OpcodeInfo kO_55 = { 0x55, "WIZ_SELECT_MSG_OUT", Direction::Out, kF_O_55, 2, false, false, false, false };
+constexpr OpcodeInfo kO_57 = { 0x57, "WIZ_BATTLE_EVENT_OUT", Direction::Out, kF_O_57, 2, false, false, false, true };
+constexpr OpcodeInfo kO_5B = { 0x5B, "WIZ_ITEM_UPGRADE_OUT", Direction::Out, kF_O_5B, 4, false, false, false, true };
+constexpr OpcodeInfo kO_5F = { 0x5F, "WIZ_EVENT_OUT", Direction::Out, kF_O_5F, 2, false, false, false, true };
+constexpr OpcodeInfo kO_61 = { 0x61, "WIZ_ROOM_PACKETPROCESS_OUT", Direction::Out, kF_O_61, 2, false, false, false, true };
+constexpr OpcodeInfo kO_62 = { 0x62, "OP_62_OUT", Direction::Out, kF_O_62, 1, false, false, false, false };
+constexpr OpcodeInfo kO_68 = { 0x68, "WIZ_MERCHANT_OUT", Direction::Out, kF_O_68, 2, false, false, false, true };
+constexpr OpcodeInfo kO_6A = { 0x6A, "WIZ_SHOPPING_MALL_OUT", Direction::Out, kF_O_6A, 1, false, false, false, true };
+constexpr OpcodeInfo kO_6D = { 0x6D, "WIZ_SIEGE_OUT", Direction::Out, kF_O_6D, 2, false, false, false, true };
+constexpr OpcodeInfo kO_6E = { 0x6E, "WIZ_NAME_CHANGE_OUT", Direction::Out, kF_O_6E, 2, false, false, false, false };
+constexpr OpcodeInfo kO_70 = { 0x70, "WIZ_CAPE_OUT", Direction::Out, kF_O_70, 1, false, false, false, false };
+constexpr OpcodeInfo kO_72 = { 0x72, "WIZ_HACKTOOL_OUT", Direction::Out, kF_O_72, 2, false, false, false, true };
+constexpr OpcodeInfo kO_73 = { 0x73, "WIZ_RENTAL_OUT", Direction::Out, kF_O_73, 1, false, false, false, true };
+constexpr OpcodeInfo kO_75 = { 0x75, "WIZ_CHALLENGE_OUT", Direction::Out, kF_O_75, 1, false, false, false, true };
+constexpr OpcodeInfo kO_77 = { 0x77, "OP_77_OUT", Direction::Out, kF_O_77, 3, false, false, false, true };
+constexpr OpcodeInfo kO_78 = { 0x78, "WIZ_KING_OUT", Direction::Out, kF_O_78, 4, false, false, false, true };
+constexpr OpcodeInfo kO_79 = { 0x79, "WIZ_SKILLDATA_OUT", Direction::Out, kF_O_79, 1, false, false, false, true };
+constexpr OpcodeInfo kO_7A = { 0x7A, "WIZ_PROGRAMCHECK_OUT", Direction::Out, kF_O_7A, 1, false, false, false, false };
+constexpr OpcodeInfo kO_7C = { 0x7C, "WIZ_REPORT_OUT", Direction::Out, kF_O_7C, 2, false, false, false, true };
+constexpr OpcodeInfo kO_7D = { 0x7D, "WIZ_LOGOSSHOUT_OUT", Direction::Out, kF_O_7D, 1, false, false, false, false };
+constexpr OpcodeInfo kO_84 = { 0x84, "WIZ_PACKET10_OUT", Direction::Out, kF_O_84, 1, false, false, false, true };
+constexpr OpcodeInfo kO_85 = { 0x85, "WIZ_PACKET11_OUT", Direction::Out, kF_O_85, 1, false, false, false, true };
+constexpr OpcodeInfo kO_89 = { 0x89, "WIZ_CHANGE_HAIR_OUT", Direction::Out, kF_O_89, 1, false, false, false, true };
+constexpr OpcodeInfo kO_98 = { 0x98, "OP_98_OUT", Direction::Out, kF_O_98, 1, false, false, false, true };
+constexpr OpcodeInfo kO_99 = { 0x99, "OP_99_OUT", Direction::Out, kF_O_99, 2, false, false, false, true };
+constexpr OpcodeInfo kO_9A = { 0x9A, "OP_9A_OUT", Direction::Out, kF_O_9A, 1, false, false, false, true };
+constexpr OpcodeInfo kO_9C = { 0x9C, "OP_9C_OUT", Direction::Out, kF_O_9C, 1, false, false, false, true };
+constexpr OpcodeInfo kO_AC = { 0xAC, "OP_AC_OUT", Direction::Out, kF_O_AC, 1, false, false, false, true };
+constexpr OpcodeInfo kO_B5 = { 0xB5, "OP_B5_OUT", Direction::Out, kF_O_B5, 2, false, false, false, true };
+constexpr OpcodeInfo kO_B9 = { 0xB9, "OP_B9_OUT", Direction::Out, kF_O_B9, 1, false, false, false, true };
+constexpr OpcodeInfo kO_CC = { 0xCC, "OP_CC_OUT", Direction::Out, kF_O_CC, 1, false, false, false, true };
+constexpr OpcodeInfo kO_CF = { 0xCF, "OP_CF_OUT", Direction::Out, kF_O_CF, 1, false, false, false, true };
+constexpr OpcodeInfo kO_D5 = { 0xD5, "OP_D5_OUT", Direction::Out, kF_O_D5, 2, false, false, false, false };
+// provisional: Cagri yeri govdeye alan yazmiyor (sabit opcode); islev adi cagri yerinden turetildi.
+constexpr OpcodeInfo kO_F2 = { 0xF2, "OP_F2_OUT_UNVERIFIED", Direction::Out, nullptr, 0, true, false, false, false };
+// provisional: Cagri yeri govdeye alan yazmiyor (sabit opcode); islev adi cagri yerinden turetildi.
+constexpr OpcodeInfo kO_F6 = { 0xF6, "OP_F6_OUT_UNVERIFIED", Direction::Out, nullptr, 0, true, false, false, false };
+constexpr OpcodeInfo kO_F9 = { 0xF9, "OP_F9_OUT", Direction::Out, kF_O_F9, 4, false, false, false, false };
+// provisional: Cagri yeri govdeye alan yazmiyor (sabit opcode); islev adi cagri yerinden turetildi.
+constexpr OpcodeInfo kO_FD = { 0xFD, "OP_FD_OUT_UNVERIFIED", Direction::Out, nullptr, 0, true, false, false, false };
 
 // 256 girisli indeksli tablo: bos slotlar nullptr. Ikili arama yok.
 constexpr const OpcodeInfo* kInTable[256] = {
@@ -1049,8 +1948,41 @@ constexpr const OpcodeInfo* kInTable[256] = {
     /* 0xF8 */ nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &kI_FE, nullptr,
 };
 
-// Giden yon icin ayri kayit yok; tablo In ile ayni kayitlari isaret eder.
-constexpr const OpcodeInfo* kOutTable[256] = {};
+// Giden yon tablosu: pkt_send_wrap cagri yerlerinden cikarildi.
+constexpr const OpcodeInfo* kOutTable[256] = {
+    /* 0x00 */ nullptr, &kO_01, nullptr, nullptr, nullptr, &kO_05, nullptr, nullptr,
+    /* 0x08 */ nullptr, &kO_09, nullptr, nullptr, &kO_0C, nullptr, nullptr, nullptr,
+    /* 0x10 */ &kO_10, nullptr, &kO_12, nullptr, &kO_14, nullptr, nullptr, nullptr,
+    /* 0x18 */ nullptr, &kO_19, nullptr, nullptr, nullptr, nullptr, &kO_1E, &kO_1F,
+    /* 0x20 */ &kO_20, &kO_21, nullptr, nullptr, nullptr, nullptr, &kO_26, nullptr,
+    /* 0x28 */ nullptr, nullptr, nullptr, &kO_2B, nullptr, nullptr, nullptr, &kO_2F,
+    /* 0x30 */ &kO_30, nullptr, &kO_32, nullptr, &kO_34, &kO_35, nullptr, nullptr,
+    /* 0x38 */ nullptr, nullptr, nullptr, &kO_3B, &kO_3C, nullptr, nullptr, nullptr,
+    /* 0x40 */ &kO_40, &kO_41, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    /* 0x48 */ &kO_48, &kO_49, nullptr, nullptr, nullptr, nullptr, nullptr, &kO_4F,
+    /* 0x50 */ &kO_50, &kO_51, nullptr, nullptr, nullptr, &kO_55, nullptr, &kO_57,
+    /* 0x58 */ nullptr, nullptr, nullptr, &kO_5B, nullptr, nullptr, nullptr, &kO_5F,
+    /* 0x60 */ nullptr, &kO_61, &kO_62, nullptr, nullptr, nullptr, nullptr, nullptr,
+    /* 0x68 */ &kO_68, nullptr, &kO_6A, nullptr, nullptr, &kO_6D, &kO_6E, nullptr,
+    /* 0x70 */ &kO_70, nullptr, &kO_72, &kO_73, nullptr, &kO_75, nullptr, &kO_77,
+    /* 0x78 */ &kO_78, &kO_79, &kO_7A, nullptr, &kO_7C, &kO_7D, nullptr, nullptr,
+    /* 0x80 */ nullptr, nullptr, nullptr, nullptr, &kO_84, &kO_85, nullptr, nullptr,
+    /* 0x88 */ nullptr, &kO_89, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    /* 0x90 */ nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    /* 0x98 */ &kO_98, &kO_99, &kO_9A, nullptr, &kO_9C, nullptr, nullptr, nullptr,
+    /* 0xA0 */ nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    /* 0xA8 */ nullptr, nullptr, nullptr, nullptr, &kO_AC, nullptr, nullptr, nullptr,
+    /* 0xB0 */ nullptr, nullptr, nullptr, nullptr, nullptr, &kO_B5, nullptr, nullptr,
+    /* 0xB8 */ nullptr, &kO_B9, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    /* 0xC0 */ nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    /* 0xC8 */ nullptr, nullptr, nullptr, nullptr, &kO_CC, nullptr, nullptr, &kO_CF,
+    /* 0xD0 */ nullptr, nullptr, nullptr, nullptr, nullptr, &kO_D5, nullptr, nullptr,
+    /* 0xD8 */ nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    /* 0xE0 */ nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    /* 0xE8 */ nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr,
+    /* 0xF0 */ nullptr, nullptr, &kO_F2, nullptr, nullptr, nullptr, &kO_F6, nullptr,
+    /* 0xF8 */ nullptr, &kO_F9, nullptr, nullptr, nullptr, &kO_FD, nullptr, nullptr,
+};
 
 } // namespace
 
@@ -1061,16 +1993,25 @@ const OpcodeInfo* findOpcode(std::uint8_t opcode, Direction dir) {
   return (dir == Direction::Out) ? kInTable[opcode] : kOutTable[opcode];
 }
 
+// Ad once alim, sonra giden tablosundan cozulur; giden opcode'lar da ad alir.
 const char* opcodeName(std::uint8_t opcode) {
-  const OpcodeInfo* e = findOpcode(opcode, Direction::In);
-  return e ? e->name : "UNKNOWN";
+  if (const OpcodeInfo* e = kInTable[opcode]) return e->name;
+  if (const OpcodeInfo* e = kOutTable[opcode]) return e->name;
+  return "UNKNOWN";
 }
 
-bool isKnownOpcode(std::uint8_t opcode) { return findOpcode(opcode, Direction::In) != nullptr; }
+bool isKnownOpcode(std::uint8_t opcode) {
+  return kInTable[opcode] != nullptr || kOutTable[opcode] != nullptr;
+}
 
+// CELISKI KURALI: bir opcode iki yonde de kayitliysa Direction::Out doner.
+// Gerekce: ayni numara iki yonde farkli govde tasir; giden govde istemci
+// tarafindan uretildigi icin alan yerlesimi daha kesin bilinir. Yalniz bir
+// yonde kayit varsa o yon doner; hic kayit yoksa varsayilan In'dir.
 Direction opcodeDirection(std::uint8_t opcode) {
-  const OpcodeInfo* e = findOpcode(opcode, Direction::In);
-  return e ? e->dir : Direction::In;
+  if (kOutTable[opcode] != nullptr) return Direction::Out;
+  if (const OpcodeInfo* e = kInTable[opcode]) return e->dir;
+  return Direction::In;
 }
 
 } // namespace ko

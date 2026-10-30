@@ -23,6 +23,14 @@ constexpr float kToolbarHeight = 70.0f;
 constexpr float kStatusBarHeight = 26.0f;
 constexpr int kHexBytesPerRow = 16;
 
+// Listede sona bu kadar piksel mesafe kalinca "en altta" sayilir ve otomatik takip acilir.
+constexpr float kFollowThreshold = 2.0f;
+
+// Kalici arayuz tercihlerinin anahtarlari.
+constexpr const char* kKeyWarnings = "gorunum.uyari_paneli";
+constexpr const char* kKeyFilterBar = "gorunum.filtre_cubugu";
+constexpr const char* kKeyAutoScroll = "gorunum.otomatik_kaydir";
+
 constexpr ImGuiTableFlags kDetailTableFlags =
     ImGuiTableFlags_SizingFixedFit | ImGuiTableFlags_BordersInnerH | ImGuiTableFlags_BordersOuterH |
     ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_RowBg;
@@ -126,11 +134,42 @@ Ui::Ui(AppState& state) : state_(state), buffer_(PacketBuffer::kDefaultCapacity)
   capture_.setSink([this](RawPacket&& packet) { buffer_.push(std::move(packet)); });
   npcapPresent_ = wpcapPresent();
   logDirectory_ = "logs";
+  settingsPath_ = SettingsStore::derivePath(ImGui::GetIO().IniFilename);
 }
 
-Ui::~Ui() { stopCapture(); }
+Ui::~Ui() {
+  stopCapture();
+  savePreferences();
+}
+
+// Tercihleri dosyadan okur. Dosya yoksa varsayilanlar korunur.
+void Ui::loadPreferences() {
+  if (preferencesLoaded_) return;
+  preferencesLoaded_ = true;
+
+  settings_.load(settingsPath_);
+
+  showWarnings_ = settings_.getBool(kKeyWarnings, showWarnings_);
+  filterBarOpen_ = settings_.getBool(kKeyFilterBar, filterBarOpen_);
+  autoScroll_ = settings_.getBool(kKeyAutoScroll, autoScroll_);
+  followTail_ = autoScroll_;
+}
+
+// Tercihleri bir kez, kapanista yazar; her karede yazmaz.
+void Ui::savePreferences() {
+  if (!preferencesLoaded_) return;
+
+  settings_.setBool(kKeyWarnings, showWarnings_);
+  settings_.setBool(kKeyFilterBar, filterBarOpen_);
+  settings_.setBool(kKeyAutoScroll, autoScroll_);
+
+  std::string err;
+  settings_.save(settingsPath_, err);
+  if (!err.empty()) setError(err);
+}
 
 void Ui::initialize() {
+  loadPreferences();
   refreshDevices();
   if (!npcapPresent_) {
     setError("Npcap surucusu kurulu degil (wpcap.dll yuklenemiyor). Npcap kurulduktan sonra uygulamayi yeniden baslatin.");
@@ -289,6 +328,8 @@ void Ui::clearPackets() {
   nextSeq_ = 1;
   pipeline_.reset();
   filtersDirty_ = true;
+  followTail_ = autoScroll_;
+  scrollInitialized_ = false;
   setStatus("Paket listesi temizlendi.");
 }
 
@@ -421,7 +462,10 @@ void Ui::drawMenuBarAndToolbar() {
     if (ImGui::BeginMenu("Gorunum")) {
       if (ImGui::MenuItem("Filtre Cubugu", nullptr, filterBarOpen_)) filterBarOpen_ = !filterBarOpen_;
       if (ImGui::MenuItem("Uyari Paneli", nullptr, showWarnings_)) showWarnings_ = !showWarnings_;
-      if (ImGui::MenuItem("Otomatik Kaydir", nullptr, autoScroll_)) autoScroll_ = !autoScroll_;
+      if (ImGui::MenuItem("Otomatik Kaydir", nullptr, autoScroll_)) {
+        autoScroll_ = !autoScroll_;
+        followTail_ = autoScroll_;
+      }
       ImGui::EndMenu();
     }
     ImGui::EndMenuBar();
@@ -654,9 +698,27 @@ void Ui::drawPacketList() {
       }
     }
 
-    if (autoScroll_ && total > 0 && ImGui::GetScrollY() < ImGui::GetScrollMaxY()) {
-      ImGui::SetScrollY(ImGui::GetScrollMaxY());
+    // Sticky-bottom: kullanici en alttayken takip edilir; yukari kaydirirsa takip birakilir,
+    // kullanici kendisi tekrar sona inince takip geri acilir.
+    const float scrollY = ImGui::GetScrollY();
+    const float scrollMaxY = ImGui::GetScrollMaxY();
+
+    if (!scrollInitialized_) {
+      lastScrollY_ = scrollY;
+      scrollInitialized_ = true;
     }
+
+    // Son referanstan esikten fazla yukari kaydiysa takip birakilir.
+    if (followTail_ && scrollY < lastScrollY_ - kFollowThreshold) followTail_ = false;
+
+    // Kullanici kendisi sona indiyse (veya liste zaten sonundaysa) takip yeniden acilir.
+    const bool atBottom = scrollMaxY - scrollY <= kFollowThreshold;
+    if (atBottom) followTail_ = true;
+
+    if (autoScroll_ && followTail_ && total > 0 && !atBottom) ImGui::SetScrollY(scrollMaxY);
+
+    // Takip acikken referans hep son satirdir; birakildiginda kullanicinin konumu korunur.
+    lastScrollY_ = followTail_ ? scrollMaxY : scrollY;
 
     ImGui::EndTable();
   }

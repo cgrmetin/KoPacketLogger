@@ -111,10 +111,13 @@ struct Capture::Impl {
   std::mutex sink_mutex;
   std::mutex handle_mutex;
   net::LinkType frame_link = net::LinkType::Ethernet;
+  // Son çözümleme hatası: aynı metni tekrar tekrar yazmamak için.
+  const char* last_parse_error = nullptr;
 
   void resetState() {
     stop_flag.store(false, std::memory_order_relaxed);
     running_flag.store(false, std::memory_order_relaxed);
+    last_parse_error = nullptr;
   }
 
   // Yakalama döngüsü; ayrı thread'de koşar.
@@ -134,7 +137,17 @@ struct Capture::Impl {
       if (header->caplen == 0) continue;
 
       net::ParsedFrame frame;
-      if (!net::parseFrame(bytes, header->caplen, frame, frame_link)) continue;
+      if (!net::parseFrame(bytes, header->caplen, frame, frame_link)) {
+        // Sessiz atlama yok: neden varsa son hata olarak saklanır ve hata metni
+        // değiştiğinde hata ayıklayıcı çıktısına bir kez yazılır.
+        if (frame.err != nullptr && last_parse_error != frame.err) {
+          last_parse_error = frame.err;
+          ::OutputDebugStringA("[KoPacketLogger] cerceve cozulemedi: ");
+          ::OutputDebugStringA(frame.err);
+          ::OutputDebugStringA("\n");
+        }
+        continue;
+      }
 
       RawPacket packet;
       packet.ts_unix_us = static_cast<std::int64_t>(header->ts.tv_sec) * 1000000 +
@@ -266,8 +279,9 @@ bool Capture::start(const std::string& device, std::string& err) {
     return false;
   }
 
-  // Çözümleyici Ethernet, Raw IP ve loopback çerçevelerini biliyor. Başka link
-  // tipinde sessizce paket kaybetmek yerine açık hata ver.
+  // Çözümleyici Ethernet, Raw IP, loopback ve ham 802.11 (radiotap dahil)
+  // çerçevelerini biliyor. Başka link tipinde sessizce paket kaybetmek yerine
+  // açık hata ver.
   const int link_type = pcap_datalink(handle);
   net::LinkType frame_link = net::LinkType::Ethernet;
   if (link_type == DLT_EN10MB) {
@@ -276,6 +290,10 @@ bool Capture::start(const std::string& device, std::string& err) {
     frame_link = net::LinkType::RawIp;
   } else if (link_type == DLT_NULL || link_type == DLT_LOOP) {
     frame_link = net::LinkType::NullLoop;
+  } else if (link_type == DLT_IEEE802_11) {
+    frame_link = net::LinkType::Dot11;
+  } else if (link_type == DLT_IEEE802_11_RADIO) {
+    frame_link = net::LinkType::Dot11Radio;
   } else {
     const char* link_name = pcap_datalink_val_to_description(link_type);
     err = "Desteklenmeyen link tipi (DLT=" + std::to_string(link_type) + "): " +
