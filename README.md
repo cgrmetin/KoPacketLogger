@@ -58,6 +58,19 @@ Varsayılan BPF filtresi `tcp portrange 15100-15109 || port 15001`.
 - 802.11 (DLT 105/127) desteklenir; şifreli gövdede LLC/SNAP okunamaz, gövde
   ham gösterilir.
 
+## Protokol wikisi
+
+Görünüm menüsünden "Protokol Wikisi" paneli açılır. Wiki, opcode tablosundan
+üretilir; **canlı yakalama veya paket seçimi gerekmez**. Her opcode için
+çerçeve yerleşimi, offset tablosu (offset, tip, alan adı) ve yön bilgisi
+listelenir. Üstteki arama kutusu opcode veya alan adıyla süzer.
+
+Seçili bir paket varsa detay panelindeki "Yerleşim" sekmesi aynı şemayı o
+paketin baytları üzerinde gösterir.
+
+Alan adları ikili analizden (handler disassembly) çıkarılmıştır. Kanıt
+bulunamayan alanlar `field_<offset>` olarak kalır.
+
 ## Uyarı
 
 Bu araç yalnızca kendi bağlantınızı incelemek için kullanılmalıdır. Başkasının
